@@ -16,13 +16,11 @@
 
 <title>KG Farms</title>
 
-
 <style>
 
 * {
   box-sizing: border-box;
 }
-
 
 body {
   margin: 0;
@@ -31,7 +29,6 @@ body {
   color: #1f2937;
   padding-bottom: 75px;
 }
-
 
 header {
   background: #1f7a45;
@@ -42,12 +39,10 @@ header {
   z-index: 20;
 }
 
-
 .header-title {
   font-size: 22px;
   font-weight: bold;
 }
-
 
 .header-subtitle {
   font-size: 13px;
@@ -55,23 +50,19 @@ header {
   opacity: .9;
 }
 
-
 .container {
   max-width: 700px;
   margin: auto;
   padding: 16px;
 }
 
-
 .page {
   display: none;
 }
 
-
 .page.active {
   display: block;
 }
-
 
 .card {
   background: white;
@@ -81,33 +72,27 @@ header {
   box-shadow: 0 2px 8px rgba(0,0,0,.06);
 }
 
-
 .card-title {
   font-size: 17px;
   font-weight: bold;
-  margin-bottom: 7px;
 }
 
-
 .section-title {
-  font-size: 20px;
+  font-size: 21px;
   font-weight: bold;
   margin-bottom: 14px;
 }
 
-
 .section-subtitle {
-  font-size: 14px;
+  font-size: 17px;
   font-weight: bold;
-  margin: 18px 0 10px;
+  margin: 20px 0 10px;
 }
-
 
 .muted {
   color: #6b7280;
   font-size: 13px;
 }
-
 
 .row {
   display: flex;
@@ -116,68 +101,118 @@ header {
   gap: 10px;
 }
 
-
-.stat-grid {
+.dashboard-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 14px;
 }
 
-
-.stat {
+.dashboard-stat {
   background: white;
-  border-radius: 12px;
-  padding: 14px;
+  border-radius: 14px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
 }
 
-
-.stat-label {
+.dashboard-stat-label {
   font-size: 12px;
   color: #6b7280;
 }
 
-
-.stat-value {
-  font-size: 21px;
+.dashboard-stat-value {
+  font-size: 23px;
   font-weight: bold;
   margin-top: 5px;
 }
 
+.dashboard-stat-small {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 3px;
+}
 
-.feed-card {
+.quick-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.quick-btn {
+  background: #eef6f1;
+  color: #1f7a45;
+  border: none;
+  border-radius: 11px;
+  padding: 14px 8px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.farm-card {
   border-left: 4px solid #1f7a45;
 }
 
-
-.order-card {
-  border-left: 4px solid #d89000;
+.farm-name {
+  font-size: 18px;
+  font-weight: bold;
 }
 
+.farm-birds {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.farm-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 13px;
+}
+
+.mini-box {
+  background: #f7f9fa;
+  padding: 10px;
+  border-radius: 9px;
+}
+
+.mini-label {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.mini-value {
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 3px;
+}
+
+.feed-card {
+  border-left: 4px solid #d89000;
+}
 
 .vaccine-card {
   border-left: 4px solid #3b6fa8;
 }
 
+.order-card {
+  border-left: 4px solid #d89000;
+}
 
 .vaccine-name {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: bold;
 }
-
 
 .vaccine-date {
-  font-size: 20px;
+  font-size: 19px;
   font-weight: bold;
-  margin-top: 5px;
+  margin-top: 7px;
 }
-
 
 .feed-type {
   font-size: 17px;
   font-weight: bold;
 }
-
 
 .feed-line {
   display: flex;
@@ -186,17 +221,9 @@ header {
   font-size: 13px;
 }
 
-
 .feed-line strong {
   font-size: 14px;
 }
-
-
-.big-number {
-  font-size: 25px;
-  font-weight: bold;
-}
-
 
 .badge {
   display: inline-block;
@@ -207,61 +234,25 @@ header {
   white-space: nowrap;
 }
 
-
 .badge-green {
   background: #e6f5eb;
   color: #18713d;
 }
-
 
 .badge-orange {
   background: #fff1d8;
   color: #9a6700;
 }
 
-
 .badge-blue {
   background: #eaf2fb;
   color: #285b9f;
 }
 
-
 .badge-red {
   background: #fdecec;
   color: #b42318;
 }
-
-
-label {
-  display: block;
-  font-size: 13px;
-  font-weight: bold;
-  margin-bottom: 6px;
-}
-
-
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 9px;
-  font-size: 15px;
-  background: white;
-}
-
-
-textarea {
-  min-height: 80px;
-  resize: vertical;
-}
-
-
-.form-group {
-  margin-bottom: 14px;
-}
-
 
 button {
   border: none;
@@ -272,48 +263,34 @@ button {
   cursor: pointer;
 }
 
-
-button:disabled {
-  opacity: .6;
-  cursor: not-allowed;
-}
-
-
 .primary {
-  width: 100%;
   background: #1f7a45;
   color: white;
 }
-
 
 .secondary {
   background: #e8f2ec;
   color: #1f7a45;
 }
 
-
 .warning {
   background: #fff1d8;
   color: #8a6200;
 }
-
 
 .danger {
   background: #fdecec;
   color: #b42318;
 }
 
-
 .small-btn {
   padding: 9px 12px;
   font-size: 12px;
 }
 
-
 .full-btn {
   width: 100%;
 }
-
 
 .back-btn {
   background: white;
@@ -321,51 +298,6 @@ button:disabled {
   border: 1px solid #d9e5dd;
   margin-bottom: 12px;
 }
-
-
-.empty {
-  text-align: center;
-  padding: 25px 10px;
-  color: #6b7280;
-}
-
-
-.loading {
-  text-align: center;
-  padding: 25px;
-  color: #6b7280;
-}
-
-
-.error-box {
-  background: #fdecec;
-  color: #b42318;
-  padding: 12px;
-  border-radius: 9px;
-  margin-bottom: 14px;
-  font-size: 13px;
-}
-
-
-.success-box {
-  background: #eaf7ee;
-  color: #18713d;
-  padding: 12px;
-  border-radius: 9px;
-  margin-bottom: 14px;
-  font-size: 13px;
-}
-
-
-.info-box {
-  background: #eef5ff;
-  color: #285b9f;
-  padding: 12px;
-  border-radius: 9px;
-  margin-bottom: 14px;
-  font-size: 13px;
-}
-
 
 .bottom-nav {
   position: fixed;
@@ -381,7 +313,6 @@ button:disabled {
   z-index: 30;
 }
 
-
 .nav-btn {
   background: none;
   color: #6b7280;
@@ -389,11 +320,9 @@ button:disabled {
   font-size: 11px;
 }
 
-
 .nav-btn.active {
   color: #1f7a45;
 }
-
 
 .nav-icon {
   display: block;
@@ -401,6 +330,44 @@ button:disabled {
   margin-bottom: 2px;
 }
 
+.loading {
+  text-align: center;
+  padding: 25px;
+  color: #6b7280;
+}
+
+.empty {
+  text-align: center;
+  padding: 22px 10px;
+  color: #6b7280;
+}
+
+.error-box {
+  background: #fdecec;
+  color: #b42318;
+  padding: 12px;
+  border-radius: 9px;
+  margin-bottom: 14px;
+  font-size: 13px;
+}
+
+.success-box {
+  background: #eaf7ee;
+  color: #18713d;
+  padding: 12px;
+  border-radius: 9px;
+  margin-bottom: 14px;
+  font-size: 13px;
+}
+
+.info-box {
+  background: #eef5ff;
+  color: #285b9f;
+  padding: 12px;
+  border-radius: 9px;
+  margin-bottom: 14px;
+  font-size: 13px;
+}
 
 hr {
   border: none;
@@ -408,13 +375,31 @@ hr {
   margin: 14px 0;
 }
 
-
-.order-total {
-  font-size: 25px;
+label {
+  display: block;
+  font-size: 13px;
   font-weight: bold;
-  color: #1f7a45;
+  margin-bottom: 6px;
 }
 
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+  font-size: 15px;
+  background: white;
+}
+
+textarea {
+  min-height: 80px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
 
 .order-summary {
   background: #f7f9fa;
@@ -422,6 +407,11 @@ hr {
   padding: 15px;
 }
 
+.order-total {
+  font-size: 25px;
+  font-weight: bold;
+  color: #1f7a45;
+}
 
 .order-actions {
   display: grid;
@@ -429,24 +419,6 @@ hr {
   gap: 8px;
   margin-top: 12px;
 }
-
-
-.farm-card {
-  cursor: pointer;
-}
-
-
-.vaccine-date-group {
-  margin-top: 16px;
-}
-
-
-.date-heading {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 9px;
-}
-
 
 .schedule-row {
   background: white;
@@ -458,24 +430,16 @@ hr {
   align-items: center;
 }
 
-
-.schedule-left {
-  min-width: 0;
-}
-
-
 .schedule-vaccine {
   font-weight: bold;
   font-size: 15px;
 }
-
 
 .schedule-farm {
   color: #6b7280;
   font-size: 12px;
   margin-top: 3px;
 }
-
 
 .batch-vaccine-row {
   display: flex;
@@ -484,16 +448,13 @@ hr {
   border-bottom: 1px solid #eee;
 }
 
-
 .batch-vaccine-row:last-child {
   border-bottom: none;
 }
 
-
 </style>
 
 </head>
-
 
 <body>
 
@@ -515,7 +476,7 @@ hr {
 
 
 <!-- ======================================================
-     HOME
+     HOME DASHBOARD
 ====================================================== -->
 
 <section id="homePage"
@@ -529,59 +490,106 @@ hr {
   <div id="homeError"></div>
 
 
-  <div class="stat-grid">
+  <!-- MAIN STATISTICS -->
 
-    <div class="stat">
+  <div class="dashboard-grid">
 
-      <div class="stat-label">
-        Farms
+
+    <div class="dashboard-stat">
+
+      <div class="dashboard-stat-label">
+        Active Batches
       </div>
 
-      <div id="totalFarms"
-           class="stat-value">
+      <div id="dashBatches"
+           class="dashboard-stat-value">
         -
       </div>
 
     </div>
 
 
-    <div class="stat">
+    <div class="dashboard-stat">
 
-      <div class="stat-label">
-        Total Birds
+      <div class="dashboard-stat-label">
+        Live Birds
       </div>
 
-      <div id="totalBirds"
-           class="stat-value">
+      <div id="dashBirds"
+           class="dashboard-stat-value">
         -
       </div>
 
     </div>
 
 
-    <div class="stat">
+    <div class="dashboard-stat">
 
-      <div class="stat-label">
-        Feed To Supply
+      <div class="dashboard-stat-label">
+        Feed Required
       </div>
 
-      <div id="totalFeedBalance"
-           class="stat-value">
+      <div id="dashFeedRequired"
+           class="dashboard-stat-value">
         -
+      </div>
+
+      <div class="dashboard-stat-small">
+        Total stage requirement
       </div>
 
     </div>
 
 
-    <div class="stat">
+    <div class="dashboard-stat">
 
-      <div class="stat-label">
-        Orders Required
+      <div class="dashboard-stat-label">
+        Feed Supplied
       </div>
 
-      <div id="ordersRequired"
-           class="stat-value">
+      <div id="dashFeedSupplied"
+           class="dashboard-stat-value">
         -
+      </div>
+
+      <div class="dashboard-stat-small">
+        Bags supplied
+      </div>
+
+    </div>
+
+
+    <div class="dashboard-stat">
+
+      <div class="dashboard-stat-label">
+        To Be Supplied
+      </div>
+
+      <div id="dashFeedBalance"
+           class="dashboard-stat-value">
+        -
+      </div>
+
+      <div class="dashboard-stat-small">
+        Bags remaining
+      </div>
+
+    </div>
+
+
+    <div class="dashboard-stat">
+
+      <div class="dashboard-stat-label">
+        Pending Orders
+      </div>
+
+      <div id="dashPendingOrders"
+           class="dashboard-stat-value">
+        -
+      </div>
+
+      <div class="dashboard-stat-small">
+        Feed orders
       </div>
 
     </div>
@@ -589,62 +597,113 @@ hr {
   </div>
 
 
+  <!-- QUICK ACTIONS -->
+
   <div class="card">
 
-    <div class="row">
+    <div class="card-title">
+      Quick Actions
+    </div>
 
-      <div>
+    <br>
 
-        <div class="card-title">
-          Feed
-        </div>
+    <div class="quick-grid">
 
-        <div class="muted">
-          Current feed requirements
-        </div>
+      <button class="quick-btn"
+              onclick="showPage('dailyPage')">
 
-      </div>
-
-
-      <button class="secondary small-btn"
-              onclick="showPage('feedPage')">
-
-        View Feed
+        + Daily Entry
 
       </button>
 
-    </div>
 
-  </div>
+      <button class="quick-btn"
+              onclick="showPage('feedSupplyPage')">
 
+        + Supply Feed
 
-  <div id="homeFeedPreview"></div>
-
-
-  <div class="card">
-
-    <div class="row">
-
-      <div>
-
-        <div class="card-title">
-          Vaccines
-        </div>
-
-        <div class="muted">
-          Upcoming vaccination schedule
-        </div>
-
-      </div>
+      </button>
 
 
-      <button class="secondary small-btn"
+      <button class="quick-btn"
+              onclick="showPage('ordersPage')">
+
+        Feed Orders
+
+      </button>
+
+
+      <button class="quick-btn"
               onclick="showPage('vaccinesPage')">
 
-        View
+        Vaccines
 
       </button>
 
+    </div>
+
+  </div>
+
+
+  <!-- TODAY'S VACCINES -->
+
+  <div class="section-subtitle">
+    Today's Vaccine Work
+  </div>
+
+
+  <div id="todayVaccines">
+
+    <div class="loading">
+      Loading...
+    </div>
+
+  </div>
+
+
+  <!-- NEXT VACCINES -->
+
+  <div class="section-subtitle">
+    Next Vaccines
+  </div>
+
+
+  <div id="nextVaccines">
+
+    <div class="loading">
+      Loading...
+    </div>
+
+  </div>
+
+
+  <!-- FEED ACTION -->
+
+  <div class="section-subtitle">
+    Feed Requiring Action
+  </div>
+
+
+  <div id="dashboardFeedAction">
+
+    <div class="loading">
+      Loading...
+    </div>
+
+  </div>
+
+
+  <!-- FARM OVERVIEW -->
+
+  <div class="section-subtitle">
+    Farm Overview
+  </div>
+
+
+  <div id="dashboardFarmOverview">
+
+    <div class="loading">
+      Loading...
     </div>
 
   </div>
@@ -663,7 +722,6 @@ hr {
   <div class="section-title">
     Farms
   </div>
-
 
   <div id="farmsList">
 
@@ -691,7 +749,6 @@ hr {
 
   </button>
 
-
   <div id="farmDetails"></div>
 
 </section>
@@ -709,17 +766,13 @@ hr {
     Daily Farm Entry
   </div>
 
-
   <div id="dailyMessage"></div>
-
 
   <div class="card">
 
     <div class="form-group">
 
-      <label>
-        Date
-      </label>
+      <label>Date</label>
 
       <input type="date"
              id="dailyDate">
@@ -729,9 +782,7 @@ hr {
 
     <div class="form-group">
 
-      <label>
-        Farm / Batch
-      </label>
+      <label>Farm / Batch</label>
 
       <select id="dailyBatch"
               onchange="updateDailyBatch()">
@@ -747,9 +798,7 @@ hr {
 
     <div class="form-group">
 
-      <label>
-        Farm Name
-      </label>
+      <label>Farm Name</label>
 
       <input type="text"
              id="dailyFarmName"
@@ -760,9 +809,7 @@ hr {
 
     <div class="form-group">
 
-      <label>
-        Age
-      </label>
+      <label>Age</label>
 
       <input type="text"
              id="dailyAge"
@@ -773,9 +820,7 @@ hr {
 
     <div class="form-group">
 
-      <label>
-        Birds
-      </label>
+      <label>Birds</label>
 
       <input type="number"
              id="dailyBirds"
@@ -786,9 +831,7 @@ hr {
 
     <div class="form-group">
 
-      <label>
-        Mortality
-      </label>
+      <label>Mortality</label>
 
       <input type="number"
              id="dailyMortality"
@@ -800,9 +843,7 @@ hr {
 
     <div class="form-group">
 
-      <label>
-        Feed Type
-      </label>
+      <label>Feed Type</label>
 
       <select id="dailyFeedType">
 
@@ -841,7 +882,7 @@ hr {
     </div>
 
 
-    <button class="primary"
+    <button class="primary full-btn"
             onclick="saveDailyEntry()">
 
       Save Daily Entry
@@ -865,38 +906,7 @@ hr {
     Feed Management
   </div>
 
-
   <div id="feedMessage"></div>
-
-
-  <div class="card">
-
-    <div class="row">
-
-      <div>
-
-        <div class="card-title">
-          Feed Overview
-        </div>
-
-        <div class="muted">
-          Requirement vs supplied
-        </div>
-
-      </div>
-
-
-      <button class="secondary small-btn"
-              onclick="showPage('feedSupplyPage')">
-
-        + Supply
-
-      </button>
-
-    </div>
-
-  </div>
-
 
   <div id="feedList">
 
@@ -923,11 +933,10 @@ hr {
 
       </div>
 
-
       <button class="secondary small-btn"
               onclick="showPage('ordersPage')">
 
-        View Orders
+        View
 
       </button>
 
@@ -953,22 +962,17 @@ hr {
 
   </button>
 
-
   <div class="section-title">
     Supply Feed
   </div>
 
-
   <div id="feedSupplyMessage"></div>
-
 
   <div class="card">
 
     <div class="form-group">
 
-      <label>
-        Date
-      </label>
+      <label>Date</label>
 
       <input type="date"
              id="supplyDate">
@@ -978,9 +982,7 @@ hr {
 
     <div class="form-group">
 
-      <label>
-        Farm / Batch
-      </label>
+      <label>Farm / Batch</label>
 
       <select id="supplyBatch"
               onchange="updateSupplyBatch()">
@@ -996,9 +998,7 @@ hr {
 
     <div class="form-group">
 
-      <label>
-        Farm Name
-      </label>
+      <label>Farm Name</label>
 
       <input type="text"
              id="supplyFarmName"
@@ -1009,9 +1009,7 @@ hr {
 
     <div class="form-group">
 
-      <label>
-        Feed Type
-      </label>
+      <label>Feed Type</label>
 
       <select id="supplyFeedType">
 
@@ -1038,9 +1036,7 @@ hr {
 
     <div class="form-group">
 
-      <label>
-        Bags Supplied
-      </label>
+      <label>Bags Supplied</label>
 
       <input type="number"
              id="supplyBags"
@@ -1052,9 +1048,7 @@ hr {
 
     <div class="form-group">
 
-      <label>
-        Remarks
-      </label>
+      <label>Remarks</label>
 
       <textarea id="supplyRemarks"
                 placeholder="Optional"></textarea>
@@ -1062,7 +1056,7 @@ hr {
     </div>
 
 
-    <button class="primary"
+    <button class="primary full-btn"
             onclick="saveFeedSupply()">
 
       Save Feed Supply
@@ -1089,14 +1083,11 @@ hr {
 
   </button>
 
-
   <div class="section-title">
     Feed Orders
   </div>
 
-
   <div id="ordersMessage"></div>
-
 
   <div id="ordersList">
 
@@ -1124,14 +1115,11 @@ hr {
 
   </button>
 
-
   <div class="section-title">
     Feed Order
   </div>
 
-
   <div id="orderMessage"></div>
-
 
   <div class="card">
 
@@ -1142,58 +1130,47 @@ hr {
       </div>
 
       <div id="orderFarm"
-           class="card-title">
-      </div>
+           class="card-title"></div>
 
+      <br>
 
       <div class="muted">
         Batch
       </div>
 
-      <div id="orderBatch">
-      </div>
-
+      <div id="orderBatch"></div>
 
       <hr>
-
 
       <div class="muted">
         Feed Type
       </div>
 
       <div id="orderFeed"
-           class="feed-type">
-      </div>
-
+           class="feed-type"></div>
 
       <hr>
-
 
       <div class="muted">
         Quantity
       </div>
 
       <div id="orderQuantity"
-           class="order-total">
-      </div>
+           class="order-total"></div>
 
     </div>
 
-
     <br>
 
-
     <button id="createOrderButton"
-            class="primary"
+            class="primary full-btn"
             onclick="createFeedOrder()">
 
       CREATE ORDER
 
     </button>
 
-
     <br><br>
-
 
     <button class="secondary full-btn"
             onclick="shareCurrentOrder()">
@@ -1219,53 +1196,40 @@ hr {
     Vaccine Management
   </div>
 
-
-  <div id="vaccineMessage"></div>
-
-
-  <!-- UPCOMING -->
-
   <div class="section-subtitle">
     Upcoming Vaccines
   </div>
 
-
   <div id="upcomingVaccines">
 
     <div class="loading">
-      Loading vaccines...
+      Loading...
     </div>
 
   </div>
 
-
-  <!-- DATE WISE -->
 
   <div class="section-subtitle">
     Date-wise Vaccinator Schedule
   </div>
 
-
   <div id="dateWiseVaccines">
 
     <div class="loading">
-      Loading schedule...
+      Loading...
     </div>
 
   </div>
 
 
-  <!-- BATCH WISE -->
-
   <div class="section-subtitle">
     Batch-wise Schedule
   </div>
 
-
   <div id="batchWiseVaccines">
 
     <div class="loading">
-      Loading schedule...
+      Loading...
     </div>
 
   </div>
@@ -1283,15 +1247,11 @@ hr {
 
 <div class="bottom-nav">
 
-
   <button class="nav-btn active"
           id="navHome"
           onclick="showPage('homePage')">
 
-    <span class="nav-icon">
-      ⌂
-    </span>
-
+    <span class="nav-icon">⌂</span>
     Home
 
   </button>
@@ -1301,10 +1261,7 @@ hr {
           id="navFarms"
           onclick="showPage('farmsPage')">
 
-    <span class="nav-icon">
-      ▣
-    </span>
-
+    <span class="nav-icon">▣</span>
     Farms
 
   </button>
@@ -1314,10 +1271,7 @@ hr {
           id="navDaily"
           onclick="showPage('dailyPage')">
 
-    <span class="nav-icon">
-      ＋
-    </span>
-
+    <span class="nav-icon">＋</span>
     Daily
 
   </button>
@@ -1327,10 +1281,7 @@ hr {
           id="navFeed"
           onclick="showPage('feedPage')">
 
-    <span class="nav-icon">
-      ▤
-    </span>
-
+    <span class="nav-icon">▤</span>
     Feed
 
   </button>
@@ -1340,10 +1291,7 @@ hr {
           id="navVaccines"
           onclick="showPage('vaccinesPage')">
 
-    <span class="nav-icon">
-      ✓
-    </span>
-
+    <span class="nav-icon">✓</span>
     Vaccines
 
   </button>
@@ -1356,7 +1304,7 @@ hr {
 
 
 /* ==========================================================
-   API URL
+   API
 ========================================================== */
 
 const API_URL =
@@ -1446,8 +1394,7 @@ async function loadData() {
 
 
     if (
-      result.status !==
-      "success"
+      result.status !== "success"
     ) {
 
       throw new Error(
@@ -1482,7 +1429,7 @@ async function loadData() {
       );
 
 
-    renderHome();
+    renderDashboard();
 
     renderFarms();
 
@@ -1500,7 +1447,6 @@ async function loadData() {
 
     console.error(error);
 
-
     document.getElementById(
       "homeError"
     ).innerHTML =
@@ -1508,10 +1454,7 @@ async function loadData() {
       `<div class="error-box">
 
         Failed to load data.<br>
-
-        ${escapeHtml(
-          error.message
-        )}
+        ${escapeHtml(error.message)}
 
       </div>`;
 
@@ -1521,7 +1464,7 @@ async function loadData() {
 
 
 /* ==========================================================
-   CONVERT DATA
+   CONVERT API DATA
 ========================================================== */
 
 function convertData(data) {
@@ -1546,16 +1489,14 @@ function convertData(data) {
 
       const obj = {};
 
-
       headers.forEach(
-        (header, index) => {
+        (header,index) => {
 
           obj[header] =
             row[index];
 
         }
       );
-
 
       return obj;
 
@@ -1565,21 +1506,988 @@ function convertData(data) {
 
 
 /* ==========================================================
+   DASHBOARD
+========================================================== */
+
+function renderDashboard() {
+
+  const batchMap = {};
+
+
+  dashboardData.forEach(
+    row => {
+
+      const id =
+        row["Batch ID"];
+
+
+      if (
+        id &&
+        !batchMap[id]
+      ) {
+
+        batchMap[id] =
+          row;
+
+      }
+
+    }
+  );
+
+
+  const batches =
+    Object.values(
+      batchMap
+    );
+
+
+  let birds = 0;
+
+
+  batches.forEach(
+    row => {
+
+      birds += Number(
+        row["Birds"] || 0
+      );
+
+    }
+  );
+
+
+  /*
+   * Feed totals are based on
+   * Feed Stage Tracker.
+   */
+
+  let feedRequired = 0;
+
+  let feedSupplied = 0;
+
+  let feedBalance = 0;
+
+
+  feedData.forEach(
+    row => {
+
+      feedRequired += Number(
+        row[
+          "Feed Required (50kg Bags)"
+        ] || 0
+      );
+
+
+      feedSupplied += Number(
+        row[
+          "Feed Supplied (Bags)"
+        ] || 0
+      );
+
+
+      feedBalance += Number(
+        row[
+          "Balance To Be Supplied (Bags)"
+        ] || 0
+      );
+
+    }
+  );
+
+
+  const pendingOrders =
+    orderData.filter(
+      row =>
+        String(
+          row["Status"] || ""
+        ).toLowerCase() ===
+        "pending"
+    );
+
+
+  document.getElementById(
+    "dashBatches"
+  ).textContent =
+    batches.length;
+
+
+  document.getElementById(
+    "dashBirds"
+  ).textContent =
+    birds.toLocaleString();
+
+
+  document.getElementById(
+    "dashFeedRequired"
+  ).textContent =
+    feedRequired.toLocaleString();
+
+
+  document.getElementById(
+    "dashFeedSupplied"
+  ).textContent =
+    feedSupplied.toLocaleString();
+
+
+  document.getElementById(
+    "dashFeedBalance"
+  ).textContent =
+    feedBalance.toLocaleString();
+
+
+  document.getElementById(
+    "dashPendingOrders"
+  ).textContent =
+    pendingOrders.length;
+
+
+  renderTodayVaccines();
+
+  renderNextVaccines();
+
+  renderDashboardFeed();
+
+  renderDashboardFarms();
+
+}
+
+
+/* ==========================================================
+   TODAY'S VACCINES
+========================================================== */
+
+function renderTodayVaccines() {
+
+  const container =
+    document.getElementById(
+      "todayVaccines"
+    );
+
+
+  const today =
+    new Date();
+
+
+  today.setHours(
+    0,0,0,0
+  );
+
+
+  const rows =
+    vaccineData.filter(
+      vaccine => {
+
+        const date =
+          parseSheetDate(
+            vaccine[
+              "Scheduled Date"
+            ]
+          );
+
+
+        return (
+          date &&
+          date.getTime() ===
+          today.getTime()
+        );
+
+      }
+    );
+
+
+  if (!rows.length) {
+
+    container.innerHTML =
+
+      `<div class="card">
+
+        <div class="row">
+
+          <div>
+
+            <div class="card-title">
+              No vaccine due today
+            </div>
+
+            <div class="muted">
+              There are no scheduled vaccine tasks for today.
+            </div>
+
+          </div>
+
+          <span class="badge badge-green">
+            Clear
+          </span>
+
+        </div>
+
+      </div>`;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    rows
+      .map(
+        vaccine => `
+
+          <div class="card vaccine-card">
+
+            <div class="row">
+
+              <div>
+
+                <div class="vaccine-name">
+
+                  ${escapeHtml(
+                    vaccine["Vaccine"]
+                  )}
+
+                </div>
+
+                <div class="muted">
+
+                  ${escapeHtml(
+                    vaccine["Farm Name"]
+                  )}
+
+                  ·
+
+                  ${escapeHtml(
+                    vaccine["Batch ID"]
+                  )}
+
+                </div>
+
+              </div>
+
+
+              <span class="badge badge-blue">
+
+                Day ${escapeHtml(
+                  vaccine["Bird Age"]
+                )}
+
+              </span>
+
+            </div>
+
+          </div>
+
+        `
+      )
+      .join("");
+
+}
+
+
+/* ==========================================================
+   NEXT VACCINES
+========================================================== */
+
+function renderNextVaccines() {
+
+  const container =
+    document.getElementById(
+      "nextVaccines"
+    );
+
+
+  const today =
+    new Date();
+
+
+  today.setHours(
+    0,0,0,0
+  );
+
+
+  const rows =
+    vaccineData
+      .filter(
+        vaccine => {
+
+          const date =
+            parseSheetDate(
+              vaccine[
+                "Scheduled Date"
+              ]
+            );
+
+
+          return (
+            date &&
+            date >= today
+          );
+
+        }
+      )
+      .sort(
+        (a,b) => {
+
+          return (
+            parseSheetDate(
+              a[
+                "Scheduled Date"
+              ]
+            ) -
+            parseSheetDate(
+              b[
+                "Scheduled Date"
+              ]
+            )
+          );
+
+        }
+      )
+      .slice(
+        0,
+        4
+      );
+
+
+  if (!rows.length) {
+
+    container.innerHTML =
+
+      `<div class="card">
+
+        <div class="empty">
+          No upcoming vaccines.
+        </div>
+
+      </div>`;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    rows
+      .map(
+        vaccine => {
+
+          const date =
+            parseSheetDate(
+              vaccine[
+                "Scheduled Date"
+              ]
+            );
+
+
+          const days =
+            daysBetween(
+              today,
+              date
+            );
+
+
+          return `
+
+            <div class="card vaccine-card">
+
+              <div class="row">
+
+                <div>
+
+                  <div class="vaccine-name">
+
+                    ${escapeHtml(
+                      vaccine["Vaccine"]
+                    )}
+
+                  </div>
+
+                  <div class="muted">
+
+                    ${escapeHtml(
+                      vaccine["Farm Name"]
+                    )}
+
+                    ·
+
+                    ${escapeHtml(
+                      vaccine["Batch ID"]
+                    )}
+
+                  </div>
+
+                </div>
+
+
+                <span class="badge badge-blue">
+
+                  Day ${escapeHtml(
+                    vaccine["Bird Age"]
+                  )}
+
+                </span>
+
+              </div>
+
+
+              <div class="vaccine-date">
+
+                ${formatDate(
+                  vaccine[
+                    "Scheduled Date"
+                  ]
+                )}
+
+              </div>
+
+
+              <div class="muted">
+
+                ${
+                  days === 0
+                    ? "Today"
+                    : days === 1
+                      ? "Tomorrow"
+                      : "In " +
+                        days +
+                        " days"
+                }
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* ==========================================================
+   DASHBOARD FEED ACTION
+========================================================== */
+
+function renderDashboardFeed() {
+
+  const container =
+    document.getElementById(
+      "dashboardFeedAction"
+    );
+
+
+  const rows =
+    feedData.filter(
+      row =>
+        Number(
+          row[
+            "Balance To Be Supplied (Bags)"
+          ] || 0
+        ) > 0
+    );
+
+
+  if (!rows.length) {
+
+    container.innerHTML =
+
+      `<div class="card">
+
+        <div class="row">
+
+          <div>
+
+            <div class="card-title">
+              Feed requirement complete
+            </div>
+
+            <div class="muted">
+              No feed balance is currently waiting to be supplied.
+            </div>
+
+          </div>
+
+          <span class="badge badge-green">
+            Complete
+          </span>
+
+        </div>
+
+      </div>`;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    rows
+      .slice(
+        0,
+        5
+      )
+      .map(
+        (row,index) => {
+
+          const balance =
+            Number(
+              row[
+                "Balance To Be Supplied (Bags)"
+              ] || 0
+            );
+
+
+          const pending =
+            findPendingOrder(
+              row["Batch ID"],
+              row["Feed Stage"]
+            );
+
+
+          return `
+
+            <div class="card feed-card">
+
+              <div class="row">
+
+                <div>
+
+                  <div class="feed-type">
+
+                    ${escapeHtml(
+                      row["Feed Stage"]
+                    )}
+
+                  </div>
+
+                  <div class="muted">
+
+                    ${escapeHtml(
+                      row["Farm Name"]
+                    )}
+
+                    ·
+
+                    ${escapeHtml(
+                      row["Batch ID"]
+                    )}
+
+                  </div>
+
+                </div>
+
+
+                <span class="badge ${
+                  pending
+                    ? "badge-orange"
+                    : "badge-red"
+                }">
+
+                  ${
+                    pending
+                      ? "Order Pending"
+                      : balance +
+                        " Bags"
+                  }
+
+                </span>
+
+              </div>
+
+
+              <div class="feed-line">
+
+                <span>
+                  To Be Supplied
+                </span>
+
+                <strong>
+                  ${balance} bags
+                </strong>
+
+              </div>
+
+
+              ${
+                pending
+                  ? `
+
+                    <button
+                      class="warning full-btn"
+                      onclick="openExistingOrder(
+                        '${escapeAttribute(
+                          row["Batch ID"]
+                        )}',
+                        '${escapeAttribute(
+                          row["Feed Stage"]
+                        )}'
+                      )">
+
+                      VIEW PENDING ORDER
+
+                    </button>
+
+                  `
+
+                  : `
+
+                    <button
+                      class="primary full-btn"
+                      onclick="openOrderByBatch(
+                        '${escapeAttribute(
+                          row["Batch ID"]
+                        )}',
+                        '${escapeAttribute(
+                          row["Feed Stage"]
+                        )}'
+                      )">
+
+                      ORDER ${balance} BAGS
+
+                    </button>
+
+                  `
+              }
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* ==========================================================
+   FARM OVERVIEW
+========================================================== */
+
+function renderDashboardFarms() {
+
+  const container =
+    document.getElementById(
+      "dashboardFarmOverview"
+    );
+
+
+  const batchMap = {};
+
+
+  dashboardData.forEach(
+    row => {
+
+      const id =
+        row["Batch ID"];
+
+
+      if (
+        id &&
+        !batchMap[id]
+      ) {
+
+        batchMap[id] =
+          row;
+
+      }
+
+    }
+  );
+
+
+  const batches =
+    Object.values(
+      batchMap
+    );
+
+
+  if (!batches.length) {
+
+    container.innerHTML =
+      `<div class="card">
+
+        <div class="empty">
+          No active farms.
+        </div>
+
+      </div>`;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    batches
+      .map(
+        row => {
+
+          const batchId =
+            row["Batch ID"];
+
+
+          const farmFeed =
+            feedData.filter(
+              item =>
+                item["Batch ID"] ===
+                batchId
+            );
+
+
+          let balance = 0;
+
+
+          farmFeed.forEach(
+            item => {
+
+              balance += Number(
+                item[
+                  "Balance To Be Supplied (Bags)"
+                ] || 0
+              );
+
+            }
+          );
+
+
+          const nextVaccine =
+            getNextVaccineForBatch(
+              batchId
+            );
+
+
+          return `
+
+            <div class="card farm-card">
+
+              <div class="row">
+
+                <div>
+
+                  <div class="farm-name">
+
+                    ${escapeHtml(
+                      row["Farm Name"]
+                    )}
+
+                  </div>
+
+                  <div class="muted">
+
+                    Batch:
+                    ${escapeHtml(
+                      batchId
+                    )}
+
+                  </div>
+
+                </div>
+
+
+                <div style="text-align:right">
+
+                  <div class="farm-birds">
+
+                    ${Number(
+                      row["Birds"] || 0
+                    ).toLocaleString()}
+
+                  </div>
+
+                  <div class="muted">
+                    Live Birds
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="farm-info-grid">
+
+                <div class="mini-box">
+
+                  <div class="mini-label">
+                    Age
+                  </div>
+
+                  <div class="mini-value">
+
+                    Day ${escapeHtml(
+                      row["Age"] || ""
+                    )}
+
+                  </div>
+
+                </div>
+
+
+                <div class="mini-box">
+
+                  <div class="mini-label">
+                    Feed To Supply
+                  </div>
+
+                  <div class="mini-value">
+
+                    ${balance} bags
+
+                  </div>
+
+                </div>
+
+
+                <div class="mini-box">
+
+                  <div class="mini-label">
+                    Current Feed
+                  </div>
+
+                  <div class="mini-value">
+
+                    ${escapeHtml(
+                      row["Current Feed"] ||
+                      "—"
+                    )}
+
+                  </div>
+
+                </div>
+
+
+                <div class="mini-box">
+
+                  <div class="mini-label">
+                    Next Vaccine
+                  </div>
+
+                  <div class="mini-value">
+
+                    ${
+                      nextVaccine
+                        ? escapeHtml(
+                            nextVaccine[
+                              "Vaccine"
+                            ]
+                          ) +
+                          " · " +
+                          formatDate(
+                            nextVaccine[
+                              "Scheduled Date"
+                            ]
+                          )
+                        : "—"
+                    }
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <br>
+
+
+              <button
+                class="secondary full-btn"
+                onclick="openFarm(
+                  '${escapeAttribute(
+                    batchId
+                  )}'
+                )">
+
+                VIEW FARM
+
+              </button>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* ==========================================================
+   NEXT VACCINE FOR BATCH
+========================================================== */
+
+function getNextVaccineForBatch(
+  batchId
+) {
+
+  const today =
+    new Date();
+
+
+  today.setHours(
+    0,0,0,0
+  );
+
+
+  return vaccineData
+    .filter(
+      vaccine =>
+        String(
+          vaccine["Batch ID"]
+        ) ===
+        String(batchId)
+    )
+    .filter(
+      vaccine => {
+
+        const date =
+          parseSheetDate(
+            vaccine[
+              "Scheduled Date"
+            ]
+          );
+
+
+        return (
+          date &&
+          date >= today
+        );
+
+      }
+    )
+    .sort(
+      (a,b) =>
+        parseSheetDate(
+          a[
+            "Scheduled Date"
+          ]
+        ) -
+        parseSheetDate(
+          b[
+            "Scheduled Date"
+          ]
+        )
+    )[0] || null;
+
+}
+
+
+/* ==========================================================
    NAVIGATION
 ========================================================== */
 
-function showPage(pageId) {
+function showPage(
+  pageId
+) {
 
   document
     .querySelectorAll(".page")
     .forEach(
-      page => {
-
+      page =>
         page.classList.remove(
           "active"
-        );
-
-      }
+        )
     );
 
 
@@ -1593,13 +2501,10 @@ function showPage(pageId) {
   document
     .querySelectorAll(".nav-btn")
     .forEach(
-      btn => {
-
-        btn.classList.remove(
+      button =>
+        button.classList.remove(
           "active"
-        );
-
-      }
+        )
     );
 
 
@@ -1615,7 +2520,8 @@ function showPage(pageId) {
 
 
   if (
-    pageId === "farmsPage"
+    pageId === "farmsPage" ||
+    pageId === "farmDetailsPage"
   ) {
 
     navFarms.classList.add(
@@ -1670,190 +2576,6 @@ function showPage(pageId) {
 
 
 /* ==========================================================
-   HOME
-========================================================== */
-
-function renderHome() {
-
-  const batches =
-    new Set(
-      dashboardData
-        .map(
-          row =>
-            row["Batch ID"]
-        )
-        .filter(Boolean)
-    );
-
-
-  let birds = 0;
-
-
-  dashboardData.forEach(
-    row => {
-
-      birds += Number(
-        row["Birds"] || 0
-      );
-
-    }
-  );
-
-
-  let balance = 0;
-
-
-  feedData.forEach(
-    row => {
-
-      balance += Number(
-        row[
-          "Balance To Be Supplied (Bags)"
-        ] || 0
-      );
-
-    }
-  );
-
-
-  const requiring =
-    feedData.filter(
-      row =>
-        Number(
-          row[
-            "Balance To Be Supplied (Bags)"
-          ] || 0
-        ) > 0
-    );
-
-
-  document.getElementById(
-    "totalFarms"
-  ).textContent =
-    batches.size;
-
-
-  document.getElementById(
-    "totalBirds"
-  ).textContent =
-    birds.toLocaleString();
-
-
-  document.getElementById(
-    "totalFeedBalance"
-  ).textContent =
-    balance.toLocaleString() +
-    " bags";
-
-
-  document.getElementById(
-    "ordersRequired"
-  ).textContent =
-    requiring.length;
-
-
-  renderHomeFeedPreview();
-
-}
-
-
-/* ==========================================================
-   HOME FEED
-========================================================== */
-
-function renderHomeFeedPreview() {
-
-  const container =
-    document.getElementById(
-      "homeFeedPreview"
-    );
-
-
-  const rows =
-    feedData.filter(
-      row =>
-        Number(
-          row[
-            "Balance To Be Supplied (Bags)"
-          ] || 0
-        ) > 0
-    );
-
-
-  if (!rows.length) {
-
-    container.innerHTML =
-      `<div class="card">
-
-        <div class="empty">
-          No feed currently needs to be supplied.
-        </div>
-
-      </div>`;
-
-    return;
-
-  }
-
-
-  container.innerHTML =
-    rows
-      .slice(0, 4)
-      .map(
-        row => `
-
-          <div class="card feed-card">
-
-            <div class="row">
-
-              <div>
-
-                <div class="feed-type">
-                  ${escapeHtml(
-                    row["Feed Stage"]
-                  )}
-                </div>
-
-                <div class="muted">
-
-                  ${escapeHtml(
-                    row["Farm Name"]
-                  )}
-
-                  ·
-
-                  ${escapeHtml(
-                    row["Batch ID"]
-                  )}
-
-                </div>
-
-              </div>
-
-
-              <span class="badge badge-orange">
-
-                ${Number(
-                  row[
-                    "Balance To Be Supplied (Bags)"
-                  ]
-                )}
-                bags
-
-              </span>
-
-            </div>
-
-          </div>
-
-        `
-      )
-      .join("");
-
-}
-
-
-/* ==========================================================
    FARMS
 ========================================================== */
 
@@ -1865,7 +2587,7 @@ function renderFarms() {
     );
 
 
-  const batches = {};
+  const batchMap = {};
 
 
   dashboardData.forEach(
@@ -1876,31 +2598,30 @@ function renderFarms() {
 
 
       if (
-        !id ||
-        batches[id]
+        id &&
+        !batchMap[id]
       ) {
 
-        return;
+        batchMap[id] =
+          row;
 
       }
-
-
-      batches[id] =
-        row;
 
     }
   );
 
 
-  if (
-    !Object.keys(batches).length
-  ) {
+  const batches =
+    Object.values(
+      batchMap
+    );
+
+
+  if (!batches.length) {
 
     container.innerHTML =
       `<div class="empty">
-
         No farms found.
-
       </div>`;
 
     return;
@@ -1909,24 +2630,22 @@ function renderFarms() {
 
 
   container.innerHTML =
-    Object
-      .values(batches)
+    batches
       .map(
         row => `
 
-          <div class="card farm-card"
-               onclick="openFarm('${escapeAttribute(
-                 row["Batch ID"]
-               )}')">
+          <div class="card farm-card">
 
             <div class="row">
 
               <div>
 
-                <div class="card-title">
+                <div class="farm-name">
+
                   ${escapeHtml(
                     row["Farm Name"]
                   )}
+
                 </div>
 
                 <div class="muted">
@@ -1943,7 +2662,7 @@ function renderFarms() {
 
               <div style="text-align:right">
 
-                <div class="big-number">
+                <div class="farm-birds">
 
                   ${Number(
                     row["Birds"] || 0
@@ -1970,14 +2689,25 @@ function renderFarms() {
               </span>
 
               <strong>
-
                 Day ${escapeHtml(
                   row["Age"] || ""
                 )}
-
               </strong>
 
             </div>
+
+
+            <button
+              class="secondary full-btn"
+              onclick="openFarm(
+                '${escapeAttribute(
+                  row["Batch ID"]
+                )}'
+              )">
+
+              VIEW FARM
+
+            </button>
 
           </div>
 
@@ -1992,7 +2722,9 @@ function renderFarms() {
    FARM DETAILS
 ========================================================== */
 
-function openFarm(batchId) {
+function openFarm(
+  batchId
+) {
 
   const row =
     dashboardData.find(
@@ -2016,11 +2748,21 @@ function openFarm(batchId) {
 
 
   const vaccines =
-    vaccineData.filter(
-      item =>
-        item["Batch ID"] ===
-        batchId
-    );
+    vaccineData
+      .filter(
+        item =>
+          item["Batch ID"] ===
+          batchId
+      )
+      .sort(
+        (a,b) =>
+          Number(
+            a["Bird Age"]
+          ) -
+          Number(
+            b["Bird Age"]
+          )
+      );
 
 
   document.getElementById(
@@ -2029,7 +2771,7 @@ function openFarm(batchId) {
 
     <div class="card">
 
-      <div class="card-title">
+      <div class="farm-name">
 
         ${escapeHtml(
           row["Farm Name"]
@@ -2037,10 +2779,9 @@ function openFarm(batchId) {
 
       </div>
 
-
       <div class="muted">
 
-        Batch
+        Batch:
         ${escapeHtml(
           batchId
         )}
@@ -2054,7 +2795,7 @@ function openFarm(batchId) {
       <div class="feed-line">
 
         <span>
-          Birds
+          Live Birds
         </span>
 
         <strong>
@@ -2075,11 +2816,9 @@ function openFarm(batchId) {
         </span>
 
         <strong>
-
           Day ${escapeHtml(
             row["Age"] || ""
           )}
-
         </strong>
 
       </div>
@@ -2105,189 +2844,184 @@ function openFarm(batchId) {
     </div>
 
 
-    <div class="card">
-
-      <div class="card-title">
-        Feed
-      </div>
+    <div class="section-subtitle">
+      Feed
+    </div>
 
 
-      ${
-        feeds
-          .map(
-            item => {
+    ${
+      feeds.length
+        ? feeds
+            .map(
+              item => {
 
-              const balance =
-                Number(
-                  item[
-                    "Balance To Be Supplied (Bags)"
-                  ] || 0
-                );
+                const balance =
+                  Number(
+                    item[
+                      "Balance To Be Supplied (Bags)"
+                    ] || 0
+                  );
 
 
-              return `
+                return `
 
-                <div class="feed-card"
-                     style="padding:10px;margin-bottom:10px">
+                  <div class="card feed-card">
 
-                  <div class="row">
+                    <div class="row">
 
-                    <div class="feed-type">
+                      <div class="feed-type">
 
-                      ${escapeHtml(
-                        item["Feed Stage"]
-                      )}
+                        ${escapeHtml(
+                          item["Feed Stage"]
+                        )}
+
+                      </div>
+
+                      <span class="badge ${
+                        balance > 0
+                          ? "badge-orange"
+                          : "badge-green"
+                      }">
+
+                        ${
+                          balance > 0
+                            ? "To Be Supplied"
+                            : "Complete"
+                        }
+
+                      </span>
 
                     </div>
 
 
-                    <span class="badge ${
-                      balance > 0
-                        ? "badge-orange"
-                        : "badge-green"
-                    }">
-
-                      ${
-                        balance > 0
-                          ? "To Be Supplied"
-                          : "Complete"
-                      }
-
-                    </span>
-
-                  </div>
+                    <hr>
 
 
-                  <div class="feed-line">
+                    <div class="feed-line">
 
-                    <span>
-                      Required
-                    </span>
+                      <span>
+                        Required
+                      </span>
 
-                    <strong>
+                      <strong>
 
-                      ${Number(
-                        item[
-                          "Feed Required (50kg Bags)"
-                        ] || 0
-                      )}
-                      bags
+                        ${Number(
+                          item[
+                            "Feed Required (50kg Bags)"
+                          ] || 0
+                        )}
+                        bags
 
-                    </strong>
+                      </strong>
 
-                  </div>
-
-
-                  <div class="feed-line">
-
-                    <span>
-                      Supplied
-                    </span>
-
-                    <strong>
-
-                      ${Number(
-                        item[
-                          "Feed Supplied (Bags)"
-                        ] || 0
-                      )}
-                      bags
-
-                    </strong>
-
-                  </div>
+                    </div>
 
 
-                  <div class="feed-line">
+                    <div class="feed-line">
 
-                    <span>
-                      To Supply
-                    </span>
+                      <span>
+                        Supplied
+                      </span>
 
-                    <strong>
-                      ${balance}
-                      bags
-                    </strong>
+                      <strong>
+
+                        ${Number(
+                          item[
+                            "Feed Supplied (Bags)"
+                          ] || 0
+                        )}
+                        bags
+
+                      </strong>
+
+                    </div>
+
+
+                    <div class="feed-line">
+
+                      <span>
+                        To Supply
+                      </span>
+
+                      <strong>
+                        ${balance} bags
+                      </strong>
+
+                    </div>
 
                   </div>
 
-                </div>
+                `;
 
-              `;
+              }
+            )
+            .join("")
+        : `<div class="card">
+             <div class="empty">
+               No feed data.
+             </div>
+           </div>`
+    }
 
-            }
-          )
-          .join("")
-      }
 
+    <div class="section-subtitle">
+      Vaccine Schedule
     </div>
 
 
     <div class="card">
 
-      <div class="card-title">
-        Vaccine Schedule
-      </div>
-
-
       ${
-        vaccines
-          .sort(
-            (a,b) =>
-              Number(
-                a["Bird Age"]
-              ) -
-              Number(
-                b["Bird Age"]
-              )
-          )
-          .map(
-            vaccine => `
+        vaccines.length
+          ? vaccines
+              .map(
+                vaccine => `
 
-              <div class="batch-vaccine-row">
+                  <div class="batch-vaccine-row">
 
-                <div>
+                    <div>
 
-                  <strong>
+                      <strong>
 
-                    ${escapeHtml(
-                      vaccine["Vaccine"]
-                    )}
+                        ${escapeHtml(
+                          vaccine["Vaccine"]
+                        )}
 
-                  </strong>
+                      </strong>
+
+                      <div class="muted">
+
+                        Day ${escapeHtml(
+                          vaccine["Bird Age"]
+                        )}
+
+                      </div>
+
+                    </div>
 
 
-                  <div class="muted">
+                    <div>
 
-                    Day
-                    ${escapeHtml(
-                      vaccine["Bird Age"]
-                    )}
+                      <strong>
+
+                        ${formatDate(
+                          vaccine[
+                            "Scheduled Date"
+                          ]
+                        )}
+
+                      </strong>
+
+                    </div>
 
                   </div>
 
-                </div>
-
-
-                <div>
-
-                  <strong>
-
-                    ${formatDate(
-                      vaccine[
-                        "Scheduled Date"
-                      ]
-                    )}
-
-                  </strong>
-
-                </div>
-
-              </div>
-
-            `
-          )
-          .join("")
+                `
+              )
+              .join("")
+          : `<div class="empty">
+               No vaccine schedule.
+             </div>`
       }
 
     </div>
@@ -2308,7 +3042,7 @@ function openFarm(batchId) {
 
 function populateBatchSelects() {
 
-  const batches = {};
+  const batchMap = {};
 
 
   dashboardData.forEach(
@@ -2319,17 +3053,14 @@ function populateBatchSelects() {
 
 
       if (
-        !id ||
-        batches[id]
+        id &&
+        !batchMap[id]
       ) {
 
-        return;
+        batchMap[id] =
+          row;
 
       }
-
-
-      batches[id] =
-        row;
 
     }
   );
@@ -2353,14 +3084,12 @@ function populateBatchSelects() {
 
       select.innerHTML =
         `<option value="">
-
           Select Farm / Batch
-
         </option>`;
 
 
       Object
-        .values(batches)
+        .values(batchMap)
         .forEach(
           row => {
 
@@ -2413,60 +3142,48 @@ function updateDailyBatch() {
     );
 
 
-  if (!row) {
-
-    document.getElementById(
-      "dailyFarmName"
-    ).value = "";
-
-
-    document.getElementById(
-      "dailyAge"
-    ).value = "";
-
-
-    document.getElementById(
-      "dailyBirds"
-    ).value = "";
-
-
-    return;
-
-  }
-
-
   document.getElementById(
     "dailyFarmName"
   ).value =
-    row["Farm Name"] || "";
+    row
+      ? row["Farm Name"] || ""
+      : "";
 
 
   document.getElementById(
     "dailyAge"
   ).value =
-    "Day " +
-    (
-      row["Age"] || ""
-    );
+    row
+      ? "Day " +
+        (
+          row["Age"] || ""
+        )
+      : "";
 
 
   document.getElementById(
     "dailyBirds"
   ).value =
-    row["Birds"] || "";
+    row
+      ? row["Birds"] || ""
+      : "";
 
 }
 
 
 /* ==========================================================
-   DAILY ENTRY
+   DAILY ENTRY SAVE
 ========================================================== */
 
 async function saveDailyEntry() {
 
-  document.getElementById(
-    "dailyMessage"
-  ).innerHTML = "";
+  const message =
+    document.getElementById(
+      "dailyMessage"
+    );
+
+
+  message.innerHTML = "";
 
 
   const payload = {
@@ -2527,14 +3244,9 @@ async function saveDailyEntry() {
     !payload.farmName
   ) {
 
-    document.getElementById(
-      "dailyMessage"
-    ).innerHTML =
-
+    message.innerHTML =
       `<div class="error-box">
-
         Please complete the required fields.
-
       </div>`;
 
     return;
@@ -2549,14 +3261,11 @@ async function saveDailyEntry() {
         API_URL,
         {
 
-          method:
-            "POST",
+          method: "POST",
 
           headers: {
-
             "Content-Type":
               "text/plain;charset=utf-8"
-
           },
 
           body:
@@ -2585,14 +3294,9 @@ async function saveDailyEntry() {
     }
 
 
-    document.getElementById(
-      "dailyMessage"
-    ).innerHTML =
-
+    message.innerHTML =
       `<div class="success-box">
-
         Daily entry saved successfully.
-
       </div>`;
 
 
@@ -2612,17 +3316,11 @@ async function saveDailyEntry() {
 
   catch(error) {
 
-    document.getElementById(
-      "dailyMessage"
-    ).innerHTML =
-
+    message.innerHTML =
       `<div class="error-box">
 
         Failed to save.<br>
-
-        ${escapeHtml(
-          error.message
-        )}
+        ${escapeHtml(error.message)}
 
       </div>`;
 
@@ -2647,9 +3345,7 @@ function renderFeed() {
 
     container.innerHTML =
       `<div class="empty">
-
         No feed data available.
-
       </div>`;
 
     return;
@@ -2686,126 +3382,11 @@ function renderFeed() {
             );
 
 
-          const pendingOrder =
+          const pending =
             findPendingOrder(
               row["Batch ID"],
               row["Feed Stage"]
             );
-
-
-          let statusHtml = "";
-
-          let actionHtml = "";
-
-
-          if (
-            balance > 0
-          ) {
-
-            if (
-              pendingOrder
-            ) {
-
-              statusHtml =
-
-                `<span class="badge badge-orange">
-
-                  Order Pending
-
-                </span>`;
-
-
-              actionHtml = `
-
-                <br>
-
-                <button
-                  class="warning full-btn"
-                  onclick="openExistingOrder(
-                    '${escapeAttribute(
-                      row["Batch ID"]
-                    )}',
-                    '${escapeAttribute(
-                      row["Feed Stage"]
-                    )}'
-                  )">
-
-                  ORDER PENDING
-
-                </button>
-
-              `;
-
-            }
-
-            else {
-
-              statusHtml =
-
-                `<span class="badge badge-orange">
-
-                  To Be Supplied
-
-                </span>`;
-
-
-              actionHtml = `
-
-                <br>
-
-                <button
-                  class="primary"
-                  onclick="openOrder(${index})">
-
-                  ORDER ${balance} BAGS
-
-                </button>
-
-              `;
-
-            }
-
-          }
-
-          else {
-
-            statusHtml =
-
-              `<span class="badge badge-green">
-
-                Complete
-
-              </span>`;
-
-
-            if (
-              pendingOrder
-            ) {
-
-              actionHtml = `
-
-                <br>
-
-                <button
-                  class="warning full-btn"
-                  onclick="openExistingOrder(
-                    '${escapeAttribute(
-                      row["Batch ID"]
-                    )}',
-                    '${escapeAttribute(
-                      row["Feed Stage"]
-                    )}'
-                  )">
-
-                  PENDING ORDER EXISTS
-
-                </button>
-
-              `;
-
-            }
-
-          }
 
 
           return `
@@ -2824,7 +3405,6 @@ function renderFeed() {
 
                   </div>
 
-
                   <div class="muted">
 
                     ${escapeHtml(
@@ -2842,9 +3422,23 @@ function renderFeed() {
                 </div>
 
 
-                <div>
-                  ${statusHtml}
-                </div>
+                <span class="badge ${
+                  balance > 0
+                    ? "badge-orange"
+                    : "badge-green"
+                }">
+
+                  ${
+                    balance > 0
+                      ? (
+                          pending
+                            ? "Order Pending"
+                            : "To Be Supplied"
+                        )
+                      : "Complete"
+                  }
+
+                </span>
 
               </div>
 
@@ -2891,7 +3485,40 @@ function renderFeed() {
               </div>
 
 
-              ${actionHtml}
+              ${
+                balance > 0
+                  ? pending
+                    ? `
+
+                      <button
+                        class="warning full-btn"
+                        onclick="openExistingOrder(
+                          '${escapeAttribute(
+                            row["Batch ID"]
+                          )}',
+                          '${escapeAttribute(
+                            row["Feed Stage"]
+                          )}'
+                        )">
+
+                        VIEW PENDING ORDER
+
+                      </button>
+
+                    `
+                    : `
+
+                      <button
+                        class="primary full-btn"
+                        onclick="openOrder(${index})">
+
+                        ORDER ${balance} BAGS
+
+                      </button>
+
+                    `
+                  : ""
+              }
 
             </div>
 
@@ -2900,6 +3527,46 @@ function renderFeed() {
         }
       )
       .join("");
+
+}
+
+
+/* ==========================================================
+   OPEN ORDER FROM DASHBOARD
+========================================================== */
+
+function openOrderByBatch(
+  batchId,
+  feedType
+) {
+
+  const index =
+    feedData.findIndex(
+      row =>
+        String(
+          row["Batch ID"]
+        ) ===
+        String(batchId)
+
+        &&
+
+        String(
+          row["Feed Stage"]
+        ) ===
+        String(feedType)
+    );
+
+
+  if (
+    index < 0
+  ) {
+
+    return;
+
+  }
+
+
+  openOrder(index);
 
 }
 
@@ -2931,7 +3598,7 @@ function findPendingOrder(
       &&
 
       String(
-        order["Status"]
+        order["Status"] || ""
       ).toLowerCase() ===
       "pending"
 
@@ -2941,10 +3608,12 @@ function findPendingOrder(
 
 
 /* ==========================================================
-   OPEN NEW ORDER
+   OPEN ORDER
 ========================================================== */
 
-function openOrder(index) {
+function openOrder(
+  index
+) {
 
   const row =
     feedData[index];
@@ -3047,13 +3716,10 @@ function openOrder(index) {
     );
 
 
-  button.disabled =
-    false;
-
+  button.disabled = false;
 
   button.textContent =
     "CREATE ORDER";
-
 
   button.className =
     "primary";
@@ -3067,7 +3733,7 @@ function openOrder(index) {
 
 
 /* ==========================================================
-   OPEN EXISTING ORDER
+   EXISTING ORDER
 ========================================================== */
 
 function openExistingOrder(
@@ -3075,19 +3741,14 @@ function openExistingOrder(
   feedType
 ) {
 
-  const existingOrder =
+  const order =
     findPendingOrder(
       batchId,
       feedType
     );
 
 
-  if (!existingOrder) {
-
-    alert(
-      "Pending order could not be found."
-    );
-
+  if (!order) {
 
     loadData();
 
@@ -3102,36 +3763,26 @@ function openExistingOrder(
       true,
 
     farmName:
-      existingOrder[
-        "Farm Name"
-      ],
+      order["Farm Name"],
 
     batchId:
-      existingOrder[
-        "Batch ID"
-      ],
+      order["Batch ID"],
 
     feedType:
-      existingOrder[
-        "Feed Type"
-      ],
+      order["Feed Type"],
 
     quantity:
       Number(
-        existingOrder[
+        order[
           "Order Qty (Bags)"
         ] || 0
       ),
 
     status:
-      existingOrder[
-        "Status"
-      ],
+      order["Status"],
 
     orderDate:
-      existingOrder[
-        "Order Date"
-      ]
+      order["Order Date"]
 
   };
 
@@ -3182,10 +3833,8 @@ function openExistingOrder(
   button.disabled =
     true;
 
-
   button.textContent =
     "ORDER ALREADY CREATED";
-
 
   button.className =
     "warning";
@@ -3204,12 +3853,8 @@ function openExistingOrder(
 
 async function createFeedOrder() {
 
-  if (!selectedOrder) {
-    return;
-  }
-
-
   if (
+    !selectedOrder ||
     selectedOrder.existing
   ) {
 
@@ -3224,17 +3869,10 @@ async function createFeedOrder() {
     );
 
 
-  button.disabled =
-    true;
-
+  button.disabled = true;
 
   button.textContent =
     "Creating Order...";
-
-
-  document.getElementById(
-    "orderMessage"
-  ).innerHTML = "";
 
 
   const existing =
@@ -3256,19 +3894,15 @@ async function createFeedOrder() {
   }
 
 
-  const today =
-    new Date()
-      .toISOString()
-      .split("T")[0];
-
-
   const payload = {
 
     action:
       "createFeedOrder",
 
     orderDate:
-      today,
+      new Date()
+        .toISOString()
+        .split("T")[0],
 
     farmName:
       selectedOrder.farmName,
@@ -3295,14 +3929,11 @@ async function createFeedOrder() {
         API_URL,
         {
 
-          method:
-            "POST",
+          method: "POST",
 
           headers: {
-
             "Content-Type":
               "text/plain;charset=utf-8"
-
           },
 
           body:
@@ -3325,49 +3956,10 @@ async function createFeedOrder() {
 
       await loadData();
 
-
-      const existingOrder =
-        findPendingOrder(
-          selectedOrder.batchId,
-          selectedOrder.feedType
-        );
-
-
-      if (
-        existingOrder
-      ) {
-
-        openExistingOrder(
-          selectedOrder.batchId,
-          selectedOrder.feedType
-        );
-
-      }
-
-      else {
-
-        document.getElementById(
-          "orderMessage"
-        ).innerHTML =
-
-          `<div class="error-box">
-
-            ${escapeHtml(
-              result.message
-            )}
-
-          </div>`;
-
-
-        button.disabled =
-          false;
-
-
-        button.textContent =
-          "CREATE ORDER";
-
-      }
-
+      openExistingOrder(
+        selectedOrder.batchId,
+        selectedOrder.feedType
+      );
 
       return;
 
@@ -3387,45 +3979,13 @@ async function createFeedOrder() {
     }
 
 
-    document.getElementById(
-      "orderMessage"
-    ).innerHTML =
-
-      `<div class="success-box">
-
-        Feed order created successfully.
-
-      </div>`;
-
-
-    button.textContent =
-      "ORDER CREATED";
-
-
-    button.className =
-      "secondary";
-
-
     await loadData();
 
 
-    const createdOrder =
-      findPendingOrder(
-        selectedOrder.batchId,
-        selectedOrder.feedType
-      );
-
-
-    if (
-      createdOrder
-    ) {
-
-      openExistingOrder(
-        selectedOrder.batchId,
-        selectedOrder.feedType
-      );
-
-    }
+    openExistingOrder(
+      selectedOrder.batchId,
+      selectedOrder.feedType
+    );
 
   }
 
@@ -3438,17 +3998,13 @@ async function createFeedOrder() {
       `<div class="error-box">
 
         Failed to create order.<br>
-
-        ${escapeHtml(
-          error.message
-        )}
+        ${escapeHtml(error.message)}
 
       </div>`;
 
 
     button.disabled =
       false;
-
 
     button.textContent =
       "CREATE ORDER";
@@ -3470,9 +4026,7 @@ function renderOrders() {
     );
 
 
-  if (
-    !orderData.length
-  ) {
+  if (!orderData.length) {
 
     container.innerHTML =
       `<div class="card">
@@ -3493,11 +4047,7 @@ function renderOrders() {
       .slice()
       .reverse()
       .map(
-        (
-          order,
-          reverseIndex
-        ) => {
-
+        (order,reverseIndex) => {
 
           const originalIndex =
             orderData.length -
@@ -3514,7 +4064,7 @@ function renderOrders() {
             "Pending";
 
 
-          let badgeClass =
+          let badge =
             "badge-orange";
 
 
@@ -3523,7 +4073,7 @@ function renderOrders() {
             "Supplied"
           ) {
 
-            badgeClass =
+            badge =
               "badge-green";
 
           }
@@ -3534,7 +4084,7 @@ function renderOrders() {
             "Cancelled"
           ) {
 
-            badgeClass =
+            badge =
               "badge-red";
 
           }
@@ -3556,7 +4106,6 @@ function renderOrders() {
 
                   </div>
 
-
                   <div class="muted">
 
                     Batch:
@@ -3569,7 +4118,7 @@ function renderOrders() {
                 </div>
 
 
-                <span class="badge ${badgeClass}">
+                <span class="badge ${badge}">
 
                   ${escapeHtml(
                     status
@@ -3586,7 +4135,7 @@ function renderOrders() {
               <div class="feed-line">
 
                 <span>
-                  Order Date
+                  Date
                 </span>
 
                 <strong>
@@ -3639,7 +4188,6 @@ function renderOrders() {
 
               <div class="order-actions">
 
-
                 <button
                   class="secondary"
                   onclick="shareOrderByIndex(
@@ -3683,7 +4231,6 @@ function renderOrders() {
                     : ""
                 }
 
-
               </div>
 
             </div>
@@ -3693,148 +4240,6 @@ function renderOrders() {
         }
       )
       .join("");
-
-}
-
-
-/* ==========================================================
-   SHARE ORDER
-========================================================== */
-
-async function shareOrderByIndex(
-  index
-) {
-
-  const order =
-    orderData[index];
-
-
-  if (!order) {
-    return;
-  }
-
-
-  const text =
-
-`KG FARMS
-FEED ORDER
-
-Date: ${formatDate(
-  order["Order Date"]
-)}
-
-Farm: ${order["Farm Name"]}
-Batch: ${order["Batch ID"]}
-
-Feed: ${order["Feed Type"]}
-Quantity: ${order["Order Qty (Bags)"]} Bags
-
-Status: ${order["Status"] || "Pending"}`;
-
-
-  await shareText(
-    text
-  );
-
-}
-
-
-/* ==========================================================
-   SHARE CURRENT ORDER
-========================================================== */
-
-async function shareCurrentOrder() {
-
-  if (!selectedOrder) {
-    return;
-  }
-
-
-  const dateText =
-    selectedOrder.orderDate
-      ? formatDate(
-          selectedOrder.orderDate
-        )
-      : new Date()
-          .toLocaleDateString(
-            "en-IN"
-          );
-
-
-  const text =
-
-`KG FARMS
-FEED ORDER
-
-Date: ${dateText}
-
-Farm: ${selectedOrder.farmName}
-Batch: ${selectedOrder.batchId}
-
-Feed: ${selectedOrder.feedType}
-Quantity: ${selectedOrder.quantity} Bags
-
-Status: ${selectedOrder.status || "Pending"}`;
-
-
-  await shareText(
-    text
-  );
-
-}
-
-
-/* ==========================================================
-   SHARE TEXT
-========================================================== */
-
-async function shareText(
-  text
-) {
-
-  try {
-
-    if (
-      navigator.share
-    ) {
-
-      await navigator.share({
-
-        title:
-          "KG Farms Feed Order",
-
-        text:
-          text
-
-      });
-
-    }
-
-    else {
-
-      await navigator
-        .clipboard
-        .writeText(
-          text
-        );
-
-
-      alert(
-        "Order copied to clipboard."
-      );
-
-    }
-
-  }
-
-  catch(error) {
-
-    console.log(
-      "Share cancelled",
-      error
-    );
-
-  }
 
 }
 
@@ -3901,14 +4306,11 @@ async function updateOrderStatus(
         API_URL,
         {
 
-          method:
-            "POST",
+          method: "POST",
 
           headers: {
-
             "Content-Type":
               "text/plain;charset=utf-8"
-
           },
 
           body:
@@ -3963,6 +4365,126 @@ async function updateOrderStatus(
 
 
 /* ==========================================================
+   SHARE ORDER
+========================================================== */
+
+async function shareOrderByIndex(
+  index
+) {
+
+  const order =
+    orderData[index];
+
+
+  if (!order) {
+    return;
+  }
+
+
+  const text =
+
+`KG FARMS
+FEED ORDER
+
+Date: ${formatDate(
+  order["Order Date"]
+)}
+
+Farm: ${order["Farm Name"]}
+Batch: ${order["Batch ID"]}
+
+Feed: ${order["Feed Type"]}
+Quantity: ${order["Order Qty (Bags)"]} Bags
+
+Status: ${order["Status"] || "Pending"}`;
+
+
+  await shareText(
+    text
+  );
+
+}
+
+
+async function shareCurrentOrder() {
+
+  if (!selectedOrder) {
+    return;
+  }
+
+
+  const text =
+
+`KG FARMS
+FEED ORDER
+
+Farm: ${selectedOrder.farmName}
+Batch: ${selectedOrder.batchId}
+
+Feed: ${selectedOrder.feedType}
+Quantity: ${selectedOrder.quantity} Bags
+
+Status: ${selectedOrder.status || "Pending"}`;
+
+
+  await shareText(
+    text
+  );
+
+}
+
+
+async function shareText(
+  text
+) {
+
+  try {
+
+    if (
+      navigator.share
+    ) {
+
+      await navigator.share({
+
+        title:
+          "KG Farms Feed Order",
+
+        text:
+          text
+
+      });
+
+    }
+
+    else {
+
+      await navigator
+        .clipboard
+        .writeText(
+          text
+        );
+
+      alert(
+        "Order copied to clipboard."
+      );
+
+    }
+
+  }
+
+  catch(error) {
+
+    console.log(
+      "Share cancelled",
+      error
+    );
+
+  }
+
+}
+
+
+/* ==========================================================
    SUPPLY BATCH
 ========================================================== */
 
@@ -3998,9 +4520,13 @@ function updateSupplyBatch() {
 
 async function saveFeedSupply() {
 
-  document.getElementById(
-    "feedSupplyMessage"
-  ).innerHTML = "";
+  const message =
+    document.getElementById(
+      "feedSupplyMessage"
+    );
+
+
+  message.innerHTML = "";
 
 
   const payload = {
@@ -4046,15 +4572,10 @@ async function saveFeedSupply() {
     !payload.batchId ||
     !payload.farmName ||
     !payload.feedType ||
-    Number(
-      payload.bags
-    ) <= 0
+    Number(payload.bags) <= 0
   ) {
 
-    document.getElementById(
-      "feedSupplyMessage"
-    ).innerHTML =
-
+    message.innerHTML =
       `<div class="error-box">
 
         Please complete all required fields.
@@ -4073,14 +4594,11 @@ async function saveFeedSupply() {
         API_URL,
         {
 
-          method:
-            "POST",
+          method: "POST",
 
           headers: {
-
             "Content-Type":
               "text/plain;charset=utf-8"
-
           },
 
           body:
@@ -4103,16 +4621,13 @@ async function saveFeedSupply() {
 
       throw new Error(
         result.message ||
-        "Failed to save feed supply"
+        "Failed to save"
       );
 
     }
 
 
-    document.getElementById(
-      "feedSupplyMessage"
-    ).innerHTML =
-
+    message.innerHTML =
       `<div class="success-box">
 
         Feed supply saved successfully.
@@ -4136,17 +4651,11 @@ async function saveFeedSupply() {
 
   catch(error) {
 
-    document.getElementById(
-      "feedSupplyMessage"
-    ).innerHTML =
-
+    message.innerHTML =
       `<div class="error-box">
 
         Failed to save feed supply.<br>
-
-        ${escapeHtml(
-          error.message
-        )}
+        ${escapeHtml(error.message)}
 
       </div>`;
 
@@ -4170,10 +4679,6 @@ function renderVaccines() {
 }
 
 
-/* ==========================================================
-   UPCOMING VACCINES
-========================================================== */
-
 function renderUpcomingVaccines() {
 
   const container =
@@ -4182,35 +4687,16 @@ function renderUpcomingVaccines() {
     );
 
 
-  if (
-    !vaccineData.length
-  ) {
-
-    container.innerHTML =
-      `<div class="card">
-
-        <div class="empty">
-
-          No vaccine schedule available.
-
-        </div>
-
-      </div>`;
-
-    return;
-
-  }
-
-
   const today =
     new Date();
+
 
   today.setHours(
     0,0,0,0
   );
 
 
-  const upcoming =
+  const rows =
     vaccineData
       .filter(
         vaccine => {
@@ -4231,47 +4717,27 @@ function renderUpcomingVaccines() {
         }
       )
       .sort(
-        (a,b) => {
-
-          const dateA =
-            parseSheetDate(
-              a[
-                "Scheduled Date"
-              ]
-            );
-
-
-          const dateB =
-            parseSheetDate(
-              b[
-                "Scheduled Date"
-              ]
-            );
-
-
-          return (
-            dateA - dateB
-          );
-
-        }
-      )
-      .slice(
-        0,
-        8
+        (a,b) =>
+          parseSheetDate(
+            a[
+              "Scheduled Date"
+            ]
+          ) -
+          parseSheetDate(
+            b[
+              "Scheduled Date"
+            ]
+          )
       );
 
 
-  if (
-    !upcoming.length
-  ) {
+  if (!rows.length) {
 
     container.innerHTML =
       `<div class="card">
 
         <div class="empty">
-
           No upcoming vaccines.
-
         </div>
 
       </div>`;
@@ -4282,109 +4748,74 @@ function renderUpcomingVaccines() {
 
 
   container.innerHTML =
-    upcoming
+    rows
+      .slice(
+        0,
+        8
+      )
       .map(
-        vaccine => {
+        vaccine => `
 
-          const date =
-            parseSheetDate(
-              vaccine[
-                "Scheduled Date"
-              ]
-            );
+          <div class="card vaccine-card">
 
+            <div class="row">
 
-          const days =
-            daysBetween(
-              today,
-              date
-            );
+              <div>
 
+                <div class="vaccine-name">
 
-          return `
-
-            <div class="card vaccine-card">
-
-              <div class="row">
-
-                <div>
-
-                  <div class="vaccine-name">
-
-                    ${escapeHtml(
-                      vaccine["Vaccine"]
-                    )}
-
-                  </div>
-
-
-                  <div class="muted">
-
-                    ${escapeHtml(
-                      vaccine["Farm Name"]
-                    )}
-
-                    ·
-
-                    ${escapeHtml(
-                      vaccine["Batch ID"]
-                    )}
-
-                  </div>
+                  ${escapeHtml(
+                    vaccine["Vaccine"]
+                  )}
 
                 </div>
 
+                <div class="muted">
 
-                <span class="badge badge-blue">
-
-                  Day ${escapeHtml(
-                    vaccine["Bird Age"]
+                  ${escapeHtml(
+                    vaccine["Farm Name"]
                   )}
 
-                </span>
+                  ·
+
+                  ${escapeHtml(
+                    vaccine["Batch ID"]
+                  )}
+
+                </div>
 
               </div>
 
 
-              <div class="vaccine-date">
+              <span class="badge badge-blue">
 
-                ${formatDate(
-                  vaccine[
-                    "Scheduled Date"
-                  ]
+                Day ${escapeHtml(
+                  vaccine["Bird Age"]
                 )}
 
-              </div>
-
-
-              <div class="muted">
-
-                ${
-                  days === 0
-                    ? "Today"
-                    : days === 1
-                      ? "Tomorrow"
-                      : "In " +
-                        days +
-                        " days"
-                }
-
-              </div>
+              </span>
 
             </div>
 
-          `;
 
-        }
+            <div class="vaccine-date">
+
+              ${formatDate(
+                vaccine[
+                  "Scheduled Date"
+                ]
+              )}
+
+            </div>
+
+          </div>
+
+        `
       )
       .join("");
 
 }
 
-
-/* ==========================================================
-   DATE-WISE VACCINE SCHEDULE
-========================================================== */
 
 function renderDateWiseVaccines() {
 
@@ -4394,24 +4825,9 @@ function renderDateWiseVaccines() {
     );
 
 
-  if (
-    !vaccineData.length
-  ) {
-
-    container.innerHTML =
-      `<div class="empty">
-
-        No schedule available.
-
-      </div>`;
-
-    return;
-
-  }
-
-
   const today =
     new Date();
+
 
   today.setHours(
     0,0,0,0
@@ -4441,29 +4857,17 @@ function renderDateWiseVaccines() {
       }
     )
     .sort(
-      (a,b) => {
-
-        const dateA =
-          parseSheetDate(
-            a[
-              "Scheduled Date"
-            ]
-          );
-
-
-        const dateB =
-          parseSheetDate(
-            b[
-              "Scheduled Date"
-            ]
-          );
-
-
-        return (
-          dateA - dateB
-        );
-
-      }
+      (a,b) =>
+        parseSheetDate(
+          a[
+            "Scheduled Date"
+          ]
+        ) -
+        parseSheetDate(
+          b[
+            "Scheduled Date"
+          ]
+        )
     )
     .forEach(
       vaccine => {
@@ -4477,9 +4881,7 @@ function renderDateWiseVaccines() {
 
 
         const key =
-          dateKey(
-            date
-          );
+          dateKey(date);
 
 
         if (
@@ -4501,9 +4903,7 @@ function renderDateWiseVaccines() {
 
         grouped[key]
           .rows
-          .push(
-            vaccine
-          );
+          .push(vaccine);
 
       }
     );
@@ -4512,12 +4912,13 @@ function renderDateWiseVaccines() {
   const groups =
     Object
       .values(grouped)
-      .slice(0,7);
+      .slice(
+        0,
+        7
+      );
 
 
-  if (
-    !groups.length
-  ) {
+  if (!groups.length) {
 
     container.innerHTML =
       `<div class="empty">
@@ -4536,9 +4937,9 @@ function renderDateWiseVaccines() {
       .map(
         group => `
 
-          <div class="vaccine-date-group">
+          <div>
 
-            <div class="date-heading">
+            <div class="section-subtitle">
 
               ${formatDate(
                 group.date
@@ -4554,7 +4955,7 @@ function renderDateWiseVaccines() {
 
                     <div class="schedule-row">
 
-                      <div class="schedule-left">
+                      <div>
 
                         <div class="schedule-vaccine">
 
@@ -4563,7 +4964,6 @@ function renderDateWiseVaccines() {
                           )}
 
                         </div>
-
 
                         <div class="schedule-farm">
 
@@ -4606,10 +5006,6 @@ function renderDateWiseVaccines() {
 }
 
 
-/* ==========================================================
-   BATCH-WISE VACCINE SCHEDULE
-========================================================== */
-
 function renderBatchWiseVaccines() {
 
   const container =
@@ -4618,49 +5014,29 @@ function renderBatchWiseVaccines() {
     );
 
 
-  if (
-    !vaccineData.length
-  ) {
-
-    container.innerHTML =
-      `<div class="empty">
-
-        No vaccine schedule available.
-
-      </div>`;
-
-    return;
-
-  }
-
-
   const batches = {};
 
 
   vaccineData.forEach(
     vaccine => {
 
-      const batchId =
-        vaccine[
-          "Batch ID"
-        ];
+      const id =
+        vaccine["Batch ID"];
 
 
-      if (!batchId) {
+      if (!id) {
         return;
       }
 
 
       if (
-        !batches[batchId]
+        !batches[id]
       ) {
 
-        batches[batchId] = {
+        batches[id] = {
 
           farmName:
-            vaccine[
-              "Farm Name"
-            ],
+            vaccine["Farm Name"],
 
           rows:
             []
@@ -4670,11 +5046,9 @@ function renderBatchWiseVaccines() {
       }
 
 
-      batches[batchId]
+      batches[id]
         .rows
-        .push(
-          vaccine
-        );
+        .push(vaccine);
 
     }
   );
@@ -4695,7 +5069,6 @@ function renderBatchWiseVaccines() {
               )}
 
             </div>
-
 
             <div class="muted">
 
@@ -4736,11 +5109,9 @@ function renderBatchWiseVaccines() {
 
                         </strong>
 
-
                         <div class="muted">
 
-                          Day
-                          ${escapeHtml(
+                          Day ${escapeHtml(
                             vaccine["Bird Age"]
                           )}
 
@@ -4780,7 +5151,7 @@ function renderBatchWiseVaccines() {
 
 
 /* ==========================================================
-   DATE HELPERS
+   DATE FUNCTIONS
 ========================================================== */
 
 function parseSheetDate(
@@ -4792,80 +5163,67 @@ function parseSheetDate(
   }
 
 
-  if (
-    value instanceof Date
-  ) {
-
-    const date =
-      new Date(value);
-
-    date.setHours(
-      0,0,0,0
-    );
-
-    return date;
-
-  }
-
-
   const text =
     String(value);
 
 
-  /*
-   * Google Sheets API can return
-   * dates in ISO format.
-   */
+  let date = null;
+
 
   if (
     text.includes("T")
   ) {
 
-    const date =
+    date =
       new Date(text);
 
+  }
 
-    if (
-      !isNaN(
-        date.getTime()
-      )
-    ) {
+  else if (
+    /^\d{2}\/\d{2}\/\d{4}$/.test(
+      text
+    )
+  ) {
 
-      date.setHours(
-        0,0,0,0
+    const parts =
+      text.split("/");
+
+
+    date =
+      new Date(
+        Number(parts[2]),
+        Number(parts[1]) - 1,
+        Number(parts[0])
       );
 
-      return date;
+  }
 
-    }
+  else {
+
+    date =
+      new Date(text);
 
   }
 
 
-  /*
-   * Try normal date parsing.
-   */
-
-  const date =
-    new Date(text);
-
-
   if (
-    !isNaN(
+    !date ||
+    isNaN(
       date.getTime()
     )
   ) {
 
-    date.setHours(
-      0,0,0,0
-    );
-
-    return date;
+    return null;
 
   }
 
 
-  return null;
+  date.setHours(
+    0,0,0,0
+  );
+
+
+  return date;
 
 }
 
@@ -4924,13 +5282,11 @@ function daysBetween(
   to
 ) {
 
-  const difference =
-    to.getTime() -
-    from.getTime();
-
-
   return Math.round(
-    difference /
+    (
+      to.getTime() -
+      from.getTime()
+    ) /
     (
       1000 *
       60 *
@@ -4943,7 +5299,7 @@ function daysBetween(
 
 
 /* ==========================================================
-   HTML SAFETY
+   SAFETY
 ========================================================== */
 
 function escapeHtml(
@@ -4996,10 +5352,6 @@ function escapeAttribute(
 
   return escapeHtml(
     value
-  )
-  .replace(
-    /"/g,
-    "&quot;"
   );
 
 }
@@ -5021,14 +5373,11 @@ function registerServiceWorker() {
         "./sw.js"
       )
       .catch(
-        error => {
-
+        error =>
           console.log(
             "Service worker error:",
             error
-          );
-
-        }
+          )
       );
 
   }
@@ -5037,7 +5386,5 @@ function registerServiceWorker() {
 
 </script>
 
-
 </body>
-
 </html>
