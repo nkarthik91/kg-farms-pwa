@@ -1,12 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<meta name="theme-color" content="#166534">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
+>
+
+<meta
+  name="theme-color"
+  content="#166534"
+>
+
 <title>KG Farms</title>
 
+
 <style>
+
+/* ==========================================================
+   BASE
+========================================================== */
+
 *{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
@@ -19,7 +35,9 @@ body{
   color:#17202a;
 }
 
-button,input,select{
+button,
+input,
+select{
   font:inherit;
 }
 
@@ -29,6 +47,15 @@ button,input,select{
   margin:auto;
   background:#f4f6f8;
 }
+
+.hidden{
+  display:none!important;
+}
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
 
 .header{
   background:#166534;
@@ -67,13 +94,14 @@ button,input,select{
   cursor:pointer;
 }
 
+
+/* ==========================================================
+   CONTENT
+========================================================== */
+
 .content{
   padding:14px;
   padding-bottom:90px;
-}
-
-.hidden{
-  display:none!important;
 }
 
 .section-title{
@@ -81,6 +109,11 @@ button,input,select{
   font-weight:700;
   margin:8px 2px 12px;
 }
+
+
+/* ==========================================================
+   SUMMARY
+========================================================== */
 
 .summary-grid{
   display:grid;
@@ -106,6 +139,11 @@ button,input,select{
   margin-top:6px;
 }
 
+
+/* ==========================================================
+   PANELS
+========================================================== */
+
 .panel{
   background:white;
   border-radius:14px;
@@ -113,6 +151,11 @@ button,input,select{
   margin-bottom:12px;
   box-shadow:0 1px 5px rgba(0,0,0,.06);
 }
+
+
+/* ==========================================================
+   FARM CARD
+========================================================== */
 
 .farm-card{
   background:white;
@@ -171,6 +214,11 @@ button,input,select{
   padding:0 12px 12px;
 }
 
+
+/* ==========================================================
+   BUTTONS
+========================================================== */
+
 .btn{
   border:0;
   border-radius:9px;
@@ -203,6 +251,11 @@ button,input,select{
   width:100%;
   margin-top:8px;
 }
+
+
+/* ==========================================================
+   STATUS
+========================================================== */
 
 .status{
   display:inline-block;
@@ -238,6 +291,11 @@ button,input,select{
   color:#666;
 }
 
+
+/* ==========================================================
+   PANEL ROW
+========================================================== */
+
 .panel-row{
   display:flex;
   justify-content:space-between;
@@ -260,6 +318,11 @@ button,input,select{
   text-align:right;
 }
 
+
+/* ==========================================================
+   FORMS
+========================================================== */
+
 .form-group{
   margin-bottom:14px;
 }
@@ -272,7 +335,8 @@ button,input,select{
   margin-bottom:6px;
 }
 
-input,select{
+input,
+select{
   width:100%;
   border:1px solid #d8dde2;
   border-radius:9px;
@@ -289,6 +353,11 @@ select:focus{
 .readonly{
   background:#f5f6f7;
 }
+
+
+/* ==========================================================
+   MESSAGES
+========================================================== */
 
 .message{
   padding:12px;
@@ -308,6 +377,11 @@ select:focus{
   color:#b42318;
 }
 
+
+/* ==========================================================
+   LOADING / EMPTY
+========================================================== */
+
 .loading{
   text-align:center;
   padding:30px 10px;
@@ -321,6 +395,11 @@ select:focus{
   color:#777;
   font-size:13px;
 }
+
+
+/* ==========================================================
+   NAVIGATION
+========================================================== */
 
 .nav{
   position:fixed;
@@ -338,8 +417,8 @@ select:focus{
 }
 
 .nav button{
-  flex:0 0 20%;
-  min-width:105px;
+  flex:0 0 16.666%;
+  min-width:100px;
   border:0;
   background:white;
   color:#6b7280;
@@ -357,6 +436,11 @@ select:focus{
   font-size:20px;
   margin-bottom:3px;
 }
+
+
+/* ==========================================================
+   ORDER CARDS
+========================================================== */
 
 .order-card,
 .vaccine-card{
@@ -390,6 +474,7 @@ select:focus{
   gap:8px;
   margin-top:10px;
 }
+
 
 /* ==========================================================
    ORDER FEED SUMMARY
@@ -430,6 +515,21 @@ select:focus{
   opacity:.55;
 }
 
+
+/* ==========================================================
+   VACCINES
+========================================================== */
+
+.date-heading{
+  background:#166534;
+  color:white;
+  padding:9px 12px;
+  border-radius:9px;
+  margin:14px 0 8px;
+  font-size:13px;
+  font-weight:700;
+}
+
 .vaccine-date{
   font-size:18px;
   font-weight:700;
@@ -441,35 +541,42 @@ select:focus{
   color:#6b7280;
 }
 
-.date-heading{
-  background:#166534;
-  color:white;
-  padding:9px 12px;
-  border-radius:9px;
-  margin:14px 0 8px;
-  font-size:13px;
-  font-weight:700;
-}
 </style>
 </head>
+
 
 <body>
 
 <div class="app">
+
+
+<!-- ========================================================
+     HEADER
+======================================================== -->
 
 <header class="header">
 
   <div class="header-top">
 
     <div>
-      <div class="title">KG Farms</div>
-      <div class="subtitle">Poultry Management</div>
+
+      <div class="title">
+        KG Farms
+      </div>
+
+      <div class="subtitle">
+        Poultry Management
+      </div>
+
     </div>
+
 
     <button
       class="refresh-btn"
       onclick="loadAllData()">
+
       ↻
+
     </button>
 
   </div>
@@ -477,14 +584,19 @@ select:focus{
 </header>
 
 
+<!-- ========================================================
+     CONTENT
+======================================================== -->
+
 <main class="content">
+
 
 <div id="message"></div>
 
 
-<!-- ======================================================
+<!-- ========================================================
      DASHBOARD
-====================================================== -->
+======================================================== -->
 
 <section id="dashboardScreen">
 
@@ -492,9 +604,11 @@ select:focus{
     Overview
   </div>
 
+
   <div class="summary-grid">
 
     <div class="summary-card">
+
       <div class="summary-label">
         Active Batches
       </div>
@@ -502,12 +616,16 @@ select:focus{
       <div
         class="summary-value"
         id="totalBatches">
+
         0
+
       </div>
+
     </div>
 
 
     <div class="summary-card">
+
       <div class="summary-label">
         Live Birds
       </div>
@@ -515,12 +633,16 @@ select:focus{
       <div
         class="summary-value"
         id="totalBirds">
+
         0
+
       </div>
+
     </div>
 
 
     <div class="summary-card">
+
       <div class="summary-label">
         Orders Required
       </div>
@@ -528,12 +650,16 @@ select:focus{
       <div
         class="summary-value"
         id="ordersRequired">
+
         0
+
       </div>
+
     </div>
 
 
     <div class="summary-card">
+
       <div class="summary-label">
         Upcoming Vaccines
       </div>
@@ -541,8 +667,11 @@ select:focus{
       <div
         class="summary-value"
         id="upcomingVaccines">
+
         0
+
       </div>
+
     </div>
 
   </div>
@@ -552,28 +681,34 @@ select:focus{
     Farms
   </div>
 
+
   <div id="farmList">
+
     <div class="loading">
       Loading...
     </div>
+
   </div>
 
 </section>
 
 
-<!-- ======================================================
+<!-- ========================================================
      DAILY ENTRY
-====================================================== -->
+======================================================== -->
 
 <section
   id="entryScreen"
   class="hidden">
 
+
   <div class="section-title">
     Daily Farm Entry
   </div>
 
+
   <div class="panel">
+
 
     <div class="form-group">
 
@@ -707,17 +842,19 @@ select:focus{
 </section>
 
 
-<!-- ======================================================
+<!-- ========================================================
      FEED
-====================================================== -->
+======================================================== -->
 
 <section
   id="feedScreen"
   class="hidden">
 
+
   <div class="section-title">
     Feed Management
   </div>
+
 
   <div id="feedList">
 
@@ -734,6 +871,7 @@ select:focus{
 
 
   <div class="panel">
+
 
     <div class="form-group">
 
@@ -851,17 +989,19 @@ select:focus{
 </section>
 
 
-<!-- ======================================================
+<!-- ========================================================
      ORDERS
-====================================================== -->
+======================================================== -->
 
 <section
   id="ordersScreen"
   class="hidden">
 
+
   <div class="section-title">
     Feed Orders
   </div>
+
 
   <div id="ordersList">
 
@@ -874,13 +1014,14 @@ select:focus{
 </section>
 
 
-<!-- ======================================================
+<!-- ========================================================
      VACCINES
-====================================================== -->
+======================================================== -->
 
 <section
   id="vaccineScreen"
   class="hidden">
+
 
   <div class="section-title">
     Vaccine Schedule
@@ -889,7 +1030,9 @@ select:focus{
 
   <div class="panel">
 
+
     <div class="panel-row">
+
       <span class="panel-label">
         Day 6
       </span>
@@ -897,10 +1040,12 @@ select:focus{
       <span class="panel-value">
         F1 / B1
       </span>
+
     </div>
 
 
     <div class="panel-row">
+
       <span class="panel-label">
         Day 12
       </span>
@@ -908,10 +1053,12 @@ select:focus{
       <span class="panel-value">
         IBD
       </span>
+
     </div>
 
 
     <div class="panel-row">
+
       <span class="panel-label">
         Day 18
       </span>
@@ -919,10 +1066,12 @@ select:focus{
       <span class="panel-value">
         NDVH
       </span>
+
     </div>
 
 
     <div class="panel-row">
+
       <span class="panel-label">
         Day 22
       </span>
@@ -930,6 +1079,7 @@ select:focus{
       <span class="panel-value">
         Zenda
       </span>
+
     </div>
 
   </div>
@@ -950,21 +1100,124 @@ select:focus{
 
 </section>
 
+
+<!-- ========================================================
+     BATCH MANAGEMENT
+======================================================== -->
+
+<section
+  id="batchScreen"
+  class="hidden">
+
+
+  <div class="section-title">
+    Batch Management
+  </div>
+
+
+  <div class="panel">
+
+
+    <div class="form-group">
+
+      <label class="form-label">
+        Batch ID
+      </label>
+
+      <input
+        id="newBatchId"
+        placeholder="Example: GK0002">
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label class="form-label">
+        Farm Name
+      </label>
+
+      <input
+        id="newFarmName"
+        placeholder="Enter farm name">
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label class="form-label">
+        Placement Date
+      </label>
+
+      <input
+        type="date"
+        id="newPlacementDate">
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label class="form-label">
+        Chicks Placed
+      </label>
+
+      <input
+        type="number"
+        min="1"
+        id="newChicksPlaced"
+        placeholder="Enter chicks placed">
+
+    </div>
+
+
+    <button
+      class="btn btn-primary full-btn"
+      onclick="createNewBatch()">
+
+      Create Batch
+
+    </button>
+
+  </div>
+
+
+  <div class="section-title">
+    All Batches
+  </div>
+
+
+  <div id="batchList">
+
+    <div class="loading">
+      Loading batches...
+    </div>
+
+  </div>
+
+</section>
+
+
 </main>
 
 
-<!-- ======================================================
+<!-- ========================================================
      NAVIGATION
-====================================================== -->
+======================================================== -->
 
 <nav class="nav">
+
 
   <button
     id="navDashboard"
     class="active"
     onclick="showScreen('dashboard')">
 
-    <span class="nav-icon">⌂</span>
+    <span class="nav-icon">
+      ⌂
+    </span>
+
     Dashboard
 
   </button>
@@ -974,7 +1227,10 @@ select:focus{
     id="navEntry"
     onclick="showScreen('entry')">
 
-    <span class="nav-icon">＋</span>
+    <span class="nav-icon">
+      ＋
+    </span>
+
     Daily Entry
 
   </button>
@@ -984,7 +1240,10 @@ select:focus{
     id="navFeed"
     onclick="showScreen('feed')">
 
-    <span class="nav-icon">▣</span>
+    <span class="nav-icon">
+      ▣
+    </span>
+
     Feed
 
   </button>
@@ -994,7 +1253,10 @@ select:focus{
     id="navOrders"
     onclick="showScreen('orders')">
 
-    <span class="nav-icon">◫</span>
+    <span class="nav-icon">
+      ◫
+    </span>
+
     Orders
 
   </button>
@@ -1004,10 +1266,27 @@ select:focus{
     id="navVaccines"
     onclick="showScreen('vaccines')">
 
-    <span class="nav-icon">♢</span>
+    <span class="nav-icon">
+      ♢
+    </span>
+
     Vaccines
 
   </button>
+
+
+  <button
+    id="navBatches"
+    onclick="showScreen('batches')">
+
+    <span class="nav-icon">
+      ◇
+    </span>
+
+    Batches
+
+  </button>
+
 
 </nav>
 
@@ -1029,9 +1308,13 @@ const API_URL =
 ========================================================== */
 
 let dashboardData = [];
+
 let feedData = [];
+
 let ordersData = [];
+
 let vaccineData = [];
+
 let batchData = [];
 
 
@@ -1047,7 +1330,8 @@ document.addEventListener(
 
     document.getElementById(
       "supplyDate"
-    ).value = todayString();
+    ).value =
+      todayString();
 
     loadAllData();
 
@@ -1065,6 +1349,7 @@ async function loadAllData(){
 
     const response =
       await fetch(API_URL);
+
 
     const result =
       await response.json();
@@ -1084,19 +1369,33 @@ async function loadAllData(){
 
 
     dashboardData =
-      cleanRows(result.data);
+      cleanRows(
+        result.data
+      );
+
 
     feedData =
-      cleanRows(result.feed);
+      cleanRows(
+        result.feed
+      );
+
 
     ordersData =
-      cleanRows(result.orders);
+      cleanRows(
+        result.orders
+      );
+
 
     vaccineData =
-      cleanRows(result.vaccines);
+      cleanRows(
+        result.vaccines
+      );
+
 
     batchData =
-      cleanRows(result.batches);
+      cleanRows(
+        result.batches
+      );
 
 
     renderDashboard();
@@ -1106,6 +1405,8 @@ async function loadAllData(){
     renderOrders();
 
     renderVaccines();
+
+    renderBatches();
 
     populateBatchDropdowns();
 
@@ -1159,6 +1460,7 @@ function cleanRows(data){
 
         const obj = {};
 
+
         headers.forEach(
           (header,index) => {
 
@@ -1167,6 +1469,7 @@ function cleanRows(data){
 
           }
         );
+
 
         return obj;
 
@@ -1214,8 +1517,12 @@ function renderDashboard(){
   const today =
     new Date();
 
+
   today.setHours(
-    0,0,0,0
+    0,
+    0,
+    0,
+    0
   );
 
 
@@ -1228,7 +1535,11 @@ function renderDashboard(){
             row["Scheduled Date"]
           );
 
-        return d && d >= today;
+
+        return (
+          d &&
+          d >= today
+        );
 
       }
     ).length;
@@ -1297,30 +1608,39 @@ function renderFarmCard(row){
   const farm =
     row["Farm Name"] || "-";
 
+
   const batch =
     row["Batch ID"] || "-";
+
 
   const birds =
     Number(
       row["Birds"] || 0
     );
 
+
   const age =
     row["Age"] || "-";
 
+
   const feed =
     row["Current Feed"] || "-";
+
 
   const balance =
     Number(
       row["Balance To Be Supplied"] || 0
     );
 
+
   const need =
     row["Next Order Need"] || "";
 
+
   const vaccine =
-    row["Next Vaccine"] || "None";
+    row["Next Vaccine"] ||
+    "None";
+
 
   const vaccineDate =
     formatDate(
@@ -1331,28 +1651,46 @@ function renderFarmCard(row){
   const status =
     need === "ORDER REQUIRED"
 
-      ? `<span class="status status-order">
-           ORDER REQUIRED · ${balance} bags
-         </span>`
+      ? `
+        <span
+          class="status status-order">
 
-      : `<span class="status status-complete">
-           FEED COMPLETE
-         </span>`;
+          ORDER REQUIRED ·
+          ${balance} bags
+
+        </span>
+      `
+
+      : `
+        <span
+          class="status status-complete">
+
+          FEED COMPLETE
+
+        </span>
+      `;
 
 
   return `
 
     <div class="farm-card">
 
+
       <div class="farm-head">
 
         <div class="farm-name">
+
           ${escapeHtml(farm)}
+
         </div>
 
+
         <div class="batch">
+
           Batch ${escapeHtml(batch)}
+
         </div>
+
 
         ${status}
 
@@ -1361,6 +1699,7 @@ function renderFarmCard(row){
 
       <div class="farm-stats">
 
+
         <div class="farm-stat">
 
           <div class="stat-label">
@@ -1368,7 +1707,9 @@ function renderFarmCard(row){
           </div>
 
           <div class="stat-value">
+
             ${birds.toLocaleString()}
+
           </div>
 
         </div>
@@ -1381,7 +1722,9 @@ function renderFarmCard(row){
           </div>
 
           <div class="stat-value">
+
             Day ${age}
+
           </div>
 
         </div>
@@ -1394,10 +1737,13 @@ function renderFarmCard(row){
           </div>
 
           <div class="stat-value">
+
             ${escapeHtml(feed)}
+
           </div>
 
         </div>
+
 
       </div>
 
@@ -1406,9 +1752,13 @@ function renderFarmCard(row){
         class="panel-row"
         style="margin:0 12px">
 
+
         <span class="panel-label">
+
           Next Vaccine
+
         </span>
+
 
         <span class="panel-value">
 
@@ -1422,10 +1772,12 @@ function renderFarmCard(row){
 
         </span>
 
+
       </div>
 
 
       <div class="farm-actions">
+
 
         <button
           class="btn btn-secondary"
@@ -1456,7 +1808,9 @@ function renderFarmCard(row){
 
         </button>
 
+
       </div>
+
 
     </div>
 
@@ -1499,25 +1853,33 @@ function renderFeed(){
           const farm =
             row["Farm Name"] || "-";
 
+
           const batch =
             row["Batch ID"] || "-";
+
 
           const feed =
             row["Current Feed"] || "-";
 
+
           const required =
             Number(
-              row["Feed Required (Bags)"] || 0
+              row["Feed Required (Bags)"] ||
+              0
             );
+
 
           const supplied =
             Number(
-              row["Feed Supplied (Bags)"] || 0
+              row["Feed Supplied (Bags)"] ||
+              0
             );
+
 
           const balance =
             Number(
-              row["Balance To Be Supplied"] || 0
+              row["Balance To Be Supplied"] ||
+              0
             );
 
 
@@ -1525,12 +1887,18 @@ function renderFeed(){
 
             <div class="panel">
 
+
               <div class="farm-name">
+
                 ${escapeHtml(farm)}
+
               </div>
 
+
               <div class="batch">
+
                 ${escapeHtml(batch)}
+
               </div>
 
 
@@ -1541,7 +1909,9 @@ function renderFeed(){
                 </span>
 
                 <span class="panel-value">
+
                   ${escapeHtml(feed)}
+
                 </span>
 
               </div>
@@ -1554,7 +1924,9 @@ function renderFeed(){
                 </span>
 
                 <span class="panel-value">
+
                   ${required} bags
+
                 </span>
 
               </div>
@@ -1567,7 +1939,9 @@ function renderFeed(){
                 </span>
 
                 <span class="panel-value">
+
                   ${supplied} bags
+
                 </span>
 
               </div>
@@ -1580,7 +1954,9 @@ function renderFeed(){
                 </span>
 
                 <span class="panel-value">
+
                   ${balance} bags
+
                 </span>
 
               </div>
@@ -1607,12 +1983,16 @@ function renderFeed(){
 
                 : `
 
-                  <span class="status status-complete">
+                  <span
+                    class="status status-complete">
+
                     COMPLETE
+
                   </span>
 
                 `
               }
+
 
             </div>
 
@@ -1656,6 +2036,7 @@ function renderOrders(){
       .map(
         (row,index) => {
 
+
           const rowNumber =
             index + 2;
 
@@ -1680,21 +2061,25 @@ function renderOrders(){
 
           const qty =
             Number(
-              row["Order Qty (Bags)"] || 0
+              row["Order Qty (Bags)"] ||
+              0
             );
 
 
           const status =
-            row["Status"] || "Pending";
+            row["Status"] ||
+            "Pending";
 
 
           const remarks =
-            row["Remarks"] || "";
+            row["Remarks"] ||
+            "";
 
 
-          /* ----------------------------------------
-             ALL 3 FEED STAGES FOR THIS BATCH
-          ---------------------------------------- */
+          /*
+             SHOW ALL 3 FEED TYPES
+             FOR THIS BATCH
+          */
 
           const stages = [
             "BPSC",
@@ -1707,6 +2092,7 @@ function renderOrders(){
             stages
               .map(
                 stage => {
+
 
                   const feedRow =
                     feedData.find(
@@ -1726,40 +2112,43 @@ function renderOrders(){
                     );
 
 
-                  const required =
-                    feedRow
+                  let required = 0;
 
-                      ? Number(
-                          feedRow[
-                            "Feed Required (50kg Bags)"
-                          ] ||
-
-                          feedRow[
-                            "Feed Required (Bags)"
-                          ] ||
-
-                          0
-                        )
-
-                      : 0;
+                  let supplied = 0;
 
 
-                  const supplied =
-                    feedRow
+                  if(feedRow){
 
-                      ? Number(
-                          feedRow[
-                            "Feed Supplied (Bags)"
-                          ] || 0
-                        )
+                    required =
+                      Number(
+                        feedRow[
+                          "Feed Required (50kg Bags)"
+                        ] ||
 
-                      : 0;
+                        feedRow[
+                          "Feed Required (Bags)"
+                        ] ||
+
+                        0
+                      );
+
+
+                    supplied =
+                      Number(
+                        feedRow[
+                          "Feed Supplied (Bags)"
+                        ] ||
+                        0
+                      );
+
+                  }
 
 
                   return `
 
                     <div
                       class="order-feed-stage">
+
 
                       <span
                         class="order-feed-name">
@@ -1776,12 +2165,15 @@ function renderOrders(){
 
                         <span
                           class="feed-separator">
+
                           |
+
                         </span>
 
                         SUP ${supplied}
 
                       </span>
+
 
                     </div>
 
@@ -1835,9 +2227,13 @@ function renderOrders(){
               </div>
 
 
-              <!-- FEED REQUIREMENT SUMMARY -->
+              <!--
+                FEED SUMMARY
+                NO BALANCE
+              -->
 
-              <div class="order-feed-summary">
+              <div
+                class="order-feed-summary">
 
                 ${feedSummary}
 
@@ -1858,11 +2254,16 @@ function renderOrders(){
               <div class="panel-row">
 
                 <span class="panel-label">
+
                   Order Date
+
                 </span>
 
+
                 <span class="panel-value">
+
                   ${date}
+
                 </span>
 
               </div>
@@ -1871,11 +2272,16 @@ function renderOrders(){
               <div class="panel-row">
 
                 <span class="panel-label">
+
                   Ordered Feed
+
                 </span>
 
+
                 <span class="panel-value">
+
                   ${escapeHtml(feed)}
+
                 </span>
 
               </div>
@@ -1884,11 +2290,16 @@ function renderOrders(){
               <div class="panel-row">
 
                 <span class="panel-label">
+
                   Order Quantity
+
                 </span>
 
+
                 <span class="panel-value">
+
                   ${qty} bags
+
                 </span>
 
               </div>
@@ -1897,58 +2308,65 @@ function renderOrders(){
               ${
                 remarks
 
-                  ? `
+                ? `
 
-                    <div class="small">
-                      ${escapeHtml(remarks)}
-                    </div>
+                  <div class="small">
 
-                  `
+                    ${escapeHtml(remarks)}
 
-                  : ""
+                  </div>
+
+                `
+
+                : ""
+
               }
 
 
               ${
                 status === "Pending"
 
-                  ? `
+                ? `
 
-                    <div class="order-buttons">
-
-                      <button
-                        class="btn btn-primary"
-                        onclick="
-                          updateOrderStatus(
-                            ${rowNumber},
-                            'Supplied'
-                          )
-                        ">
-
-                        Mark Supplied
-
-                      </button>
+                  <div class="order-buttons">
 
 
-                      <button
-                        class="btn btn-danger"
-                        onclick="
-                          updateOrderStatus(
-                            ${rowNumber},
-                            'Cancelled'
-                          )
-                        ">
+                    <button
+                      class="btn btn-primary"
+                      onclick="
+                        updateOrderStatus(
+                          ${rowNumber},
+                          'Supplied'
+                        )
+                      ">
 
-                        Cancel
+                      Mark Supplied
 
-                      </button>
+                    </button>
 
-                    </div>
 
-                  `
+                    <button
+                      class="btn btn-danger"
+                      onclick="
+                        updateOrderStatus(
+                          ${rowNumber},
+                          'Cancelled'
+                        )
+                      ">
 
-                  : ""
+                      Cancel
+
+                    </button>
+
+
+                  </div>
+
+                `
+
+                : ""
+
               }
+
 
             </div>
 
@@ -1976,8 +2394,12 @@ function renderVaccines(){
   const today =
     new Date();
 
+
   today.setHours(
-    0,0,0,0
+    0,
+    0,
+    0,
+    0
   );
 
 
@@ -1990,6 +2412,7 @@ function renderVaccines(){
             parseDate(
               row["Scheduled Date"]
             );
+
 
           return {
             row:row,
@@ -2034,6 +2457,7 @@ function renderVaccines(){
       const row =
         item.row;
 
+
       const date =
         item.date;
 
@@ -2060,6 +2484,7 @@ function renderVaccines(){
 
         `;
 
+
         lastDate =
           dateKey;
 
@@ -2069,6 +2494,7 @@ function renderVaccines(){
       html += `
 
         <div class="vaccine-card">
+
 
           <div class="card-title">
 
@@ -2104,9 +2530,11 @@ function renderVaccines(){
             </span>
 
             <span class="panel-value">
+
               Day ${escapeHtml(
                 row["Bird Age"] || "-"
               )}
+
             </span>
 
           </div>
@@ -2119,12 +2547,15 @@ function renderVaccines(){
             </span>
 
             <span class="panel-value">
+
               ${formatDate(
                 row["Scheduled Date"]
               )}
+
             </span>
 
           </div>
+
 
         </div>
 
@@ -2136,6 +2567,348 @@ function renderVaccines(){
 
   list.innerHTML =
     html;
+
+}
+
+
+/* ==========================================================
+   BATCH MANAGEMENT
+========================================================== */
+
+function renderBatches(){
+
+  const list =
+    document.getElementById(
+      "batchList"
+    );
+
+
+  if(
+    !batchData.length
+  ){
+
+    list.innerHTML =
+      `<div class="empty">
+        No batches found
+       </div>`;
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    batchData
+      .map(
+        row => {
+
+
+          const batch =
+            row["Batch ID"] || "-";
+
+
+          const farm =
+            row["Farm Name"] || "-";
+
+
+          const placement =
+            formatDate(
+              row["Placement Date"]
+            );
+
+
+          const chicks =
+            Number(
+              row["Chicks Placed"] || 0
+            );
+
+
+          const birds =
+            Number(
+              row["Current Birds"] || 0
+            );
+
+
+          const age =
+            row["Age"] || "-";
+
+
+          const status =
+            row["Status"] ||
+            "Active";
+
+
+          const statusClass =
+            status === "Completed"
+
+              ? "status-cancelled"
+
+              : "status-supplied";
+
+
+          return `
+
+            <div class="panel">
+
+
+              <div class="card-title">
+
+                ${escapeHtml(farm)}
+
+              </div>
+
+
+              <div class="small">
+
+                Batch ${escapeHtml(batch)}
+
+              </div>
+
+
+              <span
+                class="status ${statusClass}">
+
+                ${escapeHtml(status)}
+
+              </span>
+
+
+              <div class="divider"></div>
+
+
+              <div class="panel-row">
+
+                <span class="panel-label">
+                  Placement Date
+                </span>
+
+                <span class="panel-value">
+                  ${placement}
+                </span>
+
+              </div>
+
+
+              <div class="panel-row">
+
+                <span class="panel-label">
+                  Chicks Placed
+                </span>
+
+                <span class="panel-value">
+
+                  ${chicks.toLocaleString()}
+
+                </span>
+
+              </div>
+
+
+              <div class="panel-row">
+
+                <span class="panel-label">
+                  Current Birds
+                </span>
+
+                <span class="panel-value">
+
+                  ${birds.toLocaleString()}
+
+                </span>
+
+              </div>
+
+
+              <div class="panel-row">
+
+                <span class="panel-label">
+                  Age
+                </span>
+
+                <span class="panel-value">
+
+                  Day ${age}
+
+                </span>
+
+              </div>
+
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* ==========================================================
+   CREATE BATCH
+========================================================== */
+
+async function createNewBatch(){
+
+  const batchId =
+    document.getElementById(
+      "newBatchId"
+    ).value.trim();
+
+
+  const farmName =
+    document.getElementById(
+      "newFarmName"
+    ).value.trim();
+
+
+  const placementDate =
+    document.getElementById(
+      "newPlacementDate"
+    ).value;
+
+
+  const chicksPlaced =
+    Number(
+      document.getElementById(
+        "newChicksPlaced"
+      ).value || 0
+    );
+
+
+  if(!batchId){
+
+    showMessage(
+      "Enter Batch ID",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(!farmName){
+
+    showMessage(
+      "Enter farm name",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(!placementDate){
+
+    showMessage(
+      "Select placement date",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(chicksPlaced <= 0){
+
+    showMessage(
+      "Enter valid chicks placed",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    showMessage(
+      "Creating batch...",
+      "success"
+    );
+
+
+    const response =
+      await postData({
+
+        action:
+          "createBatch",
+
+        batchId:
+          batchId,
+
+        farmName:
+          farmName,
+
+        placementDate:
+          placementDate,
+
+        chicksPlaced:
+          chicksPlaced
+
+      });
+
+
+    if(
+      response.status !==
+      "success"
+    ){
+
+      throw new Error(
+        response.message ||
+        "Unable to create batch"
+      );
+
+    }
+
+
+    showMessage(
+      "Batch created successfully",
+      "success"
+    );
+
+
+    document.getElementById(
+      "newBatchId"
+    ).value = "";
+
+
+    document.getElementById(
+      "newFarmName"
+    ).value = "";
+
+
+    document.getElementById(
+      "newPlacementDate"
+    ).value = "";
+
+
+    document.getElementById(
+      "newChicksPlaced"
+    ).value = "";
+
+
+    await loadAllData();
+
+
+    showScreen(
+      "batches"
+    );
+
+  }
+  catch(error){
+
+    showMessage(
+      error.message,
+      "error"
+    );
+
+  }
 
 }
 
@@ -2161,7 +2934,10 @@ function showScreen(screen){
       "ordersScreen",
 
     vaccines:
-      "vaccineScreen"
+      "vaccineScreen",
+
+    batches:
+      "batchScreen"
 
   };
 
@@ -2170,14 +2946,20 @@ function showScreen(screen){
     .forEach(
       key => {
 
-        document
-          .getElementById(
+        const element =
+          document.getElementById(
             screens[key]
-          )
-          .classList.toggle(
+          );
+
+
+        if(element){
+
+          element.classList.toggle(
             "hidden",
             key !== screen
           );
+
+        }
 
       }
     );
@@ -2198,7 +2980,10 @@ function showScreen(screen){
       "navOrders",
 
     vaccines:
-      "navVaccines"
+      "navVaccines",
+
+    batches:
+      "navBatches"
 
   };
 
@@ -2207,14 +2992,20 @@ function showScreen(screen){
     .forEach(
       key => {
 
-        document
-          .getElementById(
+        const element =
+          document.getElementById(
             navs[key]
-          )
-          .classList.toggle(
+          );
+
+
+        if(element){
+
+          element.classList.toggle(
             "active",
             key === screen
           );
+
+        }
 
       }
     );
@@ -2340,7 +3131,9 @@ function updateEntryFarm(){
 
 function openDailyEntry(batch){
 
-  showScreen("entry");
+  showScreen(
+    "entry"
+  );
 
 
   document.getElementById(
@@ -2483,7 +3276,9 @@ async function saveDailyEntry(){
     await loadAllData();
 
 
-    showScreen("dashboard");
+    showScreen(
+      "dashboard"
+    );
 
   }
   catch(error){
@@ -2689,7 +3484,7 @@ async function saveFeedSupply(){
 
 
 /* ==========================================================
-   CREATE ORDER
+   CREATE FEED ORDER
 ========================================================== */
 
 async function createOrder(batchId){
@@ -2717,7 +3512,8 @@ async function createOrder(batchId){
 
   const quantity =
     Number(
-      row["Balance To Be Supplied"] || 0
+      row["Balance To Be Supplied"] ||
+      0
     );
 
 
@@ -2812,7 +3608,9 @@ async function createOrder(batchId){
     await loadAllData();
 
 
-    showScreen("orders");
+    showScreen(
+      "orders"
+    );
 
   }
   catch(error){
@@ -2899,7 +3697,9 @@ async function updateOrderStatus(
 
 function openFeed(batchId){
 
-  showScreen("feed");
+  showScreen(
+    "feed"
+  );
 
 
   const select =
@@ -2918,7 +3718,7 @@ function openFeed(batchId){
 
 
 /* ==========================================================
-   POST
+   POST HELPER
 ========================================================== */
 
 async function postData(data){
@@ -2949,7 +3749,7 @@ async function postData(data){
 
 
 /* ==========================================================
-   DATE
+   DATE HELPERS
 ========================================================== */
 
 function setToday(){
@@ -3003,9 +3803,14 @@ function parseDate(value){
     const d =
       new Date(value);
 
+
     d.setHours(
-      0,0,0,0
+      0,
+      0,
+      0,
+      0
     );
+
 
     return d;
 
@@ -3058,7 +3863,10 @@ function parseDate(value){
 
 
   d.setHours(
-    0,0,0,0
+    0,
+    0,
+    0,
+    0
   );
 
 
