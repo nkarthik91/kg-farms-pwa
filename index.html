@@ -1,28 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
->
-
-<meta
-  name="theme-color"
-  content="#166534"
->
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+      maximum-scale=1.0,user-scalable=no">
 
 <title>KG Farms</title>
 
-
 <style>
-
-/* ==========================================================
-   BASE
-========================================================== */
-
 *{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
@@ -30,405 +16,262 @@
 
 body{
   margin:0;
-  font-family:Arial,sans-serif;
+  font-family:Arial,Helvetica,sans-serif;
   background:#f4f6f8;
   color:#17202a;
 }
 
-button,
-input,
-select{
+button,input,select,textarea{
   font:inherit;
 }
 
-.app{
-  max-width:600px;
-  min-height:100vh;
-  margin:auto;
-  background:#f4f6f8;
+button{
+  cursor:pointer;
 }
-
-.hidden{
-  display:none!important;
-}
-
-
-/* ==========================================================
-   HEADER
-========================================================== */
 
 .header{
-  background:#166534;
-  color:white;
-  padding:18px 16px;
+  background:#ffffff;
+  padding:18px 18px 14px;
+  border-bottom:1px solid #e5e7eb;
   position:sticky;
   top:0;
   z-index:20;
 }
 
-.header-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.title{
-  font-size:22px;
+.header-title{
+  font-size:23px;
   font-weight:700;
 }
 
-.subtitle{
+.header-sub{
   font-size:13px;
+  color:#6b7280;
   margin-top:4px;
-  opacity:.85;
 }
 
-.refresh-btn{
-  border:0;
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  background:rgba(255,255,255,.15);
-  color:white;
-  font-size:22px;
-  cursor:pointer;
-}
-
-
-/* ==========================================================
-   CONTENT
-========================================================== */
-
-.content{
-  padding:14px;
+.container{
+  padding:16px;
   padding-bottom:90px;
+  max-width:700px;
+  margin:auto;
+}
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
 }
 
 .section-title{
-  font-size:17px;
+  font-size:18px;
   font-weight:700;
-  margin:8px 2px 12px;
+  margin:4px 0 12px;
 }
 
+.card{
+  background:#fff;
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:12px;
+  box-shadow:0 1px 4px rgba(0,0,0,.07);
+}
 
-/* ==========================================================
-   SUMMARY
-========================================================== */
+.card-title{
+  font-size:16px;
+  font-weight:700;
+  margin-bottom:10px;
+}
 
-.summary-grid{
+.grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
 }
 
-.summary-card{
-  background:white;
-  border-radius:14px;
-  padding:15px;
-  box-shadow:0 1px 5px rgba(0,0,0,.06);
-}
-
-.summary-label{
-  font-size:12px;
-  color:#6b7280;
-}
-
-.summary-value{
-  font-size:24px;
-  font-weight:700;
-  margin-top:6px;
-}
-
-
-/* ==========================================================
-   PANELS
-========================================================== */
-
-.panel{
-  background:white;
-  border-radius:14px;
-  padding:15px;
-  margin-bottom:12px;
-  box-shadow:0 1px 5px rgba(0,0,0,.06);
-}
-
-
-/* ==========================================================
-   FARM CARD
-========================================================== */
-
-.farm-card{
-  background:white;
-  border-radius:14px;
-  margin-bottom:12px;
-  box-shadow:0 1px 5px rgba(0,0,0,.06);
-  overflow:hidden;
-}
-
-.farm-head{
-  padding:14px;
-  border-bottom:1px solid #edf0f2;
-}
-
-.farm-name{
-  font-size:16px;
-  font-weight:700;
-}
-
-.batch{
-  color:#6b7280;
-  font-size:12px;
-  margin-top:4px;
-}
-
-.farm-stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  padding:12px 8px;
-}
-
-.farm-stat{
-  text-align:center;
-  border-right:1px solid #edf0f2;
-}
-
-.farm-stat:last-child{
-  border-right:0;
+.stat{
+  background:#f8fafc;
+  border-radius:10px;
+  padding:11px;
 }
 
 .stat-label{
   font-size:11px;
-  color:#7b8490;
-}
-
-.stat-value{
-  font-size:15px;
-  font-weight:700;
-  margin-top:5px;
-}
-
-.farm-actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  padding:0 12px 12px;
-}
-
-
-/* ==========================================================
-   BUTTONS
-========================================================== */
-
-.btn{
-  border:0;
-  border-radius:9px;
-  padding:11px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.btn-primary{
-  background:#166534;
-  color:white;
-}
-
-.btn-secondary{
-  background:#eef2f0;
-  color:#166534;
-}
-
-.btn-warning{
-  background:#fff3cd;
-  color:#8a5a00;
-}
-
-.btn-danger{
-  background:#fdecec;
-  color:#b42318;
-}
-
-.full-btn{
-  width:100%;
-  margin-top:8px;
-}
-
-
-/* ==========================================================
-   STATUS
-========================================================== */
-
-.status{
-  display:inline-block;
-  padding:5px 9px;
-  border-radius:20px;
-  font-size:11px;
-  font-weight:700;
-  margin-top:8px;
-}
-
-.status-order{
-  background:#fff0f0;
-  color:#b42318;
-}
-
-.status-complete{
-  background:#eaf7ee;
-  color:#18743a;
-}
-
-.status-pending{
-  background:#fff3cd;
-  color:#8a5a00;
-}
-
-.status-supplied{
-  background:#eaf7ee;
-  color:#18743a;
-}
-
-.status-cancelled{
-  background:#f1f1f1;
-  color:#666;
-}
-
-
-/* ==========================================================
-   PANEL ROW
-========================================================== */
-
-.panel-row{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  padding:9px 0;
-  border-bottom:1px solid #f0f2f3;
-  font-size:13px;
-}
-
-.panel-row:last-child{
-  border-bottom:0;
-}
-
-.panel-label{
   color:#6b7280;
 }
 
-.panel-value{
+.stat-value{
+  font-size:17px;
   font-weight:700;
-  text-align:right;
+  margin-top:3px;
 }
 
-
-/* ==========================================================
-   FORMS
-========================================================== */
-
-.form-group{
-  margin-bottom:14px;
-}
-
-.form-label{
+label{
   display:block;
-  font-size:12px;
+  font-size:13px;
   font-weight:600;
-  color:#59636e;
-  margin-bottom:6px;
+  margin:13px 0 6px;
 }
 
-input,
-select{
+input,select,textarea{
   width:100%;
-  border:1px solid #d8dde2;
+  border:1px solid #d1d5db;
   border-radius:9px;
-  padding:12px;
-  background:white;
+  padding:11px;
+  background:#fff;
   outline:none;
 }
 
 input:focus,
-select:focus{
-  border-color:#166534;
+select:focus,
+textarea:focus{
+  border-color:#2563eb;
 }
 
-.readonly{
-  background:#f5f6f7;
+textarea{
+  min-height:80px;
+  resize:vertical;
 }
 
-
-/* ==========================================================
-   MESSAGES
-========================================================== */
-
-.message{
-  padding:12px;
+.btn{
+  width:100%;
+  border:none;
   border-radius:10px;
+  padding:12px;
+  margin-top:14px;
+  font-weight:700;
+}
+
+.btn-primary{
+  background:#2563eb;
+  color:#fff;
+}
+
+.btn-secondary{
+  background:#e5e7eb;
+  color:#111827;
+}
+
+.btn-success{
+  background:#16a34a;
+  color:#fff;
+}
+
+.btn-danger{
+  background:#dc2626;
+  color:#fff;
+}
+
+.btn-small{
+  width:auto;
+  padding:8px 12px;
+  margin:0;
+  font-size:12px;
+}
+
+.notice{
+  padding:11px 12px;
+  border-radius:9px;
   margin-bottom:12px;
   font-size:13px;
-  font-weight:600;
 }
 
-.success{
-  background:#eaf7ee;
-  color:#18743a;
+.notice-success{
+  background:#dcfce7;
+  color:#166534;
 }
 
-.error{
-  background:#fff0f0;
-  color:#b42318;
+.notice-error{
+  background:#fee2e2;
+  color:#991b1b;
 }
 
+.notice-info{
+  background:#dbeafe;
+  color:#1e40af;
+}
 
-/* ==========================================================
-   LOADING / EMPTY
-========================================================== */
+.hidden{
+  display:none !important;
+}
 
-.loading{
-  text-align:center;
-  padding:30px 10px;
+.badge{
+  display:inline-block;
+  padding:5px 8px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:700;
+}
+
+.badge-green{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.badge-red{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.badge-orange{
+  background:#ffedd5;
+  color:#9a3412;
+}
+
+.badge-blue{
+  background:#dbeafe;
+  color:#1e40af;
+}
+
+.list-row{
+  padding:12px 0;
+  border-bottom:1px solid #eef0f2;
+}
+
+.list-row:last-child{
+  border-bottom:none;
+}
+
+.row-main{
+  font-weight:700;
+  font-size:14px;
+}
+
+.row-sub{
   color:#6b7280;
-  font-size:13px;
+  font-size:12px;
+  margin-top:4px;
 }
 
-.empty{
-  text-align:center;
-  padding:25px;
-  color:#777;
-  font-size:13px;
+.row-flex{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
 }
 
-
-/* ==========================================================
-   NAVIGATION
-========================================================== */
-
-.nav{
+.bottom-nav{
   position:fixed;
   bottom:0;
-  left:50%;
-  transform:translateX(-50%);
-  width:100%;
-  max-width:600px;
-  height:66px;
-  background:white;
-  border-top:1px solid #e2e5e8;
+  left:0;
+  right:0;
+  height:68px;
+  background:#fff;
+  border-top:1px solid #e5e7eb;
   display:flex;
+  z-index:50;
   overflow-x:auto;
-  z-index:30;
 }
 
-.nav button{
-  flex:0 0 16.666%;
-  min-width:100px;
-  border:0;
-  background:white;
+.nav-btn{
+  flex:1;
+  min-width:70px;
+  border:none;
+  background:none;
   color:#6b7280;
-  font-size:11px;
-  cursor:pointer;
-}
-
-.nav button.active{
-  color:#166534;
-  font-weight:700;
+  font-size:10px;
+  padding:7px 3px;
 }
 
 .nav-icon{
@@ -437,3566 +280,2722 @@ select:focus{
   margin-bottom:3px;
 }
 
-
-/* ==========================================================
-   ORDER CARDS
-========================================================== */
-
-.order-card,
-.vaccine-card{
-  background:white;
-  border-radius:14px;
-  padding:15px;
-  margin-bottom:10px;
-  box-shadow:0 1px 5px rgba(0,0,0,.06);
-}
-
-.card-title{
+.nav-btn.active{
+  color:#2563eb;
   font-weight:700;
-  font-size:16px;
 }
 
-.small{
+.loading{
+  text-align:center;
+  padding:30px 10px;
   color:#6b7280;
-  font-size:12px;
-  margin-top:4px;
+}
+
+.empty{
+  text-align:center;
+  padding:25px 10px;
+  color:#9ca3af;
+  font-size:13px;
 }
 
 .divider{
   height:1px;
-  background:#edf0f2;
-  margin:12px 0;
+  background:#e5e7eb;
+  margin:15px 0;
 }
 
-.order-buttons{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
+.readonly{
+  background:#f3f4f6;
+}
+
+.info-box{
+  background:#f8fafc;
+  border-radius:10px;
+  padding:12px;
   margin-top:10px;
 }
 
-
-/* ==========================================================
-   ORDER FEED SUMMARY
-========================================================== */
-
-.order-feed-summary{
-  margin-top:12px;
-  padding:10px 12px;
-  background:#f4faf7;
-  border-radius:10px;
-}
-
-.order-feed-stage{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:6px 0;
-  border-bottom:1px solid #dfeee6;
-  font-size:12px;
-}
-
-.order-feed-stage:last-child{
-  border-bottom:0;
-}
-
-.order-feed-name{
-  font-weight:700;
-  color:#166534;
-}
-
-.order-feed-values{
-  font-weight:600;
-  color:#166534;
-}
-
-.feed-separator{
-  margin:0 5px;
-  opacity:.55;
-}
-
-
-/* ==========================================================
-   VACCINES
-========================================================== */
-
-.date-heading{
-  background:#166534;
-  color:white;
-  padding:9px 12px;
-  border-radius:9px;
-  margin:14px 0 8px;
-  font-size:13px;
-  font-weight:700;
-}
-
-.vaccine-date{
-  font-size:18px;
-  font-weight:700;
-  color:#166534;
-}
-
-.vaccine-age{
-  font-size:12px;
+.info-label{
+  font-size:11px;
   color:#6b7280;
 }
 
+.info-value{
+  font-size:14px;
+  font-weight:700;
+  margin-top:3px;
+}
+
+.medicine-stock-card{
+  border-left:4px solid #2563eb;
+}
+
+.reorder-card{
+  border-left:4px solid #dc2626;
+}
+
+.tab-row{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  margin-bottom:14px;
+}
+
+.tab-btn{
+  white-space:nowrap;
+  border:1px solid #d1d5db;
+  background:#fff;
+  padding:9px 13px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
+}
+
+.tab-btn.active{
+  background:#2563eb;
+  color:#fff;
+  border-color:#2563eb;
+}
+
+.search{
+  margin-bottom:12px;
+}
+
+@media(min-width:700px){
+  .bottom-nav{
+    max-width:700px;
+    left:50%;
+    transform:translateX(-50%);
+    border-left:1px solid #e5e7eb;
+    border-right:1px solid #e5e7eb;
+  }
+}
 </style>
 </head>
 
-
 <body>
 
-<div class="app">
+<div class="header">
+  <div class="header-title">KG Farms</div>
+  <div class="header-sub">Poultry Management System</div>
+</div>
 
+<div class="container">
 
-<!-- ========================================================
-     HEADER
-======================================================== -->
-
-<header class="header">
-
-  <div class="header-top">
-
-    <div>
-
-      <div class="title">
-        KG Farms
-      </div>
-
-      <div class="subtitle">
-        Poultry Management
-      </div>
-
-    </div>
-
-
-    <button
-      class="refresh-btn"
-      onclick="loadAllData()">
-
-      ↻
-
-    </button>
-
-  </div>
-
-</header>
-
-
-<!-- ========================================================
-     CONTENT
-======================================================== -->
-
-<main class="content">
-
-
-<div id="message"></div>
-
-
-<!-- ========================================================
+<!-- =====================================================
      DASHBOARD
-======================================================== -->
+===================================================== -->
 
-<section id="dashboardScreen">
+<div id="page-dashboard" class="page active">
 
-  <div class="section-title">
-    Overview
+  <div class="section-title">Dashboard</div>
+
+  <div id="dashboardMessage"></div>
+
+  <div id="dashboardList">
+    <div class="loading">Loading dashboard...</div>
   </div>
 
-
-  <div class="summary-grid">
-
-    <div class="summary-card">
-
-      <div class="summary-label">
-        Active Batches
-      </div>
-
-      <div
-        class="summary-value"
-        id="totalBatches">
-
-        0
-
-      </div>
-
-    </div>
+</div>
 
 
-    <div class="summary-card">
-
-      <div class="summary-label">
-        Live Birds
-      </div>
-
-      <div
-        class="summary-value"
-        id="totalBirds">
-
-        0
-
-      </div>
-
-    </div>
-
-
-    <div class="summary-card">
-
-      <div class="summary-label">
-        Orders Required
-      </div>
-
-      <div
-        class="summary-value"
-        id="ordersRequired">
-
-        0
-
-      </div>
-
-    </div>
-
-
-    <div class="summary-card">
-
-      <div class="summary-label">
-        Upcoming Vaccines
-      </div>
-
-      <div
-        class="summary-value"
-        id="upcomingVaccines">
-
-        0
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="section-title">
-    Farms
-  </div>
-
-
-  <div id="farmList">
-
-    <div class="loading">
-      Loading...
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ========================================================
+<!-- =====================================================
      DAILY ENTRY
-======================================================== -->
+===================================================== -->
 
-<section
-  id="entryScreen"
-  class="hidden">
+<div id="page-daily" class="page">
 
+  <div class="section-title">Daily Farm Entry</div>
 
-  <div class="section-title">
-    Daily Farm Entry
-  </div>
+  <div id="dailyMessage"></div>
 
+  <div class="card">
 
-  <div class="panel">
+    <label>Date</label>
+    <input type="date" id="dailyDate">
 
+    <label>Batch</label>
+    <select id="dailyBatch"
+            onchange="updateDailyBatchInfo()">
+      <option value="">Select Batch</option>
+    </select>
 
-    <div class="form-group">
+    <div id="dailyBatchInfo"></div>
 
-      <label class="form-label">
-        Date
-      </label>
+    <label>Mortality</label>
+    <input type="number"
+           id="dailyMortality"
+           min="0"
+           step="1"
+           placeholder="Enter mortality">
 
-      <input
-        type="date"
-        id="entryDate">
+    <label>Feed Type</label>
+    <select id="dailyFeedType">
+      <option value="">Select Feed Type</option>
+      <option value="BPSC">BPSC</option>
+      <option value="BSC">BSC</option>
+      <option value="BFP">BFP</option>
+    </select>
 
-    </div>
+    <label>Remaining Feed Stock (50kg Bags)</label>
+    <input type="number"
+           id="dailyFeedStock"
+           min="0"
+           step="1"
+           placeholder="Optional">
 
-
-    <div class="form-group">
-
-      <label class="form-label">
-        Batch
-      </label>
-
-      <select
-        id="entryBatch"
-        onchange="updateEntryFarm()">
-
-        <option value="">
-          Select Batch
-        </option>
-
-      </select>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label class="form-label">
-        Farm
-      </label>
-
-      <input
-        id="entryFarm"
-        class="readonly"
-        readonly>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label class="form-label">
-        Current Birds
-      </label>
-
-      <input
-        id="entryBirds"
-        class="readonly"
-        readonly>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label class="form-label">
-        Mortality
-      </label>
-
-      <input
-        type="number"
-        min="0"
-        id="entryMortality"
-        placeholder="Enter mortality">
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label class="form-label">
-        Feed Type
-      </label>
-
-      <select id="entryFeed">
-
-        <option value="">
-          Select Feed
-        </option>
-
-        <option value="BPSC">
-          BPSC — Pre-Starter
-        </option>
-
-        <option value="BSC">
-          BSC — Starter
-        </option>
-
-        <option value="BFP">
-          BFP — Finisher
-        </option>
-
-      </select>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label class="form-label">
-        Remaining Feed Stock (50kg Bags)
-      </label>
-
-      <input
-        type="number"
-        min="0"
-        id="entryStock"
-        placeholder="Enter remaining bags">
-
-    </div>
-
-
-    <button
-      class="btn btn-primary full-btn"
-      onclick="saveDailyEntry()">
-
+    <button class="btn btn-primary"
+            onclick="saveDailyEntry()">
       Save Daily Entry
-
     </button>
 
   </div>
 
-</section>
+</div>
 
 
-<!-- ========================================================
+<!-- =====================================================
      FEED
-======================================================== -->
+===================================================== -->
 
-<section
-  id="feedScreen"
-  class="hidden">
+<div id="page-feed" class="page">
 
+  <div class="section-title">Feed Management</div>
 
-  <div class="section-title">
-    Feed Management
-  </div>
-
-
-  <div id="feedList">
-
-    <div class="loading">
-      Loading...
-    </div>
-
-  </div>
-
-
-  <div class="section-title">
-    Supply Feed
-  </div>
-
-
-  <div class="panel">
-
-
-    <div class="form-group">
-
-      <label class="form-label">
-        Date
-      </label>
-
-      <input
-        type="date"
-        id="supplyDate">
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label class="form-label">
-        Batch
-      </label>
-
-      <select
-        id="supplyBatch"
-        onchange="updateSupplyFarm()">
-
-        <option value="">
-          Select Batch
-        </option>
-
-      </select>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label class="form-label">
-        Farm
-      </label>
-
-      <input
-        id="supplyFarm"
-        class="readonly"
-        readonly>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label class="form-label">
-        Feed Type
-      </label>
-
-      <select id="supplyFeed">
-
-        <option value="">
-          Select Feed
-        </option>
-
-        <option value="BPSC">
-          BPSC — Pre-Starter
-        </option>
-
-        <option value="BSC">
-          BSC — Starter
-        </option>
-
-        <option value="BFP">
-          BFP — Finisher
-        </option>
-
-      </select>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label class="form-label">
-        Bags Supplied
-      </label>
-
-      <input
-        type="number"
-        min="1"
-        id="supplyBags"
-        placeholder="50kg bags">
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label class="form-label">
-        Remarks
-      </label>
-
-      <input
-        id="supplyRemarks"
-        placeholder="Optional">
-
-    </div>
-
-
-    <button
-      class="btn btn-primary full-btn"
-      onclick="saveFeedSupply()">
-
-      Save Feed Supply
-
+  <div class="tab-row">
+    <button class="tab-btn active"
+            onclick="showFeedTab('summary',this)">
+      Summary
     </button>
 
+    <button class="tab-btn"
+            onclick="showFeedTab('supply',this)">
+      Supply Feed
+    </button>
   </div>
 
-</section>
+  <div id="feedSummaryTab">
+
+    <div id="feedSummaryList">
+      <div class="loading">Loading feed...</div>
+    </div>
+
+  </div>
+
+  <div id="feedSupplyTab" class="hidden">
+
+    <div id="feedSupplyMessage"></div>
+
+    <div class="card">
+
+      <label>Date</label>
+      <input type="date" id="feedSupplyDate">
+
+      <label>Batch</label>
+      <select id="feedSupplyBatch"
+              onchange="updateFeedSupplyBatchInfo()">
+        <option value="">Select Batch</option>
+      </select>
+
+      <div id="feedSupplyBatchInfo"></div>
+
+      <label>Feed Type</label>
+      <select id="feedSupplyType">
+        <option value="">Select Feed Type</option>
+        <option value="BPSC">BPSC</option>
+        <option value="BSC">BSC</option>
+        <option value="BFP">BFP</option>
+      </select>
+
+      <label>Bags Supplied</label>
+      <input type="number"
+             id="feedSupplyBags"
+             min="1"
+             step="1"
+             placeholder="50 kg bags">
+
+      <label>Remarks</label>
+      <textarea id="feedSupplyRemarks"
+                placeholder="Optional"></textarea>
+
+      <button class="btn btn-success"
+              onclick="saveFeedSupply()">
+        Save Feed Supply
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
 
 
-<!-- ========================================================
+<!-- =====================================================
      ORDERS
-======================================================== -->
+===================================================== -->
 
-<section
-  id="ordersScreen"
-  class="hidden">
+<div id="page-orders" class="page">
 
+  <div class="section-title">Feed Orders</div>
 
-  <div class="section-title">
-    Feed Orders
-  </div>
-
+  <div id="ordersMessage"></div>
 
   <div id="ordersList">
-
-    <div class="loading">
-      Loading...
-    </div>
-
+    <div class="loading">Loading orders...</div>
   </div>
 
-</section>
+</div>
 
 
-<!-- ========================================================
+<!-- =====================================================
      VACCINES
-======================================================== -->
+===================================================== -->
 
-<section
-  id="vaccineScreen"
-  class="hidden">
+<div id="page-vaccines" class="page">
 
+  <div class="section-title">Vaccine Schedule</div>
 
-  <div class="section-title">
-    Vaccine Schedule
-  </div>
+  <div class="card">
 
-
-  <div class="panel">
-
-
-    <div class="panel-row">
-
-      <span class="panel-label">
-        Day 6
-      </span>
-
-      <span class="panel-value">
-        F1 / B1
-      </span>
-
-    </div>
-
-
-    <div class="panel-row">
-
-      <span class="panel-label">
-        Day 12
-      </span>
-
-      <span class="panel-value">
-        IBD
-      </span>
-
-    </div>
-
-
-    <div class="panel-row">
-
-      <span class="panel-label">
-        Day 18
-      </span>
-
-      <span class="panel-value">
-        NDVH
-      </span>
-
-    </div>
-
-
-    <div class="panel-row">
-
-      <span class="panel-label">
-        Day 22
-      </span>
-
-      <span class="panel-value">
-        Zenda
-      </span>
-
+    <div class="row-flex">
+      <div>
+        <div class="row-main">Upcoming Vaccines</div>
+        <div class="row-sub">
+          Based on placement date
+        </div>
+      </div>
     </div>
 
   </div>
-
-
-  <div class="section-title">
-    Upcoming Vaccines
-  </div>
-
 
   <div id="vaccineList">
-
-    <div class="loading">
-      Loading...
-    </div>
-
+    <div class="loading">Loading vaccines...</div>
   </div>
 
-</section>
+</div>
 
 
-<!-- ========================================================
+<!-- =====================================================
      BATCH MANAGEMENT
-======================================================== -->
+===================================================== -->
 
-<section
-  id="batchScreen"
-  class="hidden">
+<div id="page-batches" class="page">
 
+  <div class="section-title">Batch Management</div>
 
-  <div class="section-title">
-    Batch Management
+  <div class="tab-row">
+
+    <button class="tab-btn active"
+            onclick="showBatchTab('list',this)">
+      Batches
+    </button>
+
+    <button class="tab-btn"
+            onclick="showBatchTab('create',this)">
+      New Batch
+    </button>
+
   </div>
 
+  <div id="batchListTab">
 
-  <div class="panel">
+    <div id="batchList">
+      <div class="loading">Loading batches...</div>
+    </div>
 
+  </div>
 
-    <div class="form-group">
+  <div id="batchCreateTab" class="hidden">
 
-      <label class="form-label">
-        Batch ID
-      </label>
+    <div id="batchMessage"></div>
 
-      <input
-        id="newBatchId"
-        placeholder="Example: GK0002">
+    <div class="card">
+
+      <label>Batch ID</label>
+      <input type="text"
+             id="batchId"
+             placeholder="Example: DP0004">
+
+      <label>Farm Name</label>
+      <input type="text"
+             id="batchFarm"
+             placeholder="Farm Name">
+
+      <label>Placement Date</label>
+      <input type="date"
+             id="batchPlacementDate">
+
+      <label>Chicks Placed</label>
+      <input type="number"
+             id="batchChicks"
+             min="1"
+             step="1"
+             placeholder="Number of chicks">
+
+      <button class="btn btn-primary"
+              onclick="createBatch()">
+        Create Batch
+      </button>
 
     </div>
 
+  </div>
 
-    <div class="form-group">
-
-      <label class="form-label">
-        Farm Name
-      </label>
-
-      <input
-        id="newFarmName"
-        placeholder="Enter farm name">
-
-    </div>
+</div>
 
 
-    <div class="form-group">
+<!-- =====================================================
+     MEDICINE
+===================================================== -->
 
-      <label class="form-label">
-        Placement Date
-      </label>
+<div id="page-medicine" class="page">
 
-      <input
-        type="date"
-        id="newPlacementDate">
+  <div class="section-title">Medicine Management</div>
 
-    </div>
+  <div class="tab-row">
 
+    <button class="tab-btn active"
+            onclick="showMedicineTab('stock',this)">
+      Stock
+    </button>
 
-    <div class="form-group">
+    <button class="tab-btn"
+            onclick="showMedicineTab('master',this)">
+      Medicines
+    </button>
 
-      <label class="form-label">
-        Chicks Placed
-      </label>
+    <button class="tab-btn"
+            onclick="showMedicineTab('receive',this)">
+      Receive
+    </button>
 
-      <input
-        type="number"
-        min="1"
-        id="newChicksPlaced"
-        placeholder="Enter chicks placed">
-
-    </div>
-
-
-    <button
-      class="btn btn-primary full-btn"
-      onclick="createNewBatch()">
-
-      Create Batch
-
+    <button class="tab-btn"
+            onclick="showMedicineTab('usage',this)">
+      Usage
     </button>
 
   </div>
 
 
-  <div class="section-title">
-    All Batches
-  </div>
+  <!-- MEDICINE STOCK -->
 
+  <div id="medicineStockTab">
 
-  <div id="batchList">
-
-    <div class="loading">
-      Loading batches...
+    <div id="medicineStockList">
+      <div class="loading">Loading medicine stock...</div>
     </div>
 
   </div>
 
-</section>
+
+  <!-- MEDICINE MASTER -->
+
+  <div id="medicineMasterTab" class="hidden">
+
+    <div id="medicineMasterMessage"></div>
+
+    <div class="card">
+
+      <div class="card-title">Add Medicine</div>
+
+      <div class="notice notice-info">
+        Medicine ID will be generated automatically.
+      </div>
+
+      <label>Medicine Name</label>
+      <input type="text"
+             id="medicineName"
+             placeholder="Example: Amikacin">
+
+      <label>Unit</label>
+      <input type="text"
+             id="medicineUnit"
+             placeholder="Example: ml">
+
+      <label>Reorder Level</label>
+      <input type="number"
+             id="medicineReorder"
+             min="0"
+             step="0.01"
+             value="0">
+
+      <label>Notes</label>
+      <textarea id="medicineNotes"
+                placeholder="Optional"></textarea>
+
+      <button class="btn btn-primary"
+              onclick="createMedicine()">
+        Add Medicine
+      </button>
+
+    </div>
+
+    <div id="medicineMasterList"></div>
+
+  </div>
 
 
-</main>
+  <!-- RECEIVE STOCK -->
+
+  <div id="medicineReceiveTab" class="hidden">
+
+    <div id="medicineReceiveMessage"></div>
+
+    <div class="card">
+
+      <div class="card-title">Receive Medicine Stock</div>
+
+      <label>Date</label>
+      <input type="date"
+             id="medicineReceiveDate">
+
+      <label>Medicine</label>
+      <select id="medicineReceiveSelect">
+        <option value="">Select Medicine</option>
+      </select>
+
+      <div id="medicineReceiveInfo"></div>
+
+      <label>Quantity Received</label>
+      <input type="number"
+             id="medicineReceiveQty"
+             min="0"
+             step="0.01"
+             placeholder="Enter quantity">
+
+      <label>Reference</label>
+      <input type="text"
+             id="medicineReceiveReference"
+             placeholder="Invoice / purchase reference">
+
+      <label>Remarks</label>
+      <textarea id="medicineReceiveRemarks"
+                placeholder="Optional"></textarea>
+
+      <button class="btn btn-success"
+              onclick="saveMedicineStock()">
+        Save Stock
+      </button>
+
+    </div>
+
+  </div>
 
 
-<!-- ========================================================
-     NAVIGATION
-======================================================== -->
+  <!-- MEDICINE USAGE -->
 
-<nav class="nav">
+  <div id="medicineUsageTab" class="hidden">
+
+    <div id="medicineUsageMessage"></div>
+
+    <div class="card">
+
+      <div class="card-title">Medicine Usage</div>
+
+      <label>Date</label>
+      <input type="date"
+             id="medicineUsageDate">
+
+      <label>Batch</label>
+      <select id="medicineUsageBatch"
+              onchange="updateMedicineUsageBatch()">
+        <option value="">Select Batch</option>
+      </select>
+
+      <div id="medicineUsageFarmInfo"></div>
+
+      <label>Medicine</label>
+      <select id="medicineUsageMedicine"
+              onchange="updateMedicineUsageMedicine()">
+        <option value="">Select Medicine</option>
+      </select>
+
+      <div id="medicineUsageMedicineInfo"></div>
+
+      <label>Quantity Used</label>
+      <input type="number"
+             id="medicineUsageQty"
+             min="0"
+             step="0.01"
+             placeholder="Enter quantity">
+
+      <div id="medicineUsageStockInfo"></div>
+
+      <label>Remarks</label>
+      <textarea id="medicineUsageRemarks"
+                placeholder="Optional"></textarea>
+
+      <button class="btn btn-primary"
+              onclick="saveMedicineUsage()">
+        Save Medicine Usage
+      </button>
+
+    </div>
+
+    <div class="card">
+
+      <div class="card-title">Recent Usage</div>
+
+      <div id="medicineUsageHistory">
+        <div class="empty">No usage records.</div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
 
 
-  <button
-    id="navDashboard"
-    class="active"
-    onclick="showScreen('dashboard')">
+<!-- =====================================================
+     BOTTOM NAVIGATION
+===================================================== -->
 
-    <span class="nav-icon">
-      ⌂
-    </span>
+<div class="bottom-nav">
 
+  <button class="nav-btn active"
+          onclick="showPage('dashboard',this)">
+    <span class="nav-icon">⌂</span>
     Dashboard
-
   </button>
 
-
-  <button
-    id="navEntry"
-    onclick="showScreen('entry')">
-
-    <span class="nav-icon">
-      ＋
-    </span>
-
-    Daily Entry
-
+  <button class="nav-btn"
+          onclick="showPage('daily',this)">
+    <span class="nav-icon">＋</span>
+    Daily
   </button>
 
-
-  <button
-    id="navFeed"
-    onclick="showScreen('feed')">
-
-    <span class="nav-icon">
-      ▣
-    </span>
-
+  <button class="nav-btn"
+          onclick="showPage('feed',this)">
+    <span class="nav-icon">▣</span>
     Feed
-
   </button>
 
-
-  <button
-    id="navOrders"
-    onclick="showScreen('orders')">
-
-    <span class="nav-icon">
-      ◫
-    </span>
-
+  <button class="nav-btn"
+          onclick="showPage('orders',this)">
+    <span class="nav-icon">□</span>
     Orders
-
   </button>
 
-
-  <button
-    id="navVaccines"
-    onclick="showScreen('vaccines')">
-
-    <span class="nav-icon">
-      ♢
-    </span>
-
+  <button class="nav-btn"
+          onclick="showPage('vaccines',this)">
+    <span class="nav-icon">✚</span>
     Vaccines
-
   </button>
 
+  <button class="nav-btn"
+          onclick="showPage('medicine',this)">
+    <span class="nav-icon">⚕</span>
+    Medicine
+  </button>
 
-  <button
-    id="navBatches"
-    onclick="showScreen('batches')">
-
-    <span class="nav-icon">
-      ◇
-    </span>
-
+  <button class="nav-btn"
+          onclick="showPage('batches',this)">
+    <span class="nav-icon">☰</span>
     Batches
-
   </button>
-
-
-</nav>
 
 </div>
 
 
 <script>
 
-/* ==========================================================
-   API
-========================================================== */
+/*************************************************
+ * API
+ *************************************************/
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbzVV9-kxrknNyQroHlnY49lhrw7lWgPkNB8AmxkC_UgISCiaSxYrF1KsxRe2AGcku0B/exec";
 
 
-/* ==========================================================
-   GLOBAL DATA
-========================================================== */
+/*************************************************
+ * GLOBAL DATA
+ *************************************************/
 
 let dashboardData = [];
-
 let feedData = [];
-
 let ordersData = [];
-
 let vaccineData = [];
+let batchesData = [];
 
-let batchData = [];
+let medicineMaster = [];
+let medicineStock = [];
+let medicineUsage = [];
 
 
-/* ==========================================================
-   START
-========================================================== */
+/*************************************************
+ * PAGE NAVIGATION
+ *************************************************/
+
+function showPage(page,button){
+
+  document
+    .querySelectorAll(".page")
+    .forEach(p => p.classList.remove("active"));
+
+  const target =
+    document.getElementById("page-" + page);
+
+  if(target){
+    target.classList.add("active");
+  }
+
+  document
+    .querySelectorAll(".nav-btn")
+    .forEach(b => b.classList.remove("active"));
+
+  if(button){
+    button.classList.add("active");
+  }
+
+  window.scrollTo(0,0);
+}
+
+
+/*************************************************
+ * MESSAGE
+ *************************************************/
+
+function showMessage(id,text,type="success"){
+
+  const el = document.getElementById(id);
+
+  if(!el) return;
+
+  el.innerHTML =
+    `<div class="notice notice-${type}">
+      ${escapeHtml(text)}
+    </div>`;
+
+  setTimeout(() => {
+    el.innerHTML = "";
+  },5000);
+}
+
+
+/*************************************************
+ * HTML ESCAPE
+ *************************************************/
+
+function escapeHtml(value){
+
+  if(value === null || value === undefined){
+    return "";
+  }
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+/*************************************************
+ * API GET
+ *************************************************/
+
+async function loadData(){
+
+  try{
+
+    const response =
+      await fetch(API_URL + "?t=" + Date.now());
+
+    const data =
+      await response.json();
+
+    if(data.status !== "success"){
+      throw new Error(
+        data.message || "Unable to load data."
+      );
+    }
+
+    dashboardData =
+      Array.isArray(data.data)
+        ? data.data
+        : [];
+
+    feedData =
+      Array.isArray(data.feed)
+        ? data.feed
+        : [];
+
+    ordersData =
+      Array.isArray(data.orders)
+        ? data.orders
+        : [];
+
+    vaccineData =
+      Array.isArray(data.vaccines)
+        ? data.vaccines
+        : [];
+
+    batchesData =
+      Array.isArray(data.batches)
+        ? data.batches
+        : [];
+
+    if(data.medicine){
+
+      medicineMaster =
+        Array.isArray(data.medicine.master)
+          ? data.medicine.master
+          : [];
+
+      medicineStock =
+        Array.isArray(data.medicine.stock)
+          ? data.medicine.stock
+          : [];
+
+      medicineUsage =
+        Array.isArray(data.medicine.usage)
+          ? data.medicine.usage
+          : [];
+
+    }else{
+
+      medicineMaster = [];
+      medicineStock = [];
+      medicineUsage = [];
+
+    }
+
+    renderAll();
+
+  }catch(err){
+
+    console.error(err);
+
+    document.getElementById("dashboardList").innerHTML =
+      `<div class="notice notice-error">
+        Unable to load data.<br>
+        ${escapeHtml(err.message)}
+      </div>`;
+  }
+}
+
+
+/*************************************************
+ * API POST
+ *************************************************/
+
+async function postData(payload){
+
+  const response =
+    await fetch(API_URL,{
+      method:"POST",
+      headers:{
+        "Content-Type":"text/plain;charset=utf-8"
+      },
+      body:JSON.stringify(payload)
+    });
+
+  const data =
+    await response.json();
+
+  if(data.status !== "success"){
+    throw new Error(
+      data.message || "Request failed."
+    );
+  }
+
+  return data;
+}
+
+
+/*************************************************
+ * RENDER ALL
+ *************************************************/
+
+function renderAll(){
+
+  renderDashboard();
+  renderDailyBatchOptions();
+  renderFeed();
+  renderFeedSupplyBatchOptions();
+  renderOrders();
+  renderVaccines();
+  renderBatches();
+
+  renderMedicineStock();
+  renderMedicineMaster();
+  renderMedicineMedicineOptions();
+  renderMedicineUsageHistory();
+}
+
+
+/*************************************************
+ * DASHBOARD
+ *************************************************/
+
+function renderDashboard(){
+
+  const el =
+    document.getElementById("dashboardList");
+
+  if(!dashboardData.length){
+
+    el.innerHTML =
+      `<div class="empty">
+        No active batches found.
+      </div>`;
+
+    return;
+  }
+
+  el.innerHTML =
+    dashboardData.map(item => {
+
+      const balance =
+        Number(item.balanceToSupply) || 0;
+
+      const orderBadge =
+        balance > 0
+          ? `<span class="badge badge-orange">
+              ORDER REQUIRED
+            </span>`
+          : `<span class="badge badge-green">
+              COMPLETE
+            </span>`;
+
+      return `
+      <div class="card">
+
+        <div class="row-flex">
+
+          <div>
+            <div class="row-main">
+              ${escapeHtml(item.farmName)}
+            </div>
+
+            <div class="row-sub">
+              ${escapeHtml(item.batchId)}
+            </div>
+          </div>
+
+          ${orderBadge}
+
+        </div>
+
+        <div class="grid" style="margin-top:12px">
+
+          <div class="stat">
+            <div class="stat-label">Birds</div>
+            <div class="stat-value">
+              ${item.birds || 0}
+            </div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Age</div>
+            <div class="stat-value">
+              Day ${item.age || 0}
+            </div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Current Feed</div>
+            <div class="stat-value">
+              ${escapeHtml(item.currentFeed || "-")}
+            </div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Feed Balance</div>
+            <div class="stat-value">
+              ${balance}
+            </div>
+          </div>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="row-sub">
+          Next Vaccine
+        </div>
+
+        <div class="row-main">
+          ${escapeHtml(item.nextVaccine || "None")}
+        </div>
+
+        ${
+          item.vaccineDate
+            ? `<div class="row-sub">
+                ${escapeHtml(item.vaccineDate)}
+              </div>`
+            : ""
+        }
+
+      </div>
+      `;
+    }).join("");
+}
+
+
+/*************************************************
+ * DAILY BATCH OPTIONS
+ *************************************************/
+
+function renderDailyBatchOptions(){
+
+  const select =
+    document.getElementById("dailyBatch");
+
+  const current =
+    select.value;
+
+  select.innerHTML =
+    `<option value="">Select Batch</option>` +
+    batchesData
+      .filter(b =>
+        String(b.status).toLowerCase() !== "completed"
+      )
+      .map(b =>
+        `<option value="${escapeHtml(b.batchId)}">
+          ${escapeHtml(b.batchId)} —
+          ${escapeHtml(b.farmName)}
+        </option>`
+      ).join("");
+
+  if(current){
+    select.value = current;
+  }
+}
+
+
+function updateDailyBatchInfo(){
+
+  const batchId =
+    document.getElementById("dailyBatch").value;
+
+  const batch =
+    batchesData.find(
+      b => String(b.batchId) === String(batchId)
+    );
+
+  const el =
+    document.getElementById("dailyBatchInfo");
+
+  if(!batch){
+
+    el.innerHTML = "";
+
+    return;
+  }
+
+  const birds =
+    Number(batch.currentBirds) || 0;
+
+  el.innerHTML = `
+    <div class="info-box">
+
+      <div class="info-label">Farm</div>
+      <div class="info-value">
+        ${escapeHtml(batch.farmName)}
+      </div>
+
+      <div class="grid" style="margin-top:10px">
+
+        <div>
+          <div class="info-label">Current Birds</div>
+          <div class="info-value">${birds}</div>
+        </div>
+
+        <div>
+          <div class="info-label">Age</div>
+          <div class="info-value">
+            Day ${batch.age || 0}
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
+
+
+/*************************************************
+ * SAVE DAILY
+ *************************************************/
+
+async function saveDailyEntry(){
+
+  try{
+
+    const date =
+      document.getElementById("dailyDate").value;
+
+    const batchId =
+      document.getElementById("dailyBatch").value;
+
+    const mortality =
+      document.getElementById("dailyMortality").value;
+
+    const feedType =
+      document.getElementById("dailyFeedType").value;
+
+    const remainingFeedStock =
+      document.getElementById("dailyFeedStock").value;
+
+    if(!date){
+      throw new Error("Date is required.");
+    }
+
+    if(!batchId){
+      throw new Error("Batch is required.");
+    }
+
+    const result =
+      await postData({
+        action:"dailyEntry",
+        date:date,
+        batchId:batchId,
+        mortality:mortality,
+        feedType:feedType,
+        remainingFeedStock:remainingFeedStock
+      });
+
+    showMessage(
+      "dailyMessage",
+      `Saved. Opening birds: ${result.openingBirds}, Closing birds: ${result.closingBirds}`,
+      "success"
+    );
+
+    document.getElementById("dailyMortality").value = "";
+    document.getElementById("dailyFeedStock").value = "";
+
+    await loadData();
+
+  }catch(err){
+
+    showMessage(
+      "dailyMessage",
+      err.message,
+      "error"
+    );
+  }
+}
+
+
+/*************************************************
+ * FEED TABS
+ *************************************************/
+
+function showFeedTab(tab,button){
+
+  document
+    .getElementById("feedSummaryTab")
+    .classList.toggle(
+      "hidden",
+      tab !== "summary"
+    );
+
+  document
+    .getElementById("feedSupplyTab")
+    .classList.toggle(
+      "hidden",
+      tab !== "supply"
+    );
+
+  document
+    .querySelectorAll("#page-feed .tab-btn")
+    .forEach(b => b.classList.remove("active"));
+
+  button.classList.add("active");
+}
+
+
+/*************************************************
+ * FEED SUMMARY
+ *************************************************/
+
+function renderFeed(){
+
+  const el =
+    document.getElementById("feedSummaryList");
+
+  if(!feedData.length){
+
+    el.innerHTML =
+      `<div class="empty">
+        No feed data available.
+      </div>`;
+
+    return;
+  }
+
+  el.innerHTML =
+    feedData.map(item => {
+
+      const balance =
+        Number(item.balanceBags) || 0;
+
+      return `
+      <div class="card">
+
+        <div class="row-flex">
+
+          <div>
+            <div class="row-main">
+              ${escapeHtml(item.farmName)}
+            </div>
+
+            <div class="row-sub">
+              ${escapeHtml(item.batchId)}
+              • ${escapeHtml(item.feedType)}
+            </div>
+          </div>
+
+          ${
+            balance > 0
+              ? `<span class="badge badge-orange">
+                  TO BE SUPPLIED
+                </span>`
+              : `<span class="badge badge-green">
+                  COMPLETE
+                </span>`
+          }
+
+        </div>
+
+        <div class="grid" style="margin-top:12px">
+
+          <div class="stat">
+            <div class="stat-label">Required</div>
+            <div class="stat-value">
+              ${item.requiredBags}
+            </div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Supplied</div>
+            <div class="stat-value">
+              ${item.suppliedBags}
+            </div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Balance</div>
+            <div class="stat-value">
+              ${balance}
+            </div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Required Kg</div>
+            <div class="stat-value">
+              ${item.requiredKg}
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      `;
+    }).join("");
+}
+
+
+/*************************************************
+ * FEED SUPPLY OPTIONS
+ *************************************************/
+
+function renderFeedSupplyBatchOptions(){
+
+  const select =
+    document.getElementById("feedSupplyBatch");
+
+  const current =
+    select.value;
+
+  select.innerHTML =
+    `<option value="">Select Batch</option>` +
+    batchesData
+      .filter(b =>
+        String(b.status).toLowerCase() !== "completed"
+      )
+      .map(b =>
+        `<option value="${escapeHtml(b.batchId)}">
+          ${escapeHtml(b.batchId)} —
+          ${escapeHtml(b.farmName)}
+        </option>`
+      ).join("");
+
+  if(current){
+    select.value = current;
+  }
+}
+
+
+function updateFeedSupplyBatchInfo(){
+
+  const batchId =
+    document.getElementById("feedSupplyBatch").value;
+
+  const batch =
+    batchesData.find(
+      b => String(b.batchId) === String(batchId)
+    );
+
+  const el =
+    document.getElementById("feedSupplyBatchInfo");
+
+  if(!batch){
+
+    el.innerHTML = "";
+
+    return;
+  }
+
+  el.innerHTML = `
+    <div class="info-box">
+
+      <div class="info-label">Farm</div>
+      <div class="info-value">
+        ${escapeHtml(batch.farmName)}
+      </div>
+
+      <div class="info-label"
+           style="margin-top:8px">
+        Current Birds
+      </div>
+
+      <div class="info-value">
+        ${batch.currentBirds || 0}
+      </div>
+
+    </div>
+  `;
+}
+
+
+/*************************************************
+ * SAVE FEED SUPPLY
+ *************************************************/
+
+async function saveFeedSupply(){
+
+  try{
+
+    const date =
+      document.getElementById("feedSupplyDate").value;
+
+    const batchId =
+      document.getElementById("feedSupplyBatch").value;
+
+    const feedType =
+      document.getElementById("feedSupplyType").value;
+
+    const bags =
+      document.getElementById("feedSupplyBags").value;
+
+    const remarks =
+      document.getElementById("feedSupplyRemarks").value;
+
+    if(!date) throw new Error("Date is required.");
+    if(!batchId) throw new Error("Batch is required.");
+    if(!feedType) throw new Error("Feed Type is required.");
+    if(!bags) throw new Error("Bags supplied is required.");
+
+    await postData({
+      action:"feedSupply",
+      date:date,
+      batchId:batchId,
+      feedType:feedType,
+      bags:bags,
+      remarks:remarks
+    });
+
+    showMessage(
+      "feedSupplyMessage",
+      "Feed supply saved successfully.",
+      "success"
+    );
+
+    document.getElementById("feedSupplyBags").value = "";
+    document.getElementById("feedSupplyRemarks").value = "";
+
+    await loadData();
+
+  }catch(err){
+
+    showMessage(
+      "feedSupplyMessage",
+      err.message,
+      "error"
+    );
+  }
+}
+
+
+/*************************************************
+ * ORDERS
+ *************************************************/
+
+function renderOrders(){
+
+  const el =
+    document.getElementById("ordersList");
+
+  if(!ordersData.length){
+
+    el.innerHTML =
+      `<div class="empty">
+        No feed orders found.
+      </div>`;
+
+    return;
+  }
+
+  const grouped = {};
+
+  ordersData.forEach(order => {
+
+    if(!grouped[order.batchId]){
+      grouped[order.batchId] = {
+        farmName:order.farmName,
+        stages:{}
+      };
+    }
+
+    grouped[order.batchId]
+      .stages[order.feedType] = order;
+  });
+
+  let html = "";
+
+  Object.keys(grouped).forEach(batchId => {
+
+    const group =
+      grouped[batchId];
+
+    html += `
+      <div class="card">
+
+        <div class="row-main">
+          ${escapeHtml(group.farmName)}
+        </div>
+
+        <div class="row-sub">
+          ${escapeHtml(batchId)}
+        </div>
+
+        <div class="divider"></div>
+    `;
+
+    ["BPSC","BSC","BFP"].forEach(stage => {
+
+      const order =
+        group.stages[stage];
+
+      if(order){
+
+        html += `
+          <div class="list-row">
+
+            <div class="row-flex">
+
+              <div>
+                <div class="row-main">
+                  ${stage}
+                </div>
+
+                <div class="row-sub">
+                  Order:
+                  ${order.orderQty} bags
+                </div>
+              </div>
+
+              ${
+                String(order.status).toLowerCase()
+                  === "pending"
+                  ? `<span class="badge badge-orange">
+                      PENDING
+                    </span>`
+                  : `<span class="badge badge-green">
+                      ${escapeHtml(order.status)}
+                    </span>`
+              }
+
+            </div>
+
+          </div>
+        `;
+
+      }else{
+
+        html += `
+          <div class="list-row">
+
+            <div class="row-main">
+              ${stage}
+            </div>
+
+            <div class="row-sub">
+              No order
+            </div>
+
+          </div>
+        `;
+      }
+    });
+
+    html += `</div>`;
+  });
+
+  el.innerHTML = html;
+}
+
+
+/*************************************************
+ * VACCINES
+ *************************************************/
+
+function renderVaccines(){
+
+  const el =
+    document.getElementById("vaccineList");
+
+  if(!vaccineData.length){
+
+    el.innerHTML =
+      `<div class="empty">
+        No vaccine schedule found.
+      </div>`;
+
+    return;
+  }
+
+  const today =
+    new Date();
+
+  today.setHours(0,0,0,0);
+
+  const sorted =
+    [...vaccineData].sort(
+      (a,b) =>
+        parseDateValue(a.scheduledDate) -
+        parseDateValue(b.scheduledDate)
+    );
+
+  el.innerHTML =
+    sorted.map(vaccine => {
+
+      const date =
+        parseDateValue(vaccine.scheduledDate);
+
+      let badge =
+        `<span class="badge badge-blue">
+          UPCOMING
+        </span>`;
+
+      if(date < today){
+
+        badge =
+          `<span class="badge badge-red">
+            PAST
+          </span>`;
+
+      }else if(
+        date.getTime() === today.getTime()
+      ){
+
+        badge =
+          `<span class="badge badge-orange">
+            TODAY
+          </span>`;
+      }
+
+      return `
+      <div class="card">
+
+        <div class="row-flex">
+
+          <div>
+            <div class="row-main">
+              ${escapeHtml(vaccine.vaccine)}
+            </div>
+
+            <div class="row-sub">
+              ${escapeHtml(vaccine.farmName)}
+              • ${escapeHtml(vaccine.batchId)}
+            </div>
+          </div>
+
+          ${badge}
+
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="grid">
+
+          <div class="stat">
+            <div class="stat-label">Bird Age</div>
+            <div class="stat-value">
+              Day ${vaccine.birdAge}
+            </div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Scheduled Date</div>
+            <div class="stat-value">
+              ${escapeHtml(vaccine.scheduledDate)}
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      `;
+    }).join("");
+}
+
+
+/*************************************************
+ * BATCH TABS
+ *************************************************/
+
+function showBatchTab(tab,button){
+
+  document
+    .getElementById("batchListTab")
+    .classList.toggle(
+      "hidden",
+      tab !== "list"
+    );
+
+  document
+    .getElementById("batchCreateTab")
+    .classList.toggle(
+      "hidden",
+      tab !== "create"
+    );
+
+  document
+    .querySelectorAll("#page-batches .tab-btn")
+    .forEach(b =>
+      b.classList.remove("active")
+    );
+
+  button.classList.add("active");
+}
+
+
+/*************************************************
+ * BATCH LIST
+ *************************************************/
+
+function renderBatches(){
+
+  const el =
+    document.getElementById("batchList");
+
+  if(!batchesData.length){
+
+    el.innerHTML =
+      `<div class="empty">
+        No batches found.
+      </div>`;
+
+    return;
+  }
+
+  el.innerHTML =
+    batchesData.map(batch => {
+
+      const completed =
+        String(batch.status).toLowerCase()
+        === "completed";
+
+      return `
+      <div class="card">
+
+        <div class="row-flex">
+
+          <div>
+            <div class="row-main">
+              ${escapeHtml(batch.farmName)}
+            </div>
+
+            <div class="row-sub">
+              ${escapeHtml(batch.batchId)}
+            </div>
+          </div>
+
+          ${
+            completed
+              ? `<span class="badge badge-red">
+                  COMPLETED
+                </span>`
+              : `<span class="badge badge-green">
+                  ACTIVE
+                </span>`
+          }
+
+        </div>
+
+        <div class="grid" style="margin-top:12px">
+
+          <div class="stat">
+            <div class="stat-label">Placed</div>
+            <div class="stat-value">
+              ${batch.chicksPlaced}
+            </div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Current Birds</div>
+            <div class="stat-value">
+              ${batch.currentBirds}
+            </div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Placement</div>
+            <div class="stat-value">
+              ${escapeHtml(batch.placementDate)}
+            </div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Age</div>
+            <div class="stat-value">
+              Day ${batch.age}
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      `;
+    }).join("");
+}
+
+
+/*************************************************
+ * CREATE BATCH
+ *************************************************/
+
+async function createBatch(){
+
+  try{
+
+    const batchId =
+      document.getElementById("batchId").value.trim();
+
+    const farmName =
+      document.getElementById("batchFarm").value.trim();
+
+    const placementDate =
+      document.getElementById("batchPlacementDate").value;
+
+    const chicksPlaced =
+      document.getElementById("batchChicks").value;
+
+    if(!batchId)
+      throw new Error("Batch ID is required.");
+
+    if(!farmName)
+      throw new Error("Farm Name is required.");
+
+    if(!placementDate)
+      throw new Error("Placement Date is required.");
+
+    if(!chicksPlaced)
+      throw new Error("Chicks Placed is required.");
+
+    await postData({
+      action:"createBatch",
+      batchId:batchId,
+      farmName:farmName,
+      placementDate:placementDate,
+      chicksPlaced:chicksPlaced
+    });
+
+    showMessage(
+      "batchMessage",
+      "Batch created successfully.",
+      "success"
+    );
+
+    document.getElementById("batchId").value = "";
+    document.getElementById("batchFarm").value = "";
+    document.getElementById("batchPlacementDate").value = "";
+    document.getElementById("batchChicks").value = "";
+
+    await loadData();
+
+  }catch(err){
+
+    showMessage(
+      "batchMessage",
+      err.message,
+      "error"
+    );
+  }
+}
+
+
+/*************************************************
+ * MEDICINE TABS
+ *************************************************/
+
+function showMedicineTab(tab,button){
+
+  const tabs = [
+    "medicineStockTab",
+    "medicineMasterTab",
+    "medicineReceiveTab",
+    "medicineUsageTab"
+  ];
+
+  tabs.forEach(id => {
+
+    document
+      .getElementById(id)
+      .classList.add("hidden");
+
+  });
+
+  const target =
+    document.getElementById(
+      "medicine" +
+      tab.charAt(0).toUpperCase() +
+      tab.slice(1) +
+      "Tab"
+    );
+
+  if(target){
+    target.classList.remove("hidden");
+  }
+
+  document
+    .querySelectorAll("#page-medicine .tab-btn")
+    .forEach(b =>
+      b.classList.remove("active")
+    );
+
+  button.classList.add("active");
+}
+
+
+/*************************************************
+ * MEDICINE STOCK DISPLAY
+ *************************************************/
+
+function renderMedicineStock(){
+
+  const el =
+    document.getElementById("medicineStockList");
+
+  if(!medicineStock.length){
+
+    el.innerHTML =
+      `<div class="empty">
+        No medicines added yet.
+      </div>`;
+
+    return;
+  }
+
+  el.innerHTML =
+    medicineStock.map(medicine => {
+
+      const current =
+        Number(medicine.currentStock) || 0;
+
+      const reorder =
+        Number(medicine.reorderLevel) || 0;
+
+      const needsReorder =
+        current <= reorder;
+
+      return `
+      <div class="card ${
+        needsReorder
+          ? "reorder-card"
+          : "medicine-stock-card"
+      }">
+
+        <div class="row-flex">
+
+          <div>
+
+            <div class="row-main">
+              ${escapeHtml(medicine.medicineName)}
+            </div>
+
+            <div class="row-sub">
+              ${escapeHtml(medicine.medicineId)}
+            </div>
+
+          </div>
+
+          ${
+            needsReorder
+              ? `<span class="badge badge-red">
+                  REORDER
+                </span>`
+              : `<span class="badge badge-green">
+                  STOCK OK
+                </span>`
+          }
+
+        </div>
+
+        <div class="grid" style="margin-top:12px">
+
+          <div class="stat">
+            <div class="stat-label">Current Stock</div>
+            <div class="stat-value">
+              ${current}
+              ${escapeHtml(medicine.unit)}
+            </div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Reorder Level</div>
+            <div class="stat-value">
+              ${reorder}
+            </div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Total In</div>
+            <div class="stat-value">
+              ${medicine.totalIn}
+            </div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Total Used</div>
+            <div class="stat-value">
+              ${medicine.totalUsed}
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      `;
+    }).join("");
+}
+
+
+/*************************************************
+ * MEDICINE MASTER
+ *************************************************/
+
+function renderMedicineMaster(){
+
+  const el =
+    document.getElementById("medicineMasterList");
+
+  if(!medicineMaster.length){
+
+    el.innerHTML =
+      `<div class="empty">
+        No medicines created yet.
+      </div>`;
+
+    return;
+  }
+
+  el.innerHTML =
+    medicineMaster.map(medicine => {
+
+      const active =
+        String(medicine.status).toLowerCase()
+        !== "inactive";
+
+      return `
+      <div class="card">
+
+        <div class="row-flex">
+
+          <div>
+
+            <div class="row-main">
+              ${escapeHtml(medicine.medicineName)}
+            </div>
+
+            <div class="row-sub">
+              ${escapeHtml(medicine.medicineId)}
+              • ${escapeHtml(medicine.unit)}
+            </div>
+
+          </div>
+
+          ${
+            active
+              ? `<span class="badge badge-green">
+                  ACTIVE
+                </span>`
+              : `<span class="badge badge-red">
+                  INACTIVE
+                </span>`
+          }
+
+        </div>
+
+        <div class="grid"
+             style="margin-top:10px">
+
+          <div class="stat">
+
+            <div class="stat-label">
+              Reorder Level
+            </div>
+
+            <div class="stat-value">
+              ${medicine.reorderLevel}
+            </div>
+
+          </div>
+
+          <div class="stat">
+
+            <div class="stat-label">
+              Unit
+            </div>
+
+            <div class="stat-value">
+              ${escapeHtml(medicine.unit)}
+            </div>
+
+          </div>
+
+        </div>
+
+        ${
+          medicine.notes
+            ? `<div class="row-sub"
+                    style="margin-top:10px">
+                ${escapeHtml(medicine.notes)}
+              </div>`
+            : ""
+        }
+
+      </div>
+      `;
+    }).join("");
+}
+
+
+/*************************************************
+ * CREATE MEDICINE
+ *************************************************/
+
+async function createMedicine(){
+
+  try{
+
+    const medicineName =
+      document.getElementById("medicineName")
+        .value.trim();
+
+    const unit =
+      document.getElementById("medicineUnit")
+        .value.trim();
+
+    const reorderLevel =
+      document.getElementById("medicineReorder")
+        .value;
+
+    const notes =
+      document.getElementById("medicineNotes")
+        .value.trim();
+
+    if(!medicineName)
+      throw new Error(
+        "Medicine Name is required."
+      );
+
+    if(!unit)
+      throw new Error(
+        "Unit is required."
+      );
+
+    await postData({
+      action:"createMedicine",
+      medicineName:medicineName,
+      unit:unit,
+      reorderLevel:reorderLevel,
+      notes:notes
+    });
+
+    showMessage(
+      "medicineMasterMessage",
+      "Medicine created successfully. Medicine ID was generated automatically.",
+      "success"
+    );
+
+    document.getElementById("medicineName").value = "";
+    document.getElementById("medicineUnit").value = "";
+    document.getElementById("medicineReorder").value = "0";
+    document.getElementById("medicineNotes").value = "";
+
+    await loadData();
+
+  }catch(err){
+
+    showMessage(
+      "medicineMasterMessage",
+      err.message,
+      "error"
+    );
+  }
+}
+
+
+/*************************************************
+ * MEDICINE SELECT OPTIONS
+ *************************************************/
+
+function renderMedicineMedicineOptions(){
+
+  const selects = [
+    document.getElementById("medicineReceiveSelect"),
+    document.getElementById("medicineUsageMedicine")
+  ];
+
+  selects.forEach(select => {
+
+    if(!select) return;
+
+    const current =
+      select.value;
+
+    select.innerHTML =
+      `<option value="">
+        Select Medicine
+      </option>` +
+      medicineMaster
+        .filter(m =>
+          String(m.status).toLowerCase()
+          !== "inactive"
+        )
+        .map(m =>
+          `<option value="${escapeHtml(m.medicineId)}">
+            ${escapeHtml(m.medicineName)}
+            (${escapeHtml(m.unit)})
+          </option>`
+        ).join("");
+
+    if(current){
+      select.value = current;
+    }
+
+  });
+
+  renderMedicineUsageBatchOptions();
+}
+
+
+/*************************************************
+ * MEDICINE RECEIVE INFO
+ *************************************************/
 
 document.addEventListener(
-  "DOMContentLoaded",
-  function(){
+  "change",
+  function(e){
 
-    setToday();
+    if(
+      e.target.id ===
+      "medicineReceiveSelect"
+    ){
 
-    document.getElementById(
-      "supplyDate"
-    ).value =
-      todayString();
+      const id =
+        e.target.value;
 
-    loadAllData();
+      const medicine =
+        medicineMaster.find(
+          m =>
+            String(m.medicineId) ===
+            String(id)
+        );
+
+      const el =
+        document.getElementById(
+          "medicineReceiveInfo"
+        );
+
+      if(!medicine){
+
+        el.innerHTML = "";
+
+        return;
+      }
+
+      el.innerHTML = `
+        <div class="info-box">
+
+          <div class="info-label">
+            Medicine ID
+          </div>
+
+          <div class="info-value">
+            ${escapeHtml(medicine.medicineId)}
+          </div>
+
+          <div class="info-label"
+               style="margin-top:8px">
+            Unit
+          </div>
+
+          <div class="info-value">
+            ${escapeHtml(medicine.unit)}
+          </div>
+
+        </div>
+      `;
+    }
 
   }
 );
 
 
-/* ==========================================================
-   LOAD ALL DATA
-========================================================== */
+/*************************************************
+ * SAVE MEDICINE STOCK
+ *************************************************/
 
-async function loadAllData(){
+async function saveMedicineStock(){
 
   try{
 
-    const response =
-      await fetch(API_URL);
+    const date =
+      document.getElementById(
+        "medicineReceiveDate"
+      ).value;
 
+    const medicineId =
+      document.getElementById(
+        "medicineReceiveSelect"
+      ).value;
 
-    const result =
-      await response.json();
+    const quantityIn =
+      document.getElementById(
+        "medicineReceiveQty"
+      ).value;
 
+    const reference =
+      document.getElementById(
+        "medicineReceiveReference"
+      ).value.trim();
 
-    if(
-      result.status !==
-      "success"
-    ){
+    const remarks =
+      document.getElementById(
+        "medicineReceiveRemarks"
+      ).value.trim();
 
+    if(!date)
+      throw new Error("Date is required.");
+
+    if(!medicineId)
+      throw new Error("Medicine is required.");
+
+    if(!quantityIn)
       throw new Error(
-        result.message ||
-        "Unable to load data"
+        "Quantity received is required."
       );
 
-    }
-
-
-    dashboardData =
-      cleanRows(
-        result.data
-      );
-
-
-    feedData =
-      cleanRows(
-        result.feed
-      );
-
-
-    ordersData =
-      cleanRows(
-        result.orders
-      );
-
-
-    vaccineData =
-      cleanRows(
-        result.vaccines
-      );
-
-
-    batchData =
-      cleanRows(
-        result.batches
-      );
-
-
-    renderDashboard();
-
-    renderFeed();
-
-    renderOrders();
-
-    renderVaccines();
-
-    renderBatches();
-
-    populateBatchDropdowns();
-
-    hideMessage();
-
-  }
-  catch(error){
+    await postData({
+      action:"medicineStock",
+      date:date,
+      medicineId:medicineId,
+      quantityIn:quantityIn,
+      reference:reference,
+      remarks:remarks
+    });
 
     showMessage(
-      error.message,
-      "error"
-    );
-
-  }
-
-}
-
-
-/* ==========================================================
-   CLEAN ROWS
-========================================================== */
-
-function cleanRows(data){
-
-  if(
-    !Array.isArray(data) ||
-    data.length < 2
-  ){
-
-    return [];
-
-  }
-
-
-  const headers =
-    data[0];
-
-
-  return data
-    .slice(1)
-    .filter(
-      row =>
-        row &&
-        row.some(
-          value =>
-            value !== ""
-        )
-    )
-    .map(
-      row => {
-
-        const obj = {};
-
-
-        headers.forEach(
-          (header,index) => {
-
-            obj[header] =
-              row[index];
-
-          }
-        );
-
-
-        return obj;
-
-      }
-    );
-
-}
-
-
-/* ==========================================================
-   DASHBOARD
-========================================================== */
-
-function renderDashboard(){
-
-  const active =
-    batchData.filter(
-      row =>
-        String(
-          row["Status"] || ""
-        ).toLowerCase() !==
-        "completed"
-    );
-
-
-  const birds =
-    dashboardData.reduce(
-      (sum,row) =>
-        sum +
-        Number(
-          row["Birds"] || 0
-        ),
-      0
-    );
-
-
-  const orders =
-    dashboardData.filter(
-      row =>
-        row["Next Order Need"] ===
-        "ORDER REQUIRED"
-    ).length;
-
-
-  const today =
-    new Date();
-
-
-  today.setHours(
-    0,
-    0,
-    0,
-    0
-  );
-
-
-  const vaccines =
-    vaccineData.filter(
-      row => {
-
-        const d =
-          parseDate(
-            row["Scheduled Date"]
-          );
-
-
-        return (
-          d &&
-          d >= today
-        );
-
-      }
-    ).length;
-
-
-  document.getElementById(
-    "totalBatches"
-  ).textContent =
-    active.length;
-
-
-  document.getElementById(
-    "totalBirds"
-  ).textContent =
-    birds.toLocaleString();
-
-
-  document.getElementById(
-    "ordersRequired"
-  ).textContent =
-    orders;
-
-
-  document.getElementById(
-    "upcomingVaccines"
-  ).textContent =
-    vaccines;
-
-
-  const list =
-    document.getElementById(
-      "farmList"
-    );
-
-
-  if(
-    !dashboardData.length
-  ){
-
-    list.innerHTML =
-      `<div class="empty">
-        No farm data
-       </div>`;
-
-    return;
-
-  }
-
-
-  list.innerHTML =
-    dashboardData
-      .map(
-        renderFarmCard
-      )
-      .join("");
-
-}
-
-
-/* ==========================================================
-   FARM CARD
-========================================================== */
-
-function renderFarmCard(row){
-
-  const farm =
-    row["Farm Name"] || "-";
-
-
-  const batch =
-    row["Batch ID"] || "-";
-
-
-  const birds =
-    Number(
-      row["Birds"] || 0
-    );
-
-
-  const age =
-    row["Age"] || "-";
-
-
-  const feed =
-    row["Current Feed"] || "-";
-
-
-  const balance =
-    Number(
-      row["Balance To Be Supplied"] || 0
-    );
-
-
-  const need =
-    row["Next Order Need"] || "";
-
-
-  const vaccine =
-    row["Next Vaccine"] ||
-    "None";
-
-
-  const vaccineDate =
-    formatDate(
-      row["Vaccine Date"]
-    );
-
-
-  const status =
-    need === "ORDER REQUIRED"
-
-      ? `
-        <span
-          class="status status-order">
-
-          ORDER REQUIRED ·
-          ${balance} bags
-
-        </span>
-      `
-
-      : `
-        <span
-          class="status status-complete">
-
-          FEED COMPLETE
-
-        </span>
-      `;
-
-
-  return `
-
-    <div class="farm-card">
-
-
-      <div class="farm-head">
-
-        <div class="farm-name">
-
-          ${escapeHtml(farm)}
-
-        </div>
-
-
-        <div class="batch">
-
-          Batch ${escapeHtml(batch)}
-
-        </div>
-
-
-        ${status}
-
-      </div>
-
-
-      <div class="farm-stats">
-
-
-        <div class="farm-stat">
-
-          <div class="stat-label">
-            Birds
-          </div>
-
-          <div class="stat-value">
-
-            ${birds.toLocaleString()}
-
-          </div>
-
-        </div>
-
-
-        <div class="farm-stat">
-
-          <div class="stat-label">
-            Age
-          </div>
-
-          <div class="stat-value">
-
-            Day ${age}
-
-          </div>
-
-        </div>
-
-
-        <div class="farm-stat">
-
-          <div class="stat-label">
-            Feed
-          </div>
-
-          <div class="stat-value">
-
-            ${escapeHtml(feed)}
-
-          </div>
-
-        </div>
-
-
-      </div>
-
-
-      <div
-        class="panel-row"
-        style="margin:0 12px">
-
-
-        <span class="panel-label">
-
-          Next Vaccine
-
-        </span>
-
-
-        <span class="panel-value">
-
-          ${escapeHtml(vaccine)}
-
-          ${
-            vaccineDate
-              ? " · " + vaccineDate
-              : ""
-          }
-
-        </span>
-
-
-      </div>
-
-
-      <div class="farm-actions">
-
-
-        <button
-          class="btn btn-secondary"
-          onclick="
-            openDailyEntry(
-              '${escapeAttr(batch)}'
-            )
-          ">
-
-          Daily Entry
-
-        </button>
-
-
-        <button
-          class="btn ${
-            need === "ORDER REQUIRED"
-              ? "btn-warning"
-              : "btn-secondary"
-          }"
-          onclick="
-            openFeed(
-              '${escapeAttr(batch)}'
-            )
-          ">
-
-          Feed
-
-        </button>
-
-
-      </div>
-
-
-    </div>
-
-  `;
-
-}
-
-
-/* ==========================================================
-   FEED
-========================================================== */
-
-function renderFeed(){
-
-  const list =
-    document.getElementById(
-      "feedList"
-    );
-
-
-  if(
-    !dashboardData.length
-  ){
-
-    list.innerHTML =
-      `<div class="empty">
-        No feed data
-       </div>`;
-
-    return;
-
-  }
-
-
-  list.innerHTML =
-    dashboardData
-      .map(
-        row => {
-
-          const farm =
-            row["Farm Name"] || "-";
-
-
-          const batch =
-            row["Batch ID"] || "-";
-
-
-          const feed =
-            row["Current Feed"] || "-";
-
-
-          const required =
-            Number(
-              row["Feed Required (Bags)"] ||
-              0
-            );
-
-
-          const supplied =
-            Number(
-              row["Feed Supplied (Bags)"] ||
-              0
-            );
-
-
-          const balance =
-            Number(
-              row["Balance To Be Supplied"] ||
-              0
-            );
-
-
-          return `
-
-            <div class="panel">
-
-
-              <div class="farm-name">
-
-                ${escapeHtml(farm)}
-
-              </div>
-
-
-              <div class="batch">
-
-                ${escapeHtml(batch)}
-
-              </div>
-
-
-              <div class="panel-row">
-
-                <span class="panel-label">
-                  Feed
-                </span>
-
-                <span class="panel-value">
-
-                  ${escapeHtml(feed)}
-
-                </span>
-
-              </div>
-
-
-              <div class="panel-row">
-
-                <span class="panel-label">
-                  Required
-                </span>
-
-                <span class="panel-value">
-
-                  ${required} bags
-
-                </span>
-
-              </div>
-
-
-              <div class="panel-row">
-
-                <span class="panel-label">
-                  Supplied
-                </span>
-
-                <span class="panel-value">
-
-                  ${supplied} bags
-
-                </span>
-
-              </div>
-
-
-              <div class="panel-row">
-
-                <span class="panel-label">
-                  To Be Supplied
-                </span>
-
-                <span class="panel-value">
-
-                  ${balance} bags
-
-                </span>
-
-              </div>
-
-
-              ${
-                balance > 0
-
-                ? `
-
-                  <button
-                    class="btn btn-warning full-btn"
-                    onclick="
-                      createOrder(
-                        '${escapeAttr(batch)}'
-                      )
-                    ">
-
-                    Create Feed Order
-
-                  </button>
-
-                `
-
-                : `
-
-                  <span
-                    class="status status-complete">
-
-                    COMPLETE
-
-                  </span>
-
-                `
-              }
-
-
-            </div>
-
-          `;
-
-        }
-      )
-      .join("");
-
-}
-
-
-/* ==========================================================
-   FEED ORDERS
-========================================================== */
-
-function renderOrders(){
-
-  const list =
-    document.getElementById(
-      "ordersList"
-    );
-
-
-  if(
-    !ordersData.length
-  ){
-
-    list.innerHTML =
-      `<div class="empty">
-        No feed orders
-       </div>`;
-
-    return;
-
-  }
-
-
-  list.innerHTML =
-    ordersData
-      .map(
-        (row,index) => {
-
-
-          const rowNumber =
-            index + 2;
-
-
-          const date =
-            formatDate(
-              row["Order Date"]
-            );
-
-
-          const farm =
-            row["Farm Name"] || "-";
-
-
-          const batch =
-            row["Batch ID"] || "-";
-
-
-          const feed =
-            row["Feed Type"] || "-";
-
-
-          const qty =
-            Number(
-              row["Order Qty (Bags)"] ||
-              0
-            );
-
-
-          const status =
-            row["Status"] ||
-            "Pending";
-
-
-          const remarks =
-            row["Remarks"] ||
-            "";
-
-
-          /*
-             SHOW ALL 3 FEED TYPES
-             FOR THIS BATCH
-          */
-
-          const stages = [
-            "BPSC",
-            "BSC",
-            "BFP"
-          ];
-
-
-          const feedSummary =
-            stages
-              .map(
-                stage => {
-
-
-                  const feedRow =
-                    feedData.find(
-                      item =>
-
-                        String(
-                          item["Batch ID"]
-                        ) ===
-                        String(batch)
-
-                        &&
-
-                        String(
-                          item["Feed Stage"]
-                        ) ===
-                        stage
-                    );
-
-
-                  let required = 0;
-
-                  let supplied = 0;
-
-
-                  if(feedRow){
-
-                    required =
-                      Number(
-                        feedRow[
-                          "Feed Required (50kg Bags)"
-                        ] ||
-
-                        feedRow[
-                          "Feed Required (Bags)"
-                        ] ||
-
-                        0
-                      );
-
-
-                    supplied =
-                      Number(
-                        feedRow[
-                          "Feed Supplied (Bags)"
-                        ] ||
-                        0
-                      );
-
-                  }
-
-
-                  return `
-
-                    <div
-                      class="order-feed-stage">
-
-
-                      <span
-                        class="order-feed-name">
-
-                        ${stage}
-
-                      </span>
-
-
-                      <span
-                        class="order-feed-values">
-
-                        REQ ${required}
-
-                        <span
-                          class="feed-separator">
-
-                          |
-
-                        </span>
-
-                        SUP ${supplied}
-
-                      </span>
-
-
-                    </div>
-
-                  `;
-
-                }
-              )
-              .join("");
-
-
-          let statusClass =
-            "status-pending";
-
-
-          if(
-            status === "Supplied"
-          ){
-
-            statusClass =
-              "status-supplied";
-
-          }
-
-
-          if(
-            status === "Cancelled"
-          ){
-
-            statusClass =
-              "status-cancelled";
-
-          }
-
-
-          return `
-
-            <div class="order-card">
-
-
-              <div class="card-title">
-
-                ${escapeHtml(farm)}
-
-              </div>
-
-
-              <div class="small">
-
-                Batch ${escapeHtml(batch)}
-
-              </div>
-
-
-              <!--
-                FEED SUMMARY
-                NO BALANCE
-              -->
-
-              <div
-                class="order-feed-summary">
-
-                ${feedSummary}
-
-              </div>
-
-
-              <span
-                class="status ${statusClass}">
-
-                ${escapeHtml(status)}
-
-              </span>
-
-
-              <div class="divider"></div>
-
-
-              <div class="panel-row">
-
-                <span class="panel-label">
-
-                  Order Date
-
-                </span>
-
-
-                <span class="panel-value">
-
-                  ${date}
-
-                </span>
-
-              </div>
-
-
-              <div class="panel-row">
-
-                <span class="panel-label">
-
-                  Ordered Feed
-
-                </span>
-
-
-                <span class="panel-value">
-
-                  ${escapeHtml(feed)}
-
-                </span>
-
-              </div>
-
-
-              <div class="panel-row">
-
-                <span class="panel-label">
-
-                  Order Quantity
-
-                </span>
-
-
-                <span class="panel-value">
-
-                  ${qty} bags
-
-                </span>
-
-              </div>
-
-
-              ${
-                remarks
-
-                ? `
-
-                  <div class="small">
-
-                    ${escapeHtml(remarks)}
-
-                  </div>
-
-                `
-
-                : ""
-
-              }
-
-
-              ${
-                status === "Pending"
-
-                ? `
-
-                  <div class="order-buttons">
-
-
-                    <button
-                      class="btn btn-primary"
-                      onclick="
-                        updateOrderStatus(
-                          ${rowNumber},
-                          'Supplied'
-                        )
-                      ">
-
-                      Mark Supplied
-
-                    </button>
-
-
-                    <button
-                      class="btn btn-danger"
-                      onclick="
-                        updateOrderStatus(
-                          ${rowNumber},
-                          'Cancelled'
-                        )
-                      ">
-
-                      Cancel
-
-                    </button>
-
-
-                  </div>
-
-                `
-
-                : ""
-
-              }
-
-
-            </div>
-
-          `;
-
-        }
-      )
-      .join("");
-
-}
-
-
-/* ==========================================================
-   VACCINES
-========================================================== */
-
-function renderVaccines(){
-
-  const list =
-    document.getElementById(
-      "vaccineList"
-    );
-
-
-  const today =
-    new Date();
-
-
-  today.setHours(
-    0,
-    0,
-    0,
-    0
-  );
-
-
-  const upcoming =
-    vaccineData
-      .map(
-        row => {
-
-          const date =
-            parseDate(
-              row["Scheduled Date"]
-            );
-
-
-          return {
-            row:row,
-            date:date
-          };
-
-        }
-      )
-      .filter(
-        item =>
-          item.date &&
-          item.date >= today
-      )
-      .sort(
-        (a,b) =>
-          a.date - b.date
-      );
-
-
-  if(
-    !upcoming.length
-  ){
-
-    list.innerHTML =
-      `<div class="empty">
-        No upcoming vaccines
-       </div>`;
-
-    return;
-
-  }
-
-
-  let html = "";
-
-  let lastDate = "";
-
-
-  upcoming.forEach(
-    item => {
-
-      const row =
-        item.row;
-
-
-      const date =
-        item.date;
-
-
-      const dateKey =
-        date.getFullYear() +
-        "-" +
-        date.getMonth() +
-        "-" +
-        date.getDate();
-
-
-      if(
-        dateKey !== lastDate
-      ){
-
-        html += `
-
-          <div class="date-heading">
-
-            ${formatDate(date)}
-
-          </div>
-
-        `;
-
-
-        lastDate =
-          dateKey;
-
-      }
-
-
-      html += `
-
-        <div class="vaccine-card">
-
-
-          <div class="card-title">
-
-            ${escapeHtml(
-              row["Vaccine"] || "-"
-            )}
-
-          </div>
-
-
-          <div class="small">
-
-            ${escapeHtml(
-              row["Farm Name"] || "-"
-            )}
-
-            · Batch
-
-            ${escapeHtml(
-              row["Batch ID"] || "-"
-            )}
-
-          </div>
-
-
-          <div class="divider"></div>
-
-
-          <div class="panel-row">
-
-            <span class="panel-label">
-              Bird Age
-            </span>
-
-            <span class="panel-value">
-
-              Day ${escapeHtml(
-                row["Bird Age"] || "-"
-              )}
-
-            </span>
-
-          </div>
-
-
-          <div class="panel-row">
-
-            <span class="panel-label">
-              Scheduled Date
-            </span>
-
-            <span class="panel-value">
-
-              ${formatDate(
-                row["Scheduled Date"]
-              )}
-
-            </span>
-
-          </div>
-
-
-        </div>
-
-      `;
-
-    }
-  );
-
-
-  list.innerHTML =
-    html;
-
-}
-
-
-/* ==========================================================
-   BATCH MANAGEMENT
-========================================================== */
-
-function renderBatches(){
-
-  const list =
-    document.getElementById(
-      "batchList"
-    );
-
-
-  if(
-    !batchData.length
-  ){
-
-    list.innerHTML =
-      `<div class="empty">
-        No batches found
-       </div>`;
-
-    return;
-
-  }
-
-
-  list.innerHTML =
-    batchData
-      .map(
-        row => {
-
-
-          const batch =
-            row["Batch ID"] || "-";
-
-
-          const farm =
-            row["Farm Name"] || "-";
-
-
-          const placement =
-            formatDate(
-              row["Placement Date"]
-            );
-
-
-          const chicks =
-            Number(
-              row["Chicks Placed"] || 0
-            );
-
-
-          const birds =
-            Number(
-              row["Current Birds"] || 0
-            );
-
-
-          const age =
-            row["Age"] || "-";
-
-
-          const status =
-            row["Status"] ||
-            "Active";
-
-
-          const statusClass =
-            status === "Completed"
-
-              ? "status-cancelled"
-
-              : "status-supplied";
-
-
-          return `
-
-            <div class="panel">
-
-
-              <div class="card-title">
-
-                ${escapeHtml(farm)}
-
-              </div>
-
-
-              <div class="small">
-
-                Batch ${escapeHtml(batch)}
-
-              </div>
-
-
-              <span
-                class="status ${statusClass}">
-
-                ${escapeHtml(status)}
-
-              </span>
-
-
-              <div class="divider"></div>
-
-
-              <div class="panel-row">
-
-                <span class="panel-label">
-                  Placement Date
-                </span>
-
-                <span class="panel-value">
-                  ${placement}
-                </span>
-
-              </div>
-
-
-              <div class="panel-row">
-
-                <span class="panel-label">
-                  Chicks Placed
-                </span>
-
-                <span class="panel-value">
-
-                  ${chicks.toLocaleString()}
-
-                </span>
-
-              </div>
-
-
-              <div class="panel-row">
-
-                <span class="panel-label">
-                  Current Birds
-                </span>
-
-                <span class="panel-value">
-
-                  ${birds.toLocaleString()}
-
-                </span>
-
-              </div>
-
-
-              <div class="panel-row">
-
-                <span class="panel-label">
-                  Age
-                </span>
-
-                <span class="panel-value">
-
-                  Day ${age}
-
-                </span>
-
-              </div>
-
-
-            </div>
-
-          `;
-
-        }
-      )
-      .join("");
-
-}
-
-
-/* ==========================================================
-   CREATE BATCH
-========================================================== */
-
-async function createNewBatch(){
-
-  const batchId =
-    document.getElementById(
-      "newBatchId"
-    ).value.trim();
-
-
-  const farmName =
-    document.getElementById(
-      "newFarmName"
-    ).value.trim();
-
-
-  const placementDate =
-    document.getElementById(
-      "newPlacementDate"
-    ).value;
-
-
-  const chicksPlaced =
-    Number(
-      document.getElementById(
-        "newChicksPlaced"
-      ).value || 0
-    );
-
-
-  if(!batchId){
-
-    showMessage(
-      "Enter Batch ID",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!farmName){
-
-    showMessage(
-      "Enter farm name",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!placementDate){
-
-    showMessage(
-      "Select placement date",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(chicksPlaced <= 0){
-
-    showMessage(
-      "Enter valid chicks placed",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  try{
-
-    showMessage(
-      "Creating batch...",
+      "medicineReceiveMessage",
+      "Medicine stock added successfully.",
       "success"
     );
 
-
-    const response =
-      await postData({
-
-        action:
-          "createBatch",
-
-        batchId:
-          batchId,
-
-        farmName:
-          farmName,
-
-        placementDate:
-          placementDate,
-
-        chicksPlaced:
-          chicksPlaced
-
-      });
-
-
-    if(
-      response.status !==
-      "success"
-    ){
-
-      throw new Error(
-        response.message ||
-        "Unable to create batch"
-      );
-
-    }
-
-
-    showMessage(
-      "Batch created successfully",
-      "success"
-    );
-
-
     document.getElementById(
-      "newBatchId"
+      "medicineReceiveQty"
     ).value = "";
 
-
     document.getElementById(
-      "newFarmName"
+      "medicineReceiveReference"
     ).value = "";
 
-
     document.getElementById(
-      "newPlacementDate"
+      "medicineReceiveRemarks"
     ).value = "";
 
+    await loadData();
 
-    document.getElementById(
-      "newChicksPlaced"
-    ).value = "";
-
-
-    await loadAllData();
-
-
-    showScreen(
-      "batches"
-    );
-
-  }
-  catch(error){
+  }catch(err){
 
     showMessage(
-      error.message,
+      "medicineReceiveMessage",
+      err.message,
       "error"
     );
-
   }
-
 }
 
 
-/* ==========================================================
-   NAVIGATION
-========================================================== */
-
-function showScreen(screen){
-
-  const screens = {
-
-    dashboard:
-      "dashboardScreen",
-
-    entry:
-      "entryScreen",
-
-    feed:
-      "feedScreen",
-
-    orders:
-      "ordersScreen",
-
-    vaccines:
-      "vaccineScreen",
-
-    batches:
-      "batchScreen"
-
-  };
-
-
-  Object.keys(screens)
-    .forEach(
-      key => {
-
-        const element =
-          document.getElementById(
-            screens[key]
-          );
-
-
-        if(element){
-
-          element.classList.toggle(
-            "hidden",
-            key !== screen
-          );
-
-        }
-
-      }
-    );
-
-
-  const navs = {
-
-    dashboard:
-      "navDashboard",
-
-    entry:
-      "navEntry",
-
-    feed:
-      "navFeed",
-
-    orders:
-      "navOrders",
-
-    vaccines:
-      "navVaccines",
-
-    batches:
-      "navBatches"
-
-  };
-
-
-  Object.keys(navs)
-    .forEach(
-      key => {
-
-        const element =
-          document.getElementById(
-            navs[key]
-          );
-
-
-        if(element){
-
-          element.classList.toggle(
-            "active",
-            key === screen
-          );
-
-        }
-
-      }
-    );
-
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
-}
-
-
-/* ==========================================================
-   BATCH DROPDOWNS
-========================================================== */
-
-function populateBatchDropdowns(){
-
-  const selects = [
-
-    document.getElementById(
-      "entryBatch"
-    ),
-
-    document.getElementById(
-      "supplyBatch"
-    )
-
-  ];
-
-
-  selects.forEach(
-    select => {
-
-      select.innerHTML =
-        `<option value="">
-          Select Batch
-         </option>`;
-
-
-      batchData.forEach(
-        row => {
-
-          const id =
-            row["Batch ID"];
-
-
-          if(!id){
-            return;
-          }
-
-
-          const option =
-            document.createElement(
-              "option"
-            );
-
-
-          option.value =
-            id;
-
-
-          option.textContent =
-            `${id} — ${
-              row["Farm Name"] || ""
-            }`;
-
-
-          select.appendChild(
-            option
-          );
-
-        }
-      );
-
-    }
-  );
-
-}
-
-
-/* ==========================================================
-   DAILY ENTRY
-========================================================== */
-
-function updateEntryFarm(){
-
-  const id =
-    document.getElementById(
-      "entryBatch"
-    ).value;
-
-
-  const row =
-    batchData.find(
-      x =>
-        String(
-          x["Batch ID"]
-        ) === id
-    );
-
-
-  document.getElementById(
-    "entryFarm"
-  ).value =
-    row
-      ? row["Farm Name"] || ""
-      : "";
-
-
-  document.getElementById(
-    "entryBirds"
-  ).value =
-    row
-      ? Number(
-          row["Current Birds"] || 0
-        )
-      : "";
-
-}
-
-
-function openDailyEntry(batch){
-
-  showScreen(
-    "entry"
-  );
-
-
-  document.getElementById(
-    "entryBatch"
-  ).value =
-    batch;
-
-
-  updateEntryFarm();
-
-}
-
-
-async function saveDailyEntry(){
-
-  const data = {
-
-    action:
-      "dailyEntry",
-
-    date:
-      document.getElementById(
-        "entryDate"
-      ).value,
-
-    batchId:
-      document.getElementById(
-        "entryBatch"
-      ).value,
-
-    mortality:
-      Number(
-        document.getElementById(
-          "entryMortality"
-        ).value || 0
-      ),
-
-    feedType:
-      document.getElementById(
-        "entryFeed"
-      ).value,
-
-    remainingFeedStock:
-      document.getElementById(
-        "entryStock"
-      ).value
-
-  };
-
-
-  if(!data.date){
-
-    showMessage(
-      "Select date",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!data.batchId){
-
-    showMessage(
-      "Select batch",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!data.feedType){
-
-    showMessage(
-      "Select feed type",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(data.mortality < 0){
-
-    showMessage(
-      "Mortality cannot be negative",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  try{
-
-    showMessage(
-      "Saving daily entry...",
-      "success"
-    );
-
-
-    const response =
-      await postData(data);
-
-
-    if(
-      response.status !==
-      "success"
-    ){
-
-      throw new Error(
-        response.message ||
-        "Unable to save"
-      );
-
-    }
-
-
-    showMessage(
-      "Daily entry saved successfully",
-      "success"
-    );
-
-
-    document.getElementById(
-      "entryMortality"
-    ).value = "";
-
-
-    document.getElementById(
-      "entryStock"
-    ).value = "";
-
-
-    await loadAllData();
-
-
-    showScreen(
-      "dashboard"
-    );
-
-  }
-  catch(error){
-
-    showMessage(
-      error.message,
-      "error"
-    );
-
-  }
-
-}
-
-
-/* ==========================================================
-   SUPPLY FEED
-========================================================== */
-
-function updateSupplyFarm(){
-
-  const id =
-    document.getElementById(
-      "supplyBatch"
-    ).value;
-
-
-  const row =
-    batchData.find(
-      x =>
-        String(
-          x["Batch ID"]
-        ) === id
-    );
-
-
-  document.getElementById(
-    "supplyFarm"
-  ).value =
-    row
-      ? row["Farm Name"] || ""
-      : "";
-
-}
-
-
-async function saveFeedSupply(){
-
-  const batchId =
-    document.getElementById(
-      "supplyBatch"
-    ).value;
-
-
-  const row =
-    batchData.find(
-      x =>
-        String(
-          x["Batch ID"]
-        ) === batchId
-    );
-
-
-  const data = {
-
-    action:
-      "feedSupply",
-
-    date:
-      document.getElementById(
-        "supplyDate"
-      ).value,
-
-    batchId:
-      batchId,
-
-    farmName:
-      row
-        ? row["Farm Name"] || ""
-        : "",
-
-    feedType:
-      document.getElementById(
-        "supplyFeed"
-      ).value,
-
-    bags:
-      Number(
-        document.getElementById(
-          "supplyBags"
-        ).value || 0
-      ),
-
-    remarks:
-      document.getElementById(
-        "supplyRemarks"
-      ).value
-
-  };
-
-
-  if(!data.date){
-
-    showMessage(
-      "Select supply date",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!data.batchId){
-
-    showMessage(
-      "Select batch",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!data.feedType){
-
-    showMessage(
-      "Select feed type",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(data.bags <= 0){
-
-    showMessage(
-      "Enter a valid number of bags",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  try{
-
-    showMessage(
-      "Saving feed supply...",
-      "success"
-    );
-
-
-    const response =
-      await postData(data);
-
-
-    if(
-      response.status !==
-      "success"
-    ){
-
-      throw new Error(
-        response.message ||
-        "Unable to save"
-      );
-
-    }
-
-
-    showMessage(
-      "Feed supply saved successfully",
-      "success"
-    );
-
-
-    document.getElementById(
-      "supplyBags"
-    ).value = "";
-
-
-    document.getElementById(
-      "supplyRemarks"
-    ).value = "";
-
-
-    await loadAllData();
-
-  }
-  catch(error){
-
-    showMessage(
-      error.message,
-      "error"
-    );
-
-  }
-
-}
-
-
-/* ==========================================================
-   CREATE FEED ORDER
-========================================================== */
-
-async function createOrder(batchId){
-
-  const row =
-    dashboardData.find(
-      x =>
-        String(
-          x["Batch ID"]
-        ) === batchId
-    );
-
-
-  if(!row){
-
-    showMessage(
-      "Batch data not found",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  const quantity =
-    Number(
-      row["Balance To Be Supplied"] ||
-      0
-    );
-
-
-  const feedType =
-    row["Current Feed"] || "";
-
-
-  if(
-    quantity <= 0 ||
-    !feedType
-  ){
-
-    showMessage(
-      "No feed order required",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  try{
-
-    showMessage(
-      "Creating feed order...",
-      "success"
-    );
-
-
-    const response =
-      await postData({
-
-        action:
-          "createFeedOrder",
-
-        orderDate:
-          todayString(),
-
-        farmName:
-          row["Farm Name"],
-
-        batchId:
-          batchId,
-
-        feedType:
-          feedType,
-
-        quantity:
-          quantity,
-
-        remarks:
-          "Balance requirement"
-
-      });
-
-
-    if(
-      response.status ===
-      "duplicate"
-    ){
-
-      showMessage(
-        response.message,
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    if(
-      response.status !==
-      "success"
-    ){
-
-      throw new Error(
-        response.message ||
-        "Unable to create order"
-      );
-
-    }
-
-
-    showMessage(
-      "Feed order created successfully",
-      "success"
-    );
-
-
-    await loadAllData();
-
-
-    showScreen(
-      "orders"
-    );
-
-  }
-  catch(error){
-
-    showMessage(
-      error.message,
-      "error"
-    );
-
-  }
-
-}
-
-
-/* ==========================================================
-   ORDER STATUS
-========================================================== */
-
-async function updateOrderStatus(
-  rowNumber,
-  status
-){
-
-  try{
-
-    showMessage(
-      "Updating order...",
-      "success"
-    );
-
-
-    const response =
-      await postData({
-
-        action:
-          "updateFeedOrderStatus",
-
-        rowNumber:
-          rowNumber,
-
-        status:
-          status
-
-      });
-
-
-    if(
-      response.status !==
-      "success"
-    ){
-
-      throw new Error(
-        response.message ||
-        "Unable to update order"
-      );
-
-    }
-
-
-    showMessage(
-      "Order updated successfully",
-      "success"
-    );
-
-
-    await loadAllData();
-
-  }
-  catch(error){
-
-    showMessage(
-      error.message,
-      "error"
-    );
-
-  }
-
-}
-
-
-/* ==========================================================
-   OPEN FEED
-========================================================== */
-
-function openFeed(batchId){
-
-  showScreen(
-    "feed"
-  );
-
+/*************************************************
+ * MEDICINE USAGE BATCH OPTIONS
+ *************************************************/
+
+function renderMedicineUsageBatchOptions(){
 
   const select =
     document.getElementById(
-      "supplyBatch"
+      "medicineUsageBatch"
     );
 
+  if(!select) return;
 
-  select.value =
-    batchId;
+  const current =
+    select.value;
 
+  select.innerHTML =
+    `<option value="">
+      Select Batch
+    </option>` +
+    batchesData
+      .filter(b =>
+        String(b.status).toLowerCase()
+        !== "completed"
+      )
+      .map(b =>
+        `<option value="${escapeHtml(b.batchId)}">
+          ${escapeHtml(b.batchId)}
+          — ${escapeHtml(b.farmName)}
+        </option>`
+      ).join("");
 
-  updateSupplyFarm();
-
+  if(current){
+    select.value = current;
+  }
 }
 
 
-/* ==========================================================
-   POST HELPER
-========================================================== */
+/*************************************************
+ * MEDICINE USAGE BATCH
+ *************************************************/
 
-async function postData(data){
+function updateMedicineUsageBatch(){
 
-  const response =
-    await fetch(
-      API_URL,
-      {
+  const batchId =
+    document.getElementById(
+      "medicineUsageBatch"
+    ).value;
 
-        method:
-          "POST",
-
-        headers:{
-          "Content-Type":
-            "text/plain;charset=utf-8"
-        },
-
-        body:
-          JSON.stringify(data)
-
-      }
+  const batch =
+    batchesData.find(
+      b =>
+        String(b.batchId) ===
+        String(batchId)
     );
 
+  const el =
+    document.getElementById(
+      "medicineUsageFarmInfo"
+    );
 
-  return await response.json();
+  if(!batch){
 
-}
+    el.innerHTML = "";
 
-
-/* ==========================================================
-   DATE HELPERS
-========================================================== */
-
-function setToday(){
-
-  document.getElementById(
-    "entryDate"
-  ).value =
-    todayString();
-
-}
-
-
-function todayString(){
-
-  const d =
-    new Date();
-
-
-  return (
-
-    d.getFullYear() +
-
-    "-" +
-
-    String(
-      d.getMonth()+1
-    ).padStart(2,"0") +
-
-    "-" +
-
-    String(
-      d.getDate()
-    ).padStart(2,"0")
-
-  );
-
-}
-
-
-function parseDate(value){
-
-  if(!value){
-    return null;
+    return;
   }
 
+  el.innerHTML = `
+    <div class="info-box">
 
-  if(
-    value instanceof Date
-  ){
+      <div class="info-label">
+        Farm Name
+      </div>
 
-    const d =
-      new Date(value);
+      <div class="info-value">
+        ${escapeHtml(batch.farmName)}
+      </div>
+
+      <div class="grid"
+           style="margin-top:10px">
+
+        <div>
+          <div class="info-label">
+            Current Birds
+          </div>
+
+          <div class="info-value">
+            ${batch.currentBirds || 0}
+          </div>
+        </div>
+
+        <div>
+          <div class="info-label">
+            Age
+          </div>
+
+          <div class="info-value">
+            Day ${batch.age || 0}
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
 
 
-    d.setHours(
-      0,
-      0,
-      0,
-      0
+/*************************************************
+ * MEDICINE USAGE MEDICINE
+ *************************************************/
+
+function updateMedicineUsageMedicine(){
+
+  const medicineId =
+    document.getElementById(
+      "medicineUsageMedicine"
+    ).value;
+
+  const medicine =
+    medicineMaster.find(
+      m =>
+        String(m.medicineId) ===
+        String(medicineId)
     );
 
+  const el =
+    document.getElementById(
+      "medicineUsageMedicineInfo"
+    );
 
-    return d;
+  const stockEl =
+    document.getElementById(
+      "medicineUsageStockInfo"
+    );
 
+  if(!medicine){
+
+    el.innerHTML = "";
+    stockEl.innerHTML = "";
+
+    return;
   }
 
+  const stock =
+    medicineStock.find(
+      s =>
+        String(s.medicineId) ===
+        String(medicineId)
+    );
 
-  const text =
-    String(value);
+  const currentStock =
+    stock
+      ? Number(stock.currentStock) || 0
+      : 0;
+
+  el.innerHTML = `
+    <div class="info-box">
+
+      <div class="info-label">
+        Medicine ID
+      </div>
+
+      <div class="info-value">
+        ${escapeHtml(medicine.medicineId)}
+      </div>
+
+      <div class="info-label"
+           style="margin-top:8px">
+        Unit
+      </div>
+
+      <div class="info-value">
+        ${escapeHtml(medicine.unit)}
+      </div>
+
+    </div>
+  `;
+
+  stockEl.innerHTML = `
+    <div class="notice ${
+      currentStock > 0
+        ? "notice-info"
+        : "notice-error"
+    }">
+
+      Available Stock:
+      <strong>
+        ${currentStock}
+        ${escapeHtml(medicine.unit)}
+      </strong>
+
+    </div>
+  `;
+}
 
 
-  let d;
+/*************************************************
+ * SAVE MEDICINE USAGE
+ *************************************************/
 
+async function saveMedicineUsage(){
 
-  if(
-    /^\d{4}-\d{2}-\d{2}/
-      .test(text)
-  ){
+  try{
 
-    const p =
-      text
-        .substring(0,10)
-        .split("-");
+    const date =
+      document.getElementById(
+        "medicineUsageDate"
+      ).value;
 
+    const batchId =
+      document.getElementById(
+        "medicineUsageBatch"
+      ).value;
 
-    d =
-      new Date(
-        Number(p[0]),
-        Number(p[1])-1,
-        Number(p[2])
+    const medicineId =
+      document.getElementById(
+        "medicineUsageMedicine"
+      ).value;
+
+    const quantityUsed =
+      document.getElementById(
+        "medicineUsageQty"
+      ).value;
+
+    const remarks =
+      document.getElementById(
+        "medicineUsageRemarks"
+      ).value.trim();
+
+    if(!date)
+      throw new Error("Date is required.");
+
+    if(!batchId)
+      throw new Error("Batch is required.");
+
+    if(!medicineId)
+      throw new Error("Medicine is required.");
+
+    if(!quantityUsed)
+      throw new Error(
+        "Quantity Used is required."
       );
 
+    await postData({
+      action:"medicineUsage",
+      date:date,
+      batchId:batchId,
+      medicineId:medicineId,
+      quantityUsed:quantityUsed,
+      remarks:remarks
+    });
+
+    showMessage(
+      "medicineUsageMessage",
+      "Medicine usage saved successfully.",
+      "success"
+    );
+
+    document.getElementById(
+      "medicineUsageQty"
+    ).value = "";
+
+    document.getElementById(
+      "medicineUsageRemarks"
+    ).value = "";
+
+    await loadData();
+
+    updateMedicineUsageMedicine();
+
+  }catch(err){
+
+    showMessage(
+      "medicineUsageMessage",
+      err.message,
+      "error"
+    );
   }
-  else{
-
-    d =
-      new Date(text);
-
-  }
-
-
-  if(
-    isNaN(
-      d.getTime()
-    )
-  ){
-
-    return null;
-
-  }
-
-
-  d.setHours(
-    0,
-    0,
-    0,
-    0
-  );
-
-
-  return d;
-
 }
 
 
-function formatDate(value){
+/*************************************************
+ * MEDICINE USAGE HISTORY
+ *************************************************/
 
-  const d =
-    parseDate(value);
+function renderMedicineUsageHistory(){
 
+  const el =
+    document.getElementById(
+      "medicineUsageHistory"
+    );
 
-  if(!d){
-    return "";
+  if(!medicineUsage.length){
+
+    el.innerHTML =
+      `<div class="empty">
+        No usage records.
+      </div>`;
+
+    return;
   }
 
+  const recent =
+    [...medicineUsage]
+      .reverse()
+      .slice(0,20);
 
-  return d.toLocaleDateString(
-    "en-IN",
-    {
-      day:"2-digit",
-      month:"short",
-      year:"numeric"
+  el.innerHTML =
+    recent.map(item => {
+
+      return `
+      <div class="list-row">
+
+        <div class="row-flex">
+
+          <div>
+
+            <div class="row-main">
+              ${escapeHtml(item.medicineName)}
+            </div>
+
+            <div class="row-sub">
+              ${escapeHtml(item.farmName)}
+              • ${escapeHtml(item.batchId)}
+            </div>
+
+            <div class="row-sub">
+              ${escapeHtml(item.date)}
+            </div>
+
+          </div>
+
+          <div style="text-align:right">
+
+            <div class="row-main">
+              ${item.quantityUsed}
+              ${escapeHtml(item.unit)}
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+      `;
+    }).join("");
+}
+
+
+/*************************************************
+ * DATE PARSER
+ *************************************************/
+
+function parseDateValue(value){
+
+  if(!value){
+    return new Date(0);
+  }
+
+  const str =
+    String(value).trim();
+
+  if(/^\d{2}-\d{2}-\d{4}$/.test(str)){
+
+    const p =
+      str.split("-");
+
+    return new Date(
+      Number(p[2]),
+      Number(p[1])-1,
+      Number(p[0])
+    );
+  }
+
+  if(/^\d{4}-\d{2}-\d{2}$/.test(str)){
+
+    const p =
+      str.split("-");
+
+    return new Date(
+      Number(p[0]),
+      Number(p[1])-1,
+      Number(p[2])
+    );
+  }
+
+  return new Date(value);
+}
+
+
+/*************************************************
+ * DEFAULT DATES
+ *************************************************/
+
+function setDefaultDates(){
+
+  const today =
+    new Date();
+
+  const yyyy =
+    today.getFullYear();
+
+  const mm =
+    String(today.getMonth()+1)
+      .padStart(2,"0");
+
+  const dd =
+    String(today.getDate())
+      .padStart(2,"0");
+
+  const value =
+    `${yyyy}-${mm}-${dd}`;
+
+  const ids = [
+    "dailyDate",
+    "feedSupplyDate",
+    "batchPlacementDate",
+    "medicineReceiveDate",
+    "medicineUsageDate"
+  ];
+
+  ids.forEach(id => {
+
+    const el =
+      document.getElementById(id);
+
+    if(el){
+      el.value = value;
     }
-  );
 
+  });
 }
 
 
-/* ==========================================================
-   MESSAGE
-========================================================== */
+/*************************************************
+ * INITIALIZE
+ *************************************************/
 
-function showMessage(
-  text,
-  type
-){
+document.addEventListener(
+  "DOMContentLoaded",
+  async function(){
 
-  const el =
-    document.getElementById(
-      "message"
-    );
+    setDefaultDates();
 
+    await loadData();
 
-  el.className =
-    "message " +
-    (
-      type === "error"
-        ? "error"
-        : "success"
-    );
-
-
-  el.textContent =
-    text;
-
-}
-
-
-function hideMessage(){
-
-  const el =
-    document.getElementById(
-      "message"
-    );
-
-
-  el.className =
-    "";
-
-
-  el.textContent =
-    "";
-
-}
-
-
-/* ==========================================================
-   ESCAPE
-========================================================== */
-
-function escapeHtml(value){
-
-  return String(value)
-
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
-}
-
-
-function escapeAttr(value){
-
-  return String(value)
-
-    .replaceAll(
-      "\\",
-      "\\\\"
-    )
-
-    .replaceAll(
-      "'",
-      "\\'"
-    );
-
-}
+  }
+);
 
 </script>
 
