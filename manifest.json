@@ -1,0 +1,10 @@
+{
+  "name": "KG Farms",
+  "short_name": "KG Farms",
+  "description": "KG Farms Poultry Management System",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f4f6f8",
+  "theme_color": "#1f7a45",
+  "orientation": "portrait"
+}

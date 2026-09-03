@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0,
+                 maximum-scale=1.0, user-scalable=no">
+
+  <meta name="theme-color" content="#1f7a45">
+
+  <link rel="manifest" href="manifest.json">
+
+  <title>KG Farms</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #222;
+    }
+
+    header {
+      background: #1f7a45;
+      color: white;
+      padding: 18px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 23px;
+    }
+
+    header p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .container {
+      padding: 15px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 5px 0 12px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 13px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .farm-name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .batch-id {
+      color: #777;
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .divider {
+      height: 1px;
+      background: #eee;
+      margin: 12px 0;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      font-size: 14px;
+    }
+
+    .label {
+      color: #666;
+    }
+
+    .value {
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .balance-box {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #fff4e5;
+    }
+
+    .balance-number {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .order-status {
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px 10px;
+      color: #777;
+    }
+
+    .error {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      color: #b00020;
+    }
+
+    .refresh-button {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 13px;
+      margin-bottom: 15px;
+      background: #1f7a45;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .refresh-button:active {
+      transform: scale(0.98);
+    }
+
+    .empty {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>KG Farms</h1>
+  <p>Farm Management</p>
+</header>
+
+<div class="container">
+
+  <button class="refresh-button" onclick="loadDashboard()">
+    Refresh Dashboard
+  </button>
+
+  <div class="section-title">
+    Farm Overview
+  </div>
+
+  <div id="dashboard">
+    <div class="loading">
+      Loading farm data...
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+  // ============================================================
+  // KG FARMS APPS SCRIPT WEB APP URL
+  // ============================================================
+
+  const API_URL = "https://script.google.com/macros/s/AKfycbzVV9-kxrknNyQroHlnY49lhrw7lWgPkNB8AmxkC_UgISCiaSxYrF1KsxRe2AGcku0B/exec";
+
+
+  // ============================================================
+  // LOAD DASHBOARD
+  // ============================================================
+
+  async function loadDashboard() {
+
+    const dashboard = document.getElementById("dashboard");
+
+    dashboard.innerHTML = `
+      <div class="loading">
+        Loading farm data...
+      </div>
+    `;
+
+    try {
+
+      const response = await fetch(API_URL);
+
+      if (!response.ok) {
+        throw new Error("Network response failed");
+      }
+
+      const result = await response.json();
+
+      if (result.status !== "success") {
+        throw new Error("API returned an error");
+      }
+
+      const data = result.data;
+
+      if (!data || data.length <= 1) {
+
+        dashboard.innerHTML = `
+          <div class="empty">
+            No farm data available.
+          </div>
+        `;
+
+        return;
+      }
+
+      // First row is the header
+      const headers = data[0];
+
+      // Remaining rows are farm data
+      const rows = data.slice(1);
+
+      dashboard.innerHTML = "";
+
+      rows.forEach(row => {
+
+        const farm = row[0] || "";
+        const batch = row[1] || "";
+        const birds = row[2] || "";
+        const age = row[3] || "";
+        const feed = row[4] || "";
+        const required = row[5] || "";
+        const supplied = row[6] || "";
+        const balance = row[7] || "";
+        const status = row[8] || "";
+
+        const card = document.createElement("div");
+
+        card.className = "card";
+
+        card.innerHTML = `
+
+          <div class="farm-name">
+            ${escapeHtml(farm)}
+          </div>
+
+          <div class="batch-id">
+            Batch: ${escapeHtml(batch)}
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <span class="label">Birds</span>
+            <span class="value">${escapeHtml(birds)}</span>
+          </div>
+
+          <div class="row">
+            <span class="label">Age</span>
+            <span class="value">
+              ${age ? "Day " + escapeHtml(age) : "-"}
+            </span>
+          </div>
+
+          <div class="row">
+            <span class="label">Current Feed</span>
+            <span class="value">
+              ${escapeHtml(feed || "-")}
+            </span>
+          </div>
+
+          <div class="row">
+            <span class="label">Feed Required</span>
+            <span class="value">
+              ${required ? escapeHtml(required) + " bags" : "-"}
+            </span>
+          </div>
+
+          <div class="row">
+            <span class="label">Feed Supplied</span>
+            <span class="value">
+              ${supplied ? escapeHtml(supplied) + " bags" : "-"}
+            </span>
+          </div>
+
+          ${
+            balance
+            ?
+            `
+              <div class="balance-box">
+                <div class="label">
+                  Balance To Be Supplied
+                </div>
+
+                <div class="balance-number">
+                  ${escapeHtml(balance)} bags
+                </div>
+              </div>
+            `
+            :
+            ""
+          }
+
+          ${
+            status
+            ?
+            `
+              <div class="order-status">
+                ${escapeHtml(status)}
+              </div>
+            `
+            :
+            ""
+          }
+
+        `;
+
+        dashboard.appendChild(card);
+
+      });
+
+    }
+
+    catch (error) {
+
+      console.error(error);
+
+      dashboard.innerHTML = `
+        <div class="error">
+          Unable to load farm data.
+          <br><br>
+          Please check your internet connection
+          and Apps Script URL.
+        </div>
+      `;
+
+    }
+
+  }
+
+
+  // ============================================================
+  // BASIC HTML SAFETY
+  // ============================================================
+
+  function escapeHtml(value) {
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  // ============================================================
+  // REGISTER SERVICE WORKER
+  // ============================================================
+
+  if ("serviceWorker" in navigator) {
+
+    window.addEventListener("load", () => {
+
+      navigator.serviceWorker
+        .register("sw.js")
+        .then(() => {
+          console.log("KG Farms service worker registered");
+        })
+        .catch(error => {
+          console.log(
+            "Service worker registration failed:",
+            error
+          );
+        });
+
+    });
+
+  }
+
+
+  // ============================================================
+  // INITIAL LOAD
+  // ============================================================
+
+  loadDashboard();
+
+</script>
+
+</body>
+</html>
