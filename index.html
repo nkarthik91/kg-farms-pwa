@@ -1,174 +1,2057 @@
-function doGet() {
+<!DOCTYPE html>
+<html lang="en">
 
-  const data = getDashboardData();
+<head>
 
-  return ContentService
-    .createTextOutput(JSON.stringify({
-      status: "success",
-      data: data
-    }))
-    .setMimeType(ContentService.MimeType.JSON);
-}
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width,
+                 initial-scale=1.0,
+                 maximum-scale=1.0,
+                 user-scalable=no">
+
+  <meta name="theme-color" content="#1f7a45">
+
+  <link rel="manifest" href="manifest.json">
+
+  <title>KG Farms</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #222;
+      padding-bottom: 75px;
+    }
+
+    header {
+      background: #1f7a45;
+      color: white;
+      padding: 18px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 23px;
+    }
+
+    header p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      opacity: .9;
+    }
+
+    .container {
+      padding: 16px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .section-title {
+      font-size: 19px;
+      font-weight: bold;
+      margin: 8px 0 14px;
+    }
+
+    /* SUMMARY */
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .summary-card {
+      background: white;
+      border-radius: 14px;
+      padding: 15px;
+      box-shadow: 0 2px 7px rgba(0,0,0,.07);
+    }
+
+    .summary-label {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 7px;
+    }
+
+    .summary-value {
+      font-size: 23px;
+      font-weight: bold;
+    }
+
+    /* BUTTON */
+
+    .primary-button {
+      width: 100%;
+      border: none;
+      border-radius: 11px;
+      padding: 14px;
+      background: #1f7a45;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .secondary-button {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 11px;
+      padding: 13px;
+      background: white;
+      color: #333;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:active {
+      transform: scale(.98);
+    }
+
+    /* CARDS */
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 13px;
+      box-shadow: 0 2px 7px rgba(0,0,0,.07);
+    }
+
+    .farm-name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .batch {
+      color: #777;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .divider {
+      height: 1px;
+      background: #eee;
+      margin: 13px 0;
+    }
+
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: 14px;
+    }
+
+    .data-label {
+      color: #666;
+    }
+
+    .data-value {
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .balance-box {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #fff4df;
+    }
+
+    .balance-label {
+      font-size: 12px;
+      color: #777;
+    }
+
+    .balance-value {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 4px;
+    }
+
+    /* FARM LIST */
+
+    .farm-list-card {
+      background: white;
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 7px rgba(0,0,0,.07);
+      cursor: pointer;
+    }
+
+    .farm-list-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .farm-list-name {
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .farm-list-batch {
+      font-size: 12px;
+      color: #777;
+      margin-top: 4px;
+    }
+
+    .arrow {
+      font-size: 25px;
+      color: #999;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 13px;
+    }
+
+    .mini-box {
+      background: #f7f8f9;
+      border-radius: 9px;
+      padding: 9px;
+    }
+
+    .mini-label {
+      font-size: 11px;
+      color: #777;
+    }
+
+    .mini-value {
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 3px;
+    }
+
+    /* FORM */
+
+    .form-card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 2px 7px rgba(0,0,0,.07);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    input,
+    select {
+
+      width: 100%;
+
+      padding: 13px;
+
+      border: 1px solid #d8dce0;
+
+      border-radius: 10px;
+
+      background: white;
+
+      font-size: 15px;
+
+      outline: none;
+
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #1f7a45;
+    }
+
+    .readonly-box {
+
+      background: #f4f6f8;
+
+      border-radius: 10px;
+
+      padding: 13px;
+
+      font-size: 15px;
+
+    }
+
+    .success-message {
+
+      background: #e8f5ec;
+
+      color: #176b39;
+
+      padding: 12px;
+
+      border-radius: 10px;
+
+      margin-bottom: 15px;
+
+      font-size: 14px;
+
+      display: none;
+
+    }
+
+    .error-message {
+
+      background: #fdeaea;
+
+      color: #a40000;
+
+      padding: 12px;
+
+      border-radius: 10px;
+
+      margin-bottom: 15px;
+
+      font-size: 14px;
+
+      display: none;
+
+    }
+
+    /* LOADING */
+
+    .placeholder {
+
+      background: white;
+
+      border-radius: 14px;
+
+      padding: 25px;
+
+      text-align: center;
+
+      color: #777;
+
+    }
+
+    /* BOTTOM NAV */
+
+    .bottom-nav {
+
+      position: fixed;
+
+      bottom: 0;
+
+      left: 0;
+
+      right: 0;
+
+      height: 70px;
+
+      background: white;
+
+      border-top: 1px solid #ddd;
+
+      display: flex;
+
+      justify-content: space-around;
+
+      align-items: center;
+
+      z-index: 100;
+
+      box-shadow: 0 -2px 8px rgba(0,0,0,.08);
+
+    }
+
+    .nav-item {
+
+      flex: 1;
+
+      height: 100%;
+
+      border: none;
+
+      background: transparent;
+
+      color: #777;
+
+      font-size: 10px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: center;
+
+      align-items: center;
+
+      gap: 4px;
+
+      cursor: pointer;
+
+    }
+
+    .nav-icon {
+
+      font-size: 21px;
+
+      line-height: 1;
+
+    }
+
+    .nav-item.active {
+
+      color: #1f7a45;
+
+      font-weight: bold;
+
+    }
+
+  </style>
+
+</head>
 
 
-// ==========================================================
-// DASHBOARD DATA
-// ==========================================================
-
-function getDashboardData() {
-
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-
-  const sheet =
-    ss.getSheetByName("Dashboard Data");
-
-  const data =
-    sheet.getDataRange().getValues();
-
-  const headers =
-    data[0];
-
-  const rows =
-    data
-      .slice(1)
-      .filter(row => row[1] !== "");
-
-  return [
-    headers,
-    ...rows
-  ];
-
-}
+<body>
 
 
-// ==========================================================
-// SAVE DAILY FARM ENTRY
-// ==========================================================
+<header>
 
-function doPost(e) {
+  <h1>KG Farms</h1>
 
-  try {
+  <p>Farm Management</p>
 
-    const data =
-      JSON.parse(e.postData.contents);
-
-    const ss =
-      SpreadsheetApp.getActiveSpreadsheet();
-
-    const sheet =
-      ss.getSheetByName("Daily Farm Entry");
+</header>
 
 
-    if (!sheet) {
+<div class="container">
 
-      throw new Error(
-        "Daily Farm Entry sheet not found"
-      );
+
+  <!-- =====================================================
+       HOME
+  ====================================================== -->
+
+  <div id="homePage" class="page active">
+
+    <div class="section-title">
+      Overview
+    </div>
+
+
+    <div class="summary-grid">
+
+      <div class="summary-card">
+
+        <div class="summary-label">
+          Active Farms
+        </div>
+
+        <div class="summary-value"
+             id="totalFarms">
+          -
+        </div>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-label">
+          Total Birds
+        </div>
+
+        <div class="summary-value"
+             id="totalBirds">
+          -
+        </div>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-label">
+          Feed To Supply
+        </div>
+
+        <div class="summary-value"
+             id="totalFeed">
+          -
+        </div>
+
+        <div class="summary-label">
+          bags
+        </div>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-label">
+          Orders Required
+        </div>
+
+        <div class="summary-value"
+             id="ordersRequired">
+          -
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <button class="primary-button"
+            onclick="loadDashboard()">
+
+      Refresh Dashboard
+
+    </button>
+
+
+    <br><br>
+
+
+    <div class="section-title">
+      Farm Overview
+    </div>
+
+
+    <div id="homeFarmList">
+
+      <div class="placeholder">
+        Loading...
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       FARMS
+  ====================================================== -->
+
+  <div id="farmsPage" class="page">
+
+    <div class="section-title">
+      Farms
+    </div>
+
+
+    <div id="farmsList">
+
+      <div class="placeholder">
+        Loading farms...
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       FARM DETAILS
+  ====================================================== -->
+
+  <div id="detailsPage" class="page">
+
+    <button class="secondary-button"
+            onclick="showPage('farmsPage')">
+
+      ← Back to Farms
+
+    </button>
+
+
+    <br><br>
+
+
+    <div id="farmDetails">
+
+      <div class="placeholder">
+        Select a farm.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       DAILY ENTRY
+  ====================================================== -->
+
+  <div id="dailyPage" class="page">
+
+    <div class="section-title">
+      Daily Farm Entry
+    </div>
+
+
+    <div class="success-message"
+         id="successMessage">
+
+      Daily entry saved successfully.
+
+    </div>
+
+
+    <div class="error-message"
+         id="errorMessage">
+
+      Unable to save entry.
+
+    </div>
+
+
+    <div class="form-card">
+
+
+      <!-- DATE -->
+
+      <div class="form-group">
+
+        <label class="form-label">
+          Date
+        </label>
+
+        <input type="date"
+               id="entryDate">
+
+      </div>
+
+
+      <!-- FARM -->
+
+      <div class="form-group">
+
+        <label class="form-label">
+          Farm / Batch
+        </label>
+
+        <select id="batchSelect"
+                onchange="updateSelectedBatch()">
+
+          <option value="">
+            Select farm
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- FARM NAME -->
+
+      <div class="form-group">
+
+        <label class="form-label">
+          Farm Name
+        </label>
+
+        <div class="readonly-box"
+             id="selectedFarm">
+
+          -
+
+        </div>
+
+      </div>
+
+
+      <!-- AGE -->
+
+      <div class="form-group">
+
+        <label class="form-label">
+          Age
+        </label>
+
+        <div class="readonly-box"
+             id="selectedAge">
+
+          -
+
+        </div>
+
+      </div>
+
+
+      <!-- BIRDS -->
+
+      <div class="form-group">
+
+        <label class="form-label">
+          Birds
+        </label>
+
+        <div class="readonly-box"
+             id="selectedBirds">
+
+          -
+
+        </div>
+
+      </div>
+
+
+      <!-- MORTALITY -->
+
+      <div class="form-group">
+
+        <label class="form-label">
+          Mortality
+        </label>
+
+        <input type="number"
+               id="mortality"
+               min="0"
+               inputmode="numeric"
+               placeholder="Enter mortality">
+
+      </div>
+
+
+      <!-- FEED TYPE -->
+
+      <div class="form-group">
+
+        <label class="form-label">
+          Feed Type
+        </label>
+
+        <select id="feedType">
+
+          <option value="">
+            Select feed type
+          </option>
+
+          <option value="BPSC">
+            BPSC
+          </option>
+
+          <option value="BSC">
+            BSC
+          </option>
+
+          <option value="BFP">
+            BFP
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- REMAINING FEED STOCK -->
+
+      <div class="form-group">
+
+        <label class="form-label">
+          Remaining Feed Stock
+          (50kg Bags)
+        </label>
+
+        <input type="number"
+               id="remainingFeedStock"
+               min="0"
+               step="0.01"
+               inputmode="decimal"
+               placeholder="Enter remaining bags">
+
+      </div>
+
+
+      <!-- SAVE -->
+
+      <button class="primary-button"
+              id="saveEntryButton"
+              onclick="saveDailyEntry()">
+
+        Save Daily Entry
+
+      </button>
+
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       FEED
+  ====================================================== -->
+
+  <div id="feedPage" class="page">
+
+    <div class="section-title">
+      Feed
+    </div>
+
+    <div class="placeholder">
+
+      Feed management will be added
+      in the next milestone.
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       VACCINES
+  ====================================================== -->
+
+  <div id="vaccinePage" class="page">
+
+    <div class="section-title">
+      Vaccines
+    </div>
+
+    <div class="placeholder">
+
+      Vaccine schedule will be added
+      in the next milestone.
+
+    </div>
+
+  </div>
+
+
+</div>
+
+
+<!-- =======================================================
+     BOTTOM NAVIGATION
+======================================================== -->
+
+<nav class="bottom-nav">
+
+
+  <button class="nav-item active"
+          onclick="showPage('homePage', this)">
+
+    <span class="nav-icon">
+      ⌂
+    </span>
+
+    <span>
+      Home
+    </span>
+
+  </button>
+
+
+  <button class="nav-item"
+          onclick="showPage('farmsPage', this)">
+
+    <span class="nav-icon">
+      🏠
+    </span>
+
+    <span>
+      Farms
+    </span>
+
+  </button>
+
+
+  <button class="nav-item"
+          onclick="showPage('dailyPage', this)">
+
+    <span class="nav-icon">
+      ＋
+    </span>
+
+    <span>
+      Daily Entry
+    </span>
+
+  </button>
+
+
+  <button class="nav-item"
+          onclick="showPage('feedPage', this)">
+
+    <span class="nav-icon">
+      🌾
+    </span>
+
+    <span>
+      Feed
+    </span>
+
+  </button>
+
+
+  <button class="nav-item"
+          onclick="showPage('vaccinePage', this)">
+
+    <span class="nav-icon">
+      💉
+    </span>
+
+    <span>
+      Vaccines
+    </span>
+
+  </button>
+
+
+</nav>
+
+
+<script>
+
+
+  // ==========================================================
+  // API
+  // ==========================================================
+
+  const API_URL =
+    "https://script.google.com/macros/s/AKfycbzVV9-kxrknNyQroHlnY49lhrw7lWgPkNB8AmxkC_UgISCiaSxYrF1KsxRe2AGcku0B/exec";
+
+
+  // ==========================================================
+  // GLOBAL DATA
+  // ==========================================================
+
+  let dashboardRows = [];
+
+  let selectedBatch = null;
+
+
+  // ==========================================================
+  // NAVIGATION
+  // ==========================================================
+
+  function showPage(pageId, button) {
+
+
+    document
+      .querySelectorAll(".page")
+      .forEach(page => {
+
+        page.classList.remove("active");
+
+      });
+
+
+    document
+      .getElementById(pageId)
+      .classList.add("active");
+
+
+    if (button) {
+
+      document
+        .querySelectorAll(".nav-item")
+        .forEach(item => {
+
+          item.classList.remove("active");
+
+        });
+
+
+      button.classList.add("active");
 
     }
 
 
-    // ------------------------------------------------------
-    // INPUTS
-    // ------------------------------------------------------
+    window.scrollTo(0, 0);
 
-    const date =
-      data.date || "";
+
+    if (pageId === "farmsPage") {
+
+      renderFarms();
+
+    }
+
+
+    if (pageId === "dailyPage") {
+
+      populateBatchSelect();
+
+    }
+
+  }
+
+
+  // ==========================================================
+  // LOAD DASHBOARD
+  // ==========================================================
+
+  async function loadDashboard() {
+
+
+    try {
+
+
+      const response =
+        await fetch(API_URL);
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Network request failed"
+        );
+
+      }
+
+
+      const result =
+        await response.json();
+
+
+      if (result.status !== "success") {
+
+        throw new Error(
+          "API error"
+        );
+
+      }
+
+
+      const data =
+        result.data;
+
+
+      if (!data || data.length <= 1) {
+
+        dashboardRows = [];
+
+        updateSummary();
+
+        renderHomeFarms();
+
+        return;
+
+      }
+
+
+      dashboardRows =
+        data.slice(1);
+
+
+      updateSummary();
+
+      renderHomeFarms();
+
+      renderFarms();
+
+      populateBatchSelect();
+
+
+    }
+
+    catch (error) {
+
+      console.error(error);
+
+      document.getElementById(
+        "homeFarmList"
+      ).innerHTML = `
+
+        <div class="placeholder">
+
+          Unable to load farm data.
+
+        </div>
+
+      `;
+
+    }
+
+  }
+
+
+  // ==========================================================
+  // SUMMARY
+  // ==========================================================
+
+  function updateSummary() {
+
+
+    let totalBirds = 0;
+
+    let totalFeed = 0;
+
+    let orders = 0;
+
+
+    dashboardRows.forEach(row => {
+
+
+      totalBirds +=
+        Number(row[2]) || 0;
+
+
+      totalFeed +=
+        Number(row[7]) || 0;
+
+
+      if (
+        row[8] === "ORDER REQUIRED"
+      ) {
+
+        orders++;
+
+      }
+
+
+    });
+
+
+    document.getElementById(
+      "totalFarms"
+    ).textContent =
+      dashboardRows.length;
+
+
+    document.getElementById(
+      "totalBirds"
+    ).textContent =
+      totalBirds.toLocaleString();
+
+
+    document.getElementById(
+      "totalFeed"
+    ).textContent =
+      totalFeed;
+
+
+    document.getElementById(
+      "ordersRequired"
+    ).textContent =
+      orders;
+
+  }
+
+
+  // ==========================================================
+  // HOME FARM LIST
+  // ==========================================================
+
+  function renderHomeFarms() {
+
+
+    const container =
+      document.getElementById(
+        "homeFarmList"
+      );
+
+
+    container.innerHTML = "";
+
+
+    dashboardRows.forEach(row => {
+
+
+      const card =
+        document.createElement("div");
+
+
+      card.className =
+        "card";
+
+
+      card.innerHTML = `
+
+        <div class="farm-name">
+          ${escapeHtml(row[0])}
+        </div>
+
+        <div class="batch">
+          Batch: ${escapeHtml(row[1])}
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="data-row">
+          <span class="data-label">
+            Birds
+          </span>
+
+          <span class="data-value">
+            ${escapeHtml(row[2])}
+          </span>
+        </div>
+
+        <div class="data-row">
+          <span class="data-label">
+            Age
+          </span>
+
+          <span class="data-value">
+            ${
+              row[3]
+              ? "Day " + escapeHtml(row[3])
+              : "-"
+            }
+          </span>
+        </div>
+
+        <div class="data-row">
+          <span class="data-label">
+            Current Feed
+          </span>
+
+          <span class="data-value">
+            ${escapeHtml(row[4] || "-")}
+          </span>
+        </div>
+
+        <div class="balance-box">
+
+          <div class="balance-label">
+            Feed To Be Supplied
+          </div>
+
+          <div class="balance-value">
+            ${
+              row[7] !== ""
+              ? escapeHtml(row[7]) + " bags"
+              : "-"
+            }
+          </div>
+
+        </div>
+
+      `;
+
+
+      container.appendChild(card);
+
+    });
+
+  }
+
+
+  // ==========================================================
+  // FARMS LIST
+  // ==========================================================
+
+  function renderFarms() {
+
+
+    const container =
+      document.getElementById(
+        "farmsList"
+      );
+
+
+    if (
+      !dashboardRows.length
+    ) {
+
+      container.innerHTML = `
+
+        <div class="placeholder">
+          No farms found.
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    dashboardRows.forEach(
+      (row, index) => {
+
+
+        const card =
+          document.createElement("div");
+
+
+        card.className =
+          "farm-list-card";
+
+
+        card.onclick =
+          () => openFarmDetails(index);
+
+
+        card.innerHTML = `
+
+          <div class="farm-list-top">
+
+            <div>
+
+              <div class="farm-list-name">
+                ${escapeHtml(row[0])}
+              </div>
+
+              <div class="farm-list-batch">
+                Batch: ${escapeHtml(row[1])}
+              </div>
+
+            </div>
+
+            <div class="arrow">
+              ›
+            </div>
+
+          </div>
+
+
+          <div class="mini-grid">
+
+
+            <div class="mini-box">
+
+              <div class="mini-label">
+                Birds
+              </div>
+
+              <div class="mini-value">
+                ${escapeHtml(row[2])}
+              </div>
+
+            </div>
+
+
+            <div class="mini-box">
+
+              <div class="mini-label">
+                Age
+              </div>
+
+              <div class="mini-value">
+
+                ${
+                  row[3]
+                  ? "Day " + escapeHtml(row[3])
+                  : "-"
+                }
+
+              </div>
+
+            </div>
+
+
+            <div class="mini-box">
+
+              <div class="mini-label">
+                Current Feed
+              </div>
+
+              <div class="mini-value">
+                ${escapeHtml(row[4] || "-")}
+              </div>
+
+            </div>
+
+
+            <div class="mini-box">
+
+              <div class="mini-label">
+                Feed Balance
+              </div>
+
+              <div class="mini-value">
+
+                ${
+                  row[7] !== ""
+                  ? escapeHtml(row[7])
+                    + " bags"
+                  : "-"
+                }
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+        `;
+
+
+        container.appendChild(card);
+
+
+      }
+    );
+
+  }
+
+
+  // ==========================================================
+  // FARM DETAILS
+  // ==========================================================
+
+  function openFarmDetails(index) {
+
+
+    selectedBatch =
+      dashboardRows[index];
+
+
+    showPage("detailsPage");
+
+
+    const row =
+      selectedBatch;
+
+
+    document.getElementById(
+      "farmDetails"
+    ).innerHTML = `
+
+      <div class="card">
+
+        <div class="farm-name">
+          ${escapeHtml(row[0])}
+        </div>
+
+        <div class="batch">
+          Batch: ${escapeHtml(row[1])}
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="data-row">
+          <span class="data-label">
+            Birds
+          </span>
+
+          <span class="data-value">
+            ${escapeHtml(row[2])}
+          </span>
+        </div>
+
+        <div class="data-row">
+          <span class="data-label">
+            Age
+          </span>
+
+          <span class="data-value">
+            ${
+              row[3]
+              ? "Day " + escapeHtml(row[3])
+              : "-"
+            }
+          </span>
+        </div>
+
+        <div class="data-row">
+          <span class="data-label">
+            Current Feed
+          </span>
+
+          <span class="data-value">
+            ${escapeHtml(row[4] || "-")}
+          </span>
+        </div>
+
+        <div class="data-row">
+          <span class="data-label">
+            Feed Required
+          </span>
+
+          <span class="data-value">
+            ${
+              row[5]
+              ? escapeHtml(row[5])
+                + " bags"
+              : "-"
+            }
+          </span>
+        </div>
+
+        <div class="data-row">
+          <span class="data-label">
+            Feed Supplied
+          </span>
+
+          <span class="data-value">
+            ${
+              row[6]
+              ? escapeHtml(row[6])
+                + " bags"
+              : "-"
+            }
+          </span>
+        </div>
+
+
+        <div class="balance-box">
+
+          <div class="balance-label">
+            Feed To Be Supplied
+          </div>
+
+          <div class="balance-value">
+            ${
+              row[7] !== ""
+              ? escapeHtml(row[7])
+                + " bags"
+              : "-"
+            }
+          </div>
+
+        </div>
+
+        <br>
+
+        <button class="primary-button"
+                onclick="openDailyEntryForBatch('${escapeHtml(row[1])}')">
+
+          Add Daily Entry
+
+        </button>
+
+      </div>
+
+    `;
+
+  }
+
+
+  // ==========================================================
+  // DAILY ENTRY BATCH LIST
+  // ==========================================================
+
+  function populateBatchSelect() {
+
+
+    const select =
+      document.getElementById(
+        "batchSelect"
+      );
+
+
+    const current =
+      select.value;
+
+
+    select.innerHTML = `
+
+      <option value="">
+        Select farm
+      </option>
+
+    `;
+
+
+    dashboardRows.forEach(row => {
+
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        row[1];
+
+
+      option.textContent =
+        row[0] +
+        " — " +
+        row[1];
+
+
+      select.appendChild(option);
+
+    });
+
+
+    if (current) {
+
+      select.value =
+        current;
+
+    }
+
+  }
+
+
+  // ==========================================================
+  // SELECTED BATCH
+  // ==========================================================
+
+  function updateSelectedBatch() {
+
 
     const batchId =
-      data.batchId || "";
+      document.getElementById(
+        "batchSelect"
+      ).value;
 
-    const farmName =
-      data.farmName || "";
 
-    const age =
-      data.age || "";
+    const row =
+      dashboardRows.find(
+        item => item[1] === batchId
+      );
 
-    const birds =
-      data.birds || "";
+
+    if (!row) {
+
+
+      document.getElementById(
+        "selectedFarm"
+      ).textContent = "-";
+
+
+      document.getElementById(
+        "selectedAge"
+      ).textContent = "-";
+
+
+      document.getElementById(
+        "selectedBirds"
+      ).textContent = "-";
+
+
+      selectedBatch = null;
+
+
+      return;
+
+    }
+
+
+    selectedBatch =
+      row;
+
+
+    document.getElementById(
+      "selectedFarm"
+    ).textContent =
+      row[0];
+
+
+    document.getElementById(
+      "selectedAge"
+    ).textContent =
+      row[3]
+      ? "Day " + row[3]
+      : "-";
+
+
+    document.getElementById(
+      "selectedBirds"
+    ).textContent =
+      row[2] || "-";
+
+  }
+
+
+  // ==========================================================
+  // OPEN DAILY ENTRY FOR SPECIFIC BATCH
+  // ==========================================================
+
+  function openDailyEntryForBatch(batchId) {
+
+
+    showPage("dailyPage");
+
+
+    document.getElementById(
+      "batchSelect"
+    ).value =
+      batchId;
+
+
+    updateSelectedBatch();
+
+  }
+
+
+  // ==========================================================
+  // SAVE DAILY ENTRY
+  // ==========================================================
+
+  async function saveDailyEntry() {
+
+
+    const button =
+      document.getElementById(
+        "saveEntryButton"
+      );
+
+
+    const success =
+      document.getElementById(
+        "successMessage"
+      );
+
+
+    const error =
+      document.getElementById(
+        "errorMessage"
+      );
+
+
+    success.style.display =
+      "none";
+
+
+    error.style.display =
+      "none";
+
+
+    const date =
+      document.getElementById(
+        "entryDate"
+      ).value;
+
+
+    const batchId =
+      document.getElementById(
+        "batchSelect"
+      ).value;
+
 
     const mortality =
-      data.mortality || 0;
+      document.getElementById(
+        "mortality"
+      ).value;
+
 
     const feedType =
-      data.feedType || "";
+      document.getElementById(
+        "feedType"
+      ).value;
+
 
     const remainingFeedStock =
-      data.remainingFeedStock || "";
+      document.getElementById(
+        "remainingFeedStock"
+      ).value;
 
-
-    // ------------------------------------------------------
-    // VALIDATION
-    // ------------------------------------------------------
 
     if (!date) {
 
-      throw new Error(
-        "Date is required"
-      );
+      error.textContent =
+        "Please select a date.";
+
+      error.style.display =
+        "block";
+
+      return;
 
     }
+
 
     if (!batchId) {
 
-      throw new Error(
-        "Batch ID is required"
-      );
+      error.textContent =
+        "Please select a farm.";
 
-    }
+      error.style.display =
+        "block";
 
-    if (!farmName) {
-
-      throw new Error(
-        "Farm name is required"
-      );
+      return;
 
     }
 
 
-    // ------------------------------------------------------
-    // SAVE ROW
-    // ------------------------------------------------------
-
-    sheet.appendRow([
-      date,
-      batchId,
-      farmName,
-      age,
-      birds,
-      mortality,
-      feedType,
-      remainingFeedStock
-    ]);
+    const row =
+      dashboardRows.find(
+        item => item[1] === batchId
+      );
 
 
-    // ------------------------------------------------------
-    // RESPONSE
-    // ------------------------------------------------------
+    if (!row) {
 
-    return ContentService
-      .createTextOutput(JSON.stringify({
-        status: "success",
-        message: "Daily entry saved successfully"
-      }))
-      .setMimeType(
-        ContentService.MimeType.JSON
+      error.textContent =
+        "Farm not found.";
+
+      error.style.display =
+        "block";
+
+      return;
+
+    }
+
+
+    button.disabled =
+      true;
+
+
+    button.textContent =
+      "Saving...";
+
+
+    const payload = {
+
+      date: date,
+
+      batchId: batchId,
+
+      farmName: row[0],
+
+      age: row[3],
+
+      birds: row[2],
+
+      mortality:
+        mortality === ""
+        ? 0
+        : Number(mortality),
+
+      feedType: feedType,
+
+      remainingFeedStock:
+        remainingFeedStock
+
+    };
+
+
+    try {
+
+
+      const response =
+        await fetch(
+          API_URL,
+          {
+
+            method: "POST",
+
+            headers: {
+
+              "Content-Type":
+                "text/plain;charset=utf-8"
+
+            },
+
+            body:
+              JSON.stringify(payload)
+
+          }
+        );
+
+
+      const result =
+        await response.json();
+
+
+      if (
+        result.status !== "success"
+      ) {
+
+        throw new Error(
+          result.message ||
+          "Unable to save entry"
+        );
+
+      }
+
+
+      success.textContent =
+        "Daily entry saved successfully.";
+
+
+      success.style.display =
+        "block";
+
+
+      // Clear input fields
+
+      document.getElementById(
+        "mortality"
+      ).value = "";
+
+
+      document.getElementById(
+        "feedType"
+      ).value = "";
+
+
+      document.getElementById(
+        "remainingFeedStock"
+      ).value = "";
+
+
+      // Refresh data
+
+      await loadDashboard();
+
+
+    }
+
+    catch (err) {
+
+
+      console.error(err);
+
+
+      error.textContent =
+        err.message ||
+        "Unable to save entry.";
+
+
+      error.style.display =
+        "block";
+
+    }
+
+
+    finally {
+
+
+      button.disabled =
+        false;
+
+
+      button.textContent =
+        "Save Daily Entry";
+
+    }
+
+  }
+
+
+  // ==========================================================
+  // HTML SAFETY
+  // ==========================================================
+
+  function escapeHtml(value) {
+
+
+    return String(value)
+
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+
+      .replace(
+        /</g,
+        "&lt;"
+      )
+
+      .replace(
+        />/g,
+        "&gt;"
+      )
+
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+
+      .replace(
+        /'/g,
+        "&#039;"
       );
 
   }
 
 
-  catch (error) {
+  // ==========================================================
+  // SERVICE WORKER
+  // ==========================================================
 
-    return ContentService
-      .createTextOutput(JSON.stringify({
-        status: "error",
-        message: error.message
-      }))
-      .setMimeType(
-        ContentService.MimeType.JSON
-      );
+  if (
+    "serviceWorker"
+    in navigator
+  ) {
+
+
+    window.addEventListener(
+      "load",
+      () => {
+
+
+        navigator.serviceWorker
+          .register("sw.js")
+
+          .catch(error => {
+
+            console.log(
+              "Service worker error:",
+              error
+            );
+
+          });
+
+      }
+    );
 
   }
 
-}
+
+  // ==========================================================
+  // DEFAULT DATE
+  // ==========================================================
+
+  function setToday() {
+
+
+    const today =
+      new Date();
+
+
+    const yyyy =
+      today.getFullYear();
+
+
+    const mm =
+      String(
+        today.getMonth() + 1
+      ).padStart(2, "0");
+
+
+    const dd =
+      String(
+        today.getDate()
+      ).padStart(2, "0");
+
+
+    document.getElementById(
+      "entryDate"
+    ).value =
+      `${yyyy}-${mm}-${dd}`;
+
+  }
+
+
+  // ==========================================================
+  // START APP
+  // ==========================================================
+
+  setToday();
+
+  loadDashboard();
+
+
+</script>
+
+
+</body>
+
+</html>
