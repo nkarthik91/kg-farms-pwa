@@ -27,8 +27,6 @@
       padding-bottom: 72px;
     }
 
-    /* HEADER */
-
     header {
       background: #1f7a45;
       color: white;
@@ -48,8 +46,6 @@
       font-size: 13px;
       opacity: 0.9;
     }
-
-    /* MAIN */
 
     .container {
       padding: 16px;
@@ -165,6 +161,67 @@
       font-weight: bold;
     }
 
+    /* FARM LIST CARD */
+
+    .farm-list-card {
+      background: white;
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 7px rgba(0,0,0,0.07);
+      cursor: pointer;
+    }
+
+    .farm-list-card:active {
+      transform: scale(0.99);
+    }
+
+    .farm-list-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .farm-list-name {
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .farm-list-batch {
+      font-size: 12px;
+      color: #777;
+      margin-top: 4px;
+    }
+
+    .farm-list-arrow {
+      font-size: 22px;
+      color: #999;
+    }
+
+    .farm-mini-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .mini-box {
+      background: #f7f8f9;
+      border-radius: 9px;
+      padding: 9px;
+    }
+
+    .mini-label {
+      font-size: 11px;
+      color: #777;
+    }
+
+    .mini-value {
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 3px;
+    }
+
     /* BUTTON */
 
     .refresh-button {
@@ -189,7 +246,7 @@
       color: #777;
     }
 
-    /* BOTTOM NAVIGATION */
+    /* BOTTOM NAV */
 
     .bottom-nav {
       position: fixed;
@@ -239,7 +296,6 @@
 <header>
 
   <h1>KG Farms</h1>
-
   <p>Farm Management</p>
 
 </header>
@@ -356,9 +412,11 @@
       Farms
     </div>
 
-    <div class="placeholder">
+    <div id="farmsList">
 
-      Farm list will be displayed here.
+      <div class="placeholder">
+        Loading farms...
+      </div>
 
     </div>
 
@@ -376,9 +434,7 @@
     </div>
 
     <div class="placeholder">
-
       Daily farm entry will be added here.
-
     </div>
 
   </div>
@@ -395,9 +451,7 @@
     </div>
 
     <div class="placeholder">
-
       Feed management will be added here.
-
     </div>
 
   </div>
@@ -414,9 +468,7 @@
     </div>
 
     <div class="placeholder">
-
       Vaccinator schedule will be added here.
-
     </div>
 
   </div>
@@ -488,6 +540,13 @@
 
 
   // ==========================================================
+  // GLOBAL DATA
+  // ==========================================================
+
+  let dashboardRows = [];
+
+
+  // ==========================================================
   // NAVIGATION
   // ==========================================================
 
@@ -520,6 +579,15 @@
 
 
     window.scrollTo(0, 0);
+
+
+    // Load farm list when Farms tab is opened
+
+    if (pageId === "farmsPage") {
+
+      renderFarms();
+
+    }
 
   }
 
@@ -575,25 +643,9 @@
 
       if (!data || data.length <= 1) {
 
-        document.getElementById(
-          "totalFarms"
-        ).textContent = "0";
+        dashboardRows = [];
 
-
-        document.getElementById(
-          "totalBirds"
-        ).textContent = "0";
-
-
-        document.getElementById(
-          "totalFeed"
-        ).textContent = "0";
-
-
-        document.getElementById(
-          "ordersRequired"
-        ).textContent = "0";
-
+        updateSummary();
 
         farmList.innerHTML = `
           <div class="placeholder">
@@ -601,237 +653,21 @@
           </div>
         `;
 
-
         return;
 
       }
 
 
-      const rows =
+      dashboardRows =
         data.slice(1);
 
 
-      // ========================================================
-      // SUMMARY
-      // ========================================================
+      updateSummary();
 
-      let totalBirds = 0;
-
-      let totalFeedBalance = 0;
-
-      let ordersRequired = 0;
-
-
-      rows.forEach(row => {
-
-        totalBirds +=
-          Number(row[2]) || 0;
-
-
-        totalFeedBalance +=
-          Number(row[7]) || 0;
-
-
-        if (
-          row[8] === "ORDER REQUIRED"
-        ) {
-
-          ordersRequired++;
-
-        }
-
-      });
-
-
-      document.getElementById(
-        "totalFarms"
-      ).textContent =
-        rows.length;
-
-
-      document.getElementById(
-        "totalBirds"
-      ).textContent =
-        totalBirds.toLocaleString();
-
-
-      document.getElementById(
-        "totalFeed"
-      ).textContent =
-        totalFeedBalance;
-
-
-      document.getElementById(
-        "ordersRequired"
-      ).textContent =
-        ordersRequired;
-
-
-      // ========================================================
-      // FARM CARDS
-      // ========================================================
-
-      farmList.innerHTML = "";
-
-
-      rows.forEach(row => {
-
-        const farm =
-          row[0] || "";
-
-        const batch =
-          row[1] || "";
-
-        const birds =
-          row[2] || "";
-
-        const age =
-          row[3] || "";
-
-        const feed =
-          row[4] || "";
-
-        const required =
-          row[5] || "";
-
-        const supplied =
-          row[6] || "";
-
-        const balance =
-          row[7] || "";
-
-        const status =
-          row[8] || "";
-
-
-        const card =
-          document.createElement(
-            "div"
-          );
-
-
-        card.className =
-          "farm-card";
-
-
-        card.innerHTML = `
-
-          <div class="farm-name">
-            ${escapeHtml(farm)}
-          </div>
-
-          <div class="batch">
-            Batch: ${escapeHtml(batch)}
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="data-row">
-            <span class="data-label">
-              Birds
-            </span>
-
-            <span class="data-value">
-              ${escapeHtml(birds)}
-            </span>
-          </div>
-
-          <div class="data-row">
-            <span class="data-label">
-              Age
-            </span>
-
-            <span class="data-value">
-              ${
-                age
-                ? "Day " + escapeHtml(age)
-                : "-"
-              }
-            </span>
-          </div>
-
-          <div class="data-row">
-            <span class="data-label">
-              Current Feed
-            </span>
-
-            <span class="data-value">
-              ${escapeHtml(feed || "-")}
-            </span>
-          </div>
-
-          <div class="data-row">
-            <span class="data-label">
-              Feed Required
-            </span>
-
-            <span class="data-value">
-              ${
-                required
-                ? escapeHtml(required)
-                  + " bags"
-                : "-"
-              }
-            </span>
-          </div>
-
-          <div class="data-row">
-            <span class="data-label">
-              Feed Supplied
-            </span>
-
-            <span class="data-value">
-              ${
-                supplied
-                ? escapeHtml(supplied)
-                  + " bags"
-                : "-"
-              }
-            </span>
-          </div>
-
-          ${
-            balance !== ""
-            ?
-            `
-              <div class="balance-box">
-
-                <div class="balance-label">
-                  Feed To Be Supplied
-                </div>
-
-                <div class="balance-value">
-                  ${escapeHtml(balance)}
-                  bags
-                </div>
-
-              </div>
-            `
-            :
-            ""
-          }
-
-          ${
-            status
-            ?
-            `
-              <div class="order-status">
-                ${escapeHtml(status)}
-              </div>
-            `
-            :
-            ""
-          }
-
-        `;
-
-
-        farmList.appendChild(card);
-
-      });
-
+      renderHomeFarms();
 
     }
+
 
     catch (error) {
 
@@ -850,16 +686,418 @@
 
 
   // ==========================================================
+  // SUMMARY
+  // ==========================================================
+
+  function updateSummary() {
+
+    let totalBirds = 0;
+
+    let totalFeedBalance = 0;
+
+    let ordersRequired = 0;
+
+
+    dashboardRows.forEach(row => {
+
+      totalBirds +=
+        Number(row[2]) || 0;
+
+
+      totalFeedBalance +=
+        Number(row[7]) || 0;
+
+
+      if (
+        row[8] === "ORDER REQUIRED"
+      ) {
+
+        ordersRequired++;
+
+      }
+
+    });
+
+
+    document.getElementById(
+      "totalFarms"
+    ).textContent =
+      dashboardRows.length;
+
+
+    document.getElementById(
+      "totalBirds"
+    ).textContent =
+      totalBirds.toLocaleString();
+
+
+    document.getElementById(
+      "totalFeed"
+    ).textContent =
+      totalFeedBalance;
+
+
+    document.getElementById(
+      "ordersRequired"
+    ).textContent =
+      ordersRequired;
+
+  }
+
+
+  // ==========================================================
+  // HOME FARM CARDS
+  // ==========================================================
+
+  function renderHomeFarms() {
+
+    const farmList =
+      document.getElementById("farmList");
+
+
+    farmList.innerHTML = "";
+
+
+    dashboardRows.forEach(row => {
+
+      const farm =
+        row[0] || "";
+
+      const batch =
+        row[1] || "";
+
+      const birds =
+        row[2] || "";
+
+      const age =
+        row[3] || "";
+
+      const feed =
+        row[4] || "";
+
+      const required =
+        row[5] || "";
+
+      const supplied =
+        row[6] || "";
+
+      const balance =
+        row[7] || "";
+
+      const status =
+        row[8] || "";
+
+
+      const card =
+        document.createElement("div");
+
+
+      card.className =
+        "farm-card";
+
+
+      card.innerHTML = `
+
+        <div class="farm-name">
+          ${escapeHtml(farm)}
+        </div>
+
+        <div class="batch">
+          Batch: ${escapeHtml(batch)}
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="data-row">
+          <span class="data-label">
+            Birds
+          </span>
+
+          <span class="data-value">
+            ${escapeHtml(birds)}
+          </span>
+        </div>
+
+        <div class="data-row">
+          <span class="data-label">
+            Age
+          </span>
+
+          <span class="data-value">
+            ${
+              age
+              ? "Day " + escapeHtml(age)
+              : "-"
+            }
+          </span>
+        </div>
+
+        <div class="data-row">
+          <span class="data-label">
+            Current Feed
+          </span>
+
+          <span class="data-value">
+            ${escapeHtml(feed || "-")}
+          </span>
+        </div>
+
+        <div class="data-row">
+          <span class="data-label">
+            Feed Required
+          </span>
+
+          <span class="data-value">
+            ${
+              required
+              ? escapeHtml(required) + " bags"
+              : "-"
+            }
+          </span>
+        </div>
+
+        <div class="data-row">
+          <span class="data-label">
+            Feed Supplied
+          </span>
+
+          <span class="data-value">
+            ${
+              supplied
+              ? escapeHtml(supplied) + " bags"
+              : "-"
+            }
+          </span>
+        </div>
+
+        ${
+          balance !== ""
+          ?
+          `
+            <div class="balance-box">
+
+              <div class="balance-label">
+                Feed To Be Supplied
+              </div>
+
+              <div class="balance-value">
+                ${escapeHtml(balance)} bags
+              </div>
+
+            </div>
+          `
+          :
+          ""
+        }
+
+        ${
+          status
+          ?
+          `
+            <div class="order-status">
+              ${escapeHtml(status)}
+            </div>
+          `
+          :
+          ""
+        }
+
+      `;
+
+
+      farmList.appendChild(card);
+
+    });
+
+  }
+
+
+  // ==========================================================
+  // FARMS SCREEN
+  // ==========================================================
+
+  function renderFarms() {
+
+    const farmsList =
+      document.getElementById("farmsList");
+
+
+    if (
+      !dashboardRows ||
+      dashboardRows.length === 0
+    ) {
+
+      farmsList.innerHTML = `
+        <div class="placeholder">
+          No active farms found.
+        </div>
+      `;
+
+      return;
+
+    }
+
+
+    farmsList.innerHTML = "";
+
+
+    dashboardRows.forEach(row => {
+
+      const farm =
+        row[0] || "";
+
+      const batch =
+        row[1] || "";
+
+      const birds =
+        row[2] || "";
+
+      const age =
+        row[3] || "";
+
+      const feed =
+        row[4] || "";
+
+      const balance =
+        row[7] || "";
+
+      const status =
+        row[8] || "";
+
+
+      const card =
+        document.createElement("div");
+
+
+      card.className =
+        "farm-list-card";
+
+
+      card.innerHTML = `
+
+        <div class="farm-list-top">
+
+          <div>
+
+            <div class="farm-list-name">
+              ${escapeHtml(farm)}
+            </div>
+
+            <div class="farm-list-batch">
+              Batch: ${escapeHtml(batch)}
+            </div>
+
+          </div>
+
+          <div class="farm-list-arrow">
+            ›
+          </div>
+
+        </div>
+
+
+        <div class="farm-mini-grid">
+
+          <div class="mini-box">
+
+            <div class="mini-label">
+              Birds
+            </div>
+
+            <div class="mini-value">
+              ${escapeHtml(birds)}
+            </div>
+
+          </div>
+
+
+          <div class="mini-box">
+
+            <div class="mini-label">
+              Age
+            </div>
+
+            <div class="mini-value">
+              ${
+                age
+                ? "Day " + escapeHtml(age)
+                : "-"
+              }
+            </div>
+
+          </div>
+
+
+          <div class="mini-box">
+
+            <div class="mini-label">
+              Current Feed
+            </div>
+
+            <div class="mini-value">
+              ${escapeHtml(feed || "-")}
+            </div>
+
+          </div>
+
+
+          <div class="mini-box">
+
+            <div class="mini-label">
+              Feed Balance
+            </div>
+
+            <div class="mini-value">
+              ${
+                balance !== ""
+                ? escapeHtml(balance) + " bags"
+                : "-"
+              }
+            </div>
+
+          </div>
+
+        </div>
+
+
+        ${
+          status
+          ?
+          `
+            <div class="order-status">
+              ${escapeHtml(status)}
+            </div>
+          `
+          :
+          ""
+        }
+
+      `;
+
+
+      farmsList.appendChild(card);
+
+    });
+
+  }
+
+
+  // ==========================================================
   // HTML SAFETY
   // ==========================================================
 
   function escapeHtml(value) {
 
     return String(value)
+
       .replace(/&/g, "&amp;")
+
       .replace(/</g, "&lt;")
+
       .replace(/>/g, "&gt;")
+
       .replace(/"/g, "&quot;")
+
       .replace(/'/g, "&#039;");
 
   }
@@ -877,14 +1115,6 @@
 
         navigator.serviceWorker
           .register("sw.js")
-
-          .then(() => {
-
-            console.log(
-              "KG Farms PWA ready"
-            );
-
-          })
 
           .catch(error => {
 
