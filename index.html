@@ -263,6 +263,11 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+}
+
 .primary {
   background: #1f7a45;
   color: white;
@@ -393,6 +398,10 @@ textarea {
   background: white;
 }
 
+input[readonly] {
+  background: #f7f9fa;
+}
+
 textarea {
   min-height: 80px;
 }
@@ -452,9 +461,41 @@ textarea {
   border-bottom: none;
 }
 
+.live-bird-box {
+  background: #eef6f1;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.live-bird-label {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.live-bird-value {
+  font-size: 27px;
+  font-weight: bold;
+  color: #1f7a45;
+  margin-top: 4px;
+}
+
+.closing-bird-box {
+  background: #f7f9fa;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.closing-bird-value {
+  font-size: 23px;
+  font-weight: bold;
+}
+
 </style>
 
 </head>
+
 
 <body>
 
@@ -476,7 +517,7 @@ textarea {
 
 
 <!-- ======================================================
-     HOME DASHBOARD
+     HOME
 ====================================================== -->
 
 <section id="homePage"
@@ -486,14 +527,10 @@ textarea {
     Dashboard
   </div>
 
-
   <div id="homeError"></div>
 
 
-  <!-- MAIN STATISTICS -->
-
   <div class="dashboard-grid">
-
 
     <div class="dashboard-stat">
 
@@ -597,8 +634,6 @@ textarea {
   </div>
 
 
-  <!-- QUICK ACTIONS -->
-
   <div class="card">
 
     <div class="card-title">
@@ -611,105 +646,73 @@ textarea {
 
       <button class="quick-btn"
               onclick="showPage('dailyPage')">
-
         + Daily Entry
-
       </button>
-
 
       <button class="quick-btn"
               onclick="showPage('feedSupplyPage')">
-
         + Supply Feed
-
       </button>
-
 
       <button class="quick-btn"
               onclick="showPage('ordersPage')">
-
         Feed Orders
-
       </button>
-
 
       <button class="quick-btn"
               onclick="showPage('vaccinesPage')">
-
         Vaccines
-
       </button>
 
     </div>
 
   </div>
 
-
-  <!-- TODAY'S VACCINES -->
 
   <div class="section-subtitle">
     Today's Vaccine Work
   </div>
 
-
   <div id="todayVaccines">
-
     <div class="loading">
       Loading...
     </div>
-
   </div>
 
-
-  <!-- NEXT VACCINES -->
 
   <div class="section-subtitle">
     Next Vaccines
   </div>
 
-
   <div id="nextVaccines">
-
     <div class="loading">
       Loading...
     </div>
-
   </div>
 
-
-  <!-- FEED ACTION -->
 
   <div class="section-subtitle">
     Feed Requiring Action
   </div>
 
-
   <div id="dashboardFeedAction">
-
     <div class="loading">
       Loading...
     </div>
-
   </div>
 
-
-  <!-- FARM OVERVIEW -->
 
   <div class="section-subtitle">
     Farm Overview
   </div>
 
-
   <div id="dashboardFarmOverview">
-
     <div class="loading">
       Loading...
     </div>
-
   </div>
 
 </section>
-
 
 
 <!-- ======================================================
@@ -724,15 +727,12 @@ textarea {
   </div>
 
   <div id="farmsList">
-
     <div class="loading">
       Loading farms...
     </div>
-
   </div>
 
 </section>
-
 
 
 <!-- ======================================================
@@ -744,15 +744,12 @@ textarea {
 
   <button class="back-btn"
           onclick="showPage('farmsPage')">
-
     ← Back to Farms
-
   </button>
 
   <div id="farmDetails"></div>
 
 </section>
-
 
 
 <!-- ======================================================
@@ -768,21 +765,28 @@ textarea {
 
   <div id="dailyMessage"></div>
 
+
   <div class="card">
+
 
     <div class="form-group">
 
-      <label>Date</label>
+      <label>
+        Date
+      </label>
 
       <input type="date"
-             id="dailyDate">
+             id="dailyDate"
+             onchange="updateDailyBatch()">
 
     </div>
 
 
     <div class="form-group">
 
-      <label>Farm / Batch</label>
+      <label>
+        Farm / Batch
+      </label>
 
       <select id="dailyBatch"
               onchange="updateDailyBatch()">
@@ -798,7 +802,9 @@ textarea {
 
     <div class="form-group">
 
-      <label>Farm Name</label>
+      <label>
+        Farm Name
+      </label>
 
       <input type="text"
              id="dailyFarmName"
@@ -809,7 +815,22 @@ textarea {
 
     <div class="form-group">
 
-      <label>Age</label>
+      <label>
+        Placement Date
+      </label>
+
+      <input type="text"
+             id="dailyPlacementDate"
+             readonly>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>
+        Age
+      </label>
 
       <input type="text"
              id="dailyAge"
@@ -818,32 +839,60 @@ textarea {
     </div>
 
 
-    <div class="form-group">
+    <div class="live-bird-box">
 
-      <label>Birds</label>
+      <div class="live-bird-label">
+        Current Live Birds
+      </div>
 
-      <input type="number"
-             id="dailyBirds"
-             readonly>
+      <div id="dailyBirdsDisplay"
+           class="live-bird-value">
+        -
+      </div>
+
+      <input type="hidden"
+             id="dailyBirds">
 
     </div>
 
 
     <div class="form-group">
 
-      <label>Mortality</label>
+      <label>
+        Mortality
+      </label>
 
       <input type="number"
              id="dailyMortality"
              min="0"
-             value="0">
+             value="0"
+             oninput="calculateClosingBirds()">
+
+    </div>
+
+
+    <div class="closing-bird-box">
+
+      <div class="live-bird-label">
+        Birds After Mortality
+      </div>
+
+      <div id="dailyClosingBirdsDisplay"
+           class="closing-bird-value">
+        -
+      </div>
+
+      <input type="hidden"
+             id="dailyClosingBirds">
 
     </div>
 
 
     <div class="form-group">
 
-      <label>Feed Type</label>
+      <label>
+        Feed Type
+      </label>
 
       <select id="dailyFeedType">
 
@@ -885,14 +934,13 @@ textarea {
     <button class="primary full-btn"
             onclick="saveDailyEntry()">
 
-      Save Daily Entry
+      SAVE DAILY ENTRY
 
     </button>
 
   </div>
 
 </section>
-
 
 
 <!-- ======================================================
@@ -909,11 +957,9 @@ textarea {
   <div id="feedMessage"></div>
 
   <div id="feedList">
-
     <div class="loading">
       Loading feed...
     </div>
-
   </div>
 
 
@@ -935,9 +981,7 @@ textarea {
 
       <button class="secondary small-btn"
               onclick="showPage('ordersPage')">
-
         View
-
       </button>
 
     </div>
@@ -945,7 +989,6 @@ textarea {
   </div>
 
 </section>
-
 
 
 <!-- ======================================================
@@ -957,9 +1000,7 @@ textarea {
 
   <button class="back-btn"
           onclick="showPage('feedPage')">
-
     ← Back to Feed
-
   </button>
 
   <div class="section-title">
@@ -968,11 +1009,14 @@ textarea {
 
   <div id="feedSupplyMessage"></div>
 
+
   <div class="card">
 
     <div class="form-group">
 
-      <label>Date</label>
+      <label>
+        Date
+      </label>
 
       <input type="date"
              id="supplyDate">
@@ -982,7 +1026,9 @@ textarea {
 
     <div class="form-group">
 
-      <label>Farm / Batch</label>
+      <label>
+        Farm / Batch
+      </label>
 
       <select id="supplyBatch"
               onchange="updateSupplyBatch()">
@@ -998,7 +1044,9 @@ textarea {
 
     <div class="form-group">
 
-      <label>Farm Name</label>
+      <label>
+        Farm Name
+      </label>
 
       <input type="text"
              id="supplyFarmName"
@@ -1009,7 +1057,9 @@ textarea {
 
     <div class="form-group">
 
-      <label>Feed Type</label>
+      <label>
+        Feed Type
+      </label>
 
       <select id="supplyFeedType">
 
@@ -1036,7 +1086,9 @@ textarea {
 
     <div class="form-group">
 
-      <label>Bags Supplied</label>
+      <label>
+        Bags Supplied
+      </label>
 
       <input type="number"
              id="supplyBags"
@@ -1048,7 +1100,9 @@ textarea {
 
     <div class="form-group">
 
-      <label>Remarks</label>
+      <label>
+        Remarks
+      </label>
 
       <textarea id="supplyRemarks"
                 placeholder="Optional"></textarea>
@@ -1059,14 +1113,13 @@ textarea {
     <button class="primary full-btn"
             onclick="saveFeedSupply()">
 
-      Save Feed Supply
+      SAVE FEED SUPPLY
 
     </button>
 
   </div>
 
 </section>
-
 
 
 <!-- ======================================================
@@ -1078,9 +1131,7 @@ textarea {
 
   <button class="back-btn"
           onclick="showPage('feedPage')">
-
     ← Back to Feed
-
   </button>
 
   <div class="section-title">
@@ -1090,15 +1141,12 @@ textarea {
   <div id="ordersMessage"></div>
 
   <div id="ordersList">
-
     <div class="loading">
       Loading orders...
     </div>
-
   </div>
 
 </section>
-
 
 
 <!-- ======================================================
@@ -1110,9 +1158,7 @@ textarea {
 
   <button class="back-btn"
           onclick="showPage('feedPage')">
-
     ← Back to Feed
-
   </button>
 
   <div class="section-title">
@@ -1120,6 +1166,7 @@ textarea {
   </div>
 
   <div id="orderMessage"></div>
+
 
   <div class="card">
 
@@ -1184,7 +1231,6 @@ textarea {
 </section>
 
 
-
 <!-- ======================================================
      VACCINES
 ====================================================== -->
@@ -1196,16 +1242,15 @@ textarea {
     Vaccine Management
   </div>
 
+
   <div class="section-subtitle">
     Upcoming Vaccines
   </div>
 
   <div id="upcomingVaccines">
-
     <div class="loading">
       Loading...
     </div>
-
   </div>
 
 
@@ -1214,11 +1259,9 @@ textarea {
   </div>
 
   <div id="dateWiseVaccines">
-
     <div class="loading">
       Loading...
     </div>
-
   </div>
 
 
@@ -1227,18 +1270,15 @@ textarea {
   </div>
 
   <div id="batchWiseVaccines">
-
     <div class="loading">
       Loading...
     </div>
-
   </div>
 
 </section>
 
 
 </div>
-
 
 
 <!-- ======================================================
@@ -1299,21 +1339,20 @@ textarea {
 </div>
 
 
-
 <script>
 
 
-/* ==========================================================
-   API
-========================================================== */
+// ==========================================================
+// API
+// ==========================================================
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbzVV9-kxrknNyQroHlnY49lhrw7lWgPkNB8AmxkC_UgISCiaSxYrF1KsxRe2AGcku0B/exec";
 
 
-/* ==========================================================
-   GLOBAL DATA
-========================================================== */
+// ==========================================================
+// GLOBAL DATA
+// ==========================================================
 
 let dashboardData = [];
 
@@ -1323,12 +1362,14 @@ let orderData = [];
 
 let vaccineData = [];
 
+let batchMasterData = [];
+
 let selectedOrder = null;
 
 
-/* ==========================================================
-   START
-========================================================== */
+// ==========================================================
+// START
+// ==========================================================
 
 document.addEventListener(
   "DOMContentLoaded",
@@ -1344,9 +1385,9 @@ document.addEventListener(
 );
 
 
-/* ==========================================================
-   TODAY
-========================================================== */
+// ==========================================================
+// TODAY
+// ==========================================================
 
 function setToday() {
 
@@ -1368,9 +1409,9 @@ function setToday() {
 }
 
 
-/* ==========================================================
-   LOAD DATA
-========================================================== */
+// ==========================================================
+// LOAD DATA
+// ==========================================================
 
 async function loadData() {
 
@@ -1429,6 +1470,12 @@ async function loadData() {
       );
 
 
+    batchMasterData =
+      convertData(
+        result.batches || []
+      );
+
+
     renderDashboard();
 
     renderFarms();
@@ -1463,9 +1510,9 @@ async function loadData() {
 }
 
 
-/* ==========================================================
-   CONVERT API DATA
-========================================================== */
+// ==========================================================
+// CONVERT API DATA
+// ==========================================================
 
 function convertData(data) {
 
@@ -1489,6 +1536,7 @@ function convertData(data) {
 
       const obj = {};
 
+
       headers.forEach(
         (header,index) => {
 
@@ -1498,6 +1546,7 @@ function convertData(data) {
         }
       );
 
+
       return obj;
 
     });
@@ -1505,9 +1554,9 @@ function convertData(data) {
 }
 
 
-/* ==========================================================
-   DASHBOARD
-========================================================== */
+// ==========================================================
+// DASHBOARD
+// ==========================================================
 
 function renderDashboard() {
 
@@ -1554,11 +1603,6 @@ function renderDashboard() {
     }
   );
 
-
-  /*
-   * Feed totals are based on
-   * Feed Stage Tracker.
-   */
 
   let feedRequired = 0;
 
@@ -1651,9 +1695,9 @@ function renderDashboard() {
 }
 
 
-/* ==========================================================
-   TODAY'S VACCINES
-========================================================== */
+// ==========================================================
+// TODAY'S VACCINES
+// ==========================================================
 
 function renderTodayVaccines() {
 
@@ -1782,9 +1826,9 @@ function renderTodayVaccines() {
 }
 
 
-/* ==========================================================
-   NEXT VACCINES
-========================================================== */
+// ==========================================================
+// NEXT VACCINES
+// ==========================================================
 
 function renderNextVaccines() {
 
@@ -1964,9 +2008,9 @@ function renderNextVaccines() {
 }
 
 
-/* ==========================================================
-   DASHBOARD FEED ACTION
-========================================================== */
+// ==========================================================
+// DASHBOARD FEED
+// ==========================================================
 
 function renderDashboardFeed() {
 
@@ -2022,12 +2066,9 @@ function renderDashboardFeed() {
 
   container.innerHTML =
     rows
-      .slice(
-        0,
-        5
-      )
+      .slice(0,5)
       .map(
-        (row,index) => {
+        row => {
 
           const balance =
             Number(
@@ -2086,8 +2127,7 @@ function renderDashboardFeed() {
                   ${
                     pending
                       ? "Order Pending"
-                      : balance +
-                        " Bags"
+                      : balance + " Bags"
                   }
 
                 </span>
@@ -2110,6 +2150,7 @@ function renderDashboardFeed() {
 
               ${
                 pending
+
                   ? `
 
                     <button
@@ -2121,7 +2162,7 @@ function renderDashboardFeed() {
                         '${escapeAttribute(
                           row["Feed Stage"]
                         )}'
-                      )">
+                      ">
 
                       VIEW PENDING ORDER
 
@@ -2140,7 +2181,7 @@ function renderDashboardFeed() {
                         '${escapeAttribute(
                           row["Feed Stage"]
                         )}'
-                      )">
+                      ">
 
                       ORDER ${balance} BAGS
 
@@ -2160,9 +2201,9 @@ function renderDashboardFeed() {
 }
 
 
-/* ==========================================================
-   FARM OVERVIEW
-========================================================== */
+// ==========================================================
+// FARM OVERVIEW
+// ==========================================================
 
 function renderDashboardFarms() {
 
@@ -2413,9 +2454,9 @@ function renderDashboardFarms() {
 }
 
 
-/* ==========================================================
-   NEXT VACCINE FOR BATCH
-========================================================== */
+// ==========================================================
+// NEXT VACCINE FOR BATCH
+// ==========================================================
 
 function getNextVaccineForBatch(
   batchId
@@ -2473,9 +2514,9 @@ function getNextVaccineForBatch(
 }
 
 
-/* ==========================================================
-   NAVIGATION
-========================================================== */
+// ==========================================================
+// NAVIGATION
+// ==========================================================
 
 function showPage(
   pageId
@@ -2491,11 +2532,19 @@ function showPage(
     );
 
 
-  document
-    .getElementById(pageId)
-    .classList.add(
+  const page =
+    document.getElementById(
+      pageId
+    );
+
+
+  if (page) {
+
+    page.classList.add(
       "active"
     );
+
+  }
 
 
   document
@@ -2509,12 +2558,13 @@ function showPage(
 
 
   if (
-    pageId === "homePage"
+    pageId ===
+    "homePage"
   ) {
 
-    navHome.classList.add(
-      "active"
-    );
+    document
+      .getElementById("navHome")
+      .classList.add("active");
 
   }
 
@@ -2524,9 +2574,9 @@ function showPage(
     pageId === "farmDetailsPage"
   ) {
 
-    navFarms.classList.add(
-      "active"
-    );
+    document
+      .getElementById("navFarms")
+      .classList.add("active");
 
   }
 
@@ -2535,9 +2585,9 @@ function showPage(
     pageId === "dailyPage"
   ) {
 
-    navDaily.classList.add(
-      "active"
-    );
+    document
+      .getElementById("navDaily")
+      .classList.add("active");
 
   }
 
@@ -2549,20 +2599,21 @@ function showPage(
     pageId === "orderPage"
   ) {
 
-    navFeed.classList.add(
-      "active"
-    );
+    document
+      .getElementById("navFeed")
+      .classList.add("active");
 
   }
 
 
   if (
-    pageId === "vaccinesPage"
+    pageId ===
+    "vaccinesPage"
   ) {
 
-    navVaccines.classList.add(
-      "active"
-    );
+    document
+      .getElementById("navVaccines")
+      .classList.add("active");
 
   }
 
@@ -2575,9 +2626,9 @@ function showPage(
 }
 
 
-/* ==========================================================
-   FARMS
-========================================================== */
+// ==========================================================
+// FARMS
+// ==========================================================
 
 function renderFarms() {
 
@@ -2718,9 +2769,9 @@ function renderFarms() {
 }
 
 
-/* ==========================================================
-   FARM DETAILS
-========================================================== */
+// ==========================================================
+// FARM DETAILS
+// ==========================================================
 
 function openFarm(
   batchId
@@ -3036,16 +3087,21 @@ function openFarm(
 }
 
 
-/* ==========================================================
-   BATCH SELECTS
-========================================================== */
+// ==========================================================
+// BATCH SELECTS
+// ==========================================================
 
 function populateBatchSelects() {
 
   const batchMap = {};
 
 
-  dashboardData.forEach(
+  /*
+   * Use Batch Master as the source for
+   * Daily Entry selection.
+   */
+
+  batchMasterData.forEach(
     row => {
 
       const id =
@@ -3122,58 +3178,221 @@ function populateBatchSelects() {
 }
 
 
-/* ==========================================================
-   DAILY BATCH
-========================================================== */
+// ==========================================================
+// DAILY BATCH
+// ==========================================================
 
 function updateDailyBatch() {
 
-  const id =
+  const batchId =
     document.getElementById(
       "dailyBatch"
     ).value;
 
 
+  const entryDateText =
+    document.getElementById(
+      "dailyDate"
+    ).value;
+
+
   const row =
-    dashboardData.find(
+    batchMasterData.find(
       item =>
-        item["Batch ID"] ===
-        id
+        String(
+          item["Batch ID"]
+        ) ===
+        String(batchId)
+    );
+
+
+  if (!row) {
+
+    clearDailyBatchFields();
+
+    return;
+
+  }
+
+
+  const placementDate =
+    parseSheetDate(
+      row["Placement Date"]
+    );
+
+
+  const entryDate =
+    parseInputDate(
+      entryDateText
     );
 
 
   document.getElementById(
     "dailyFarmName"
   ).value =
-    row
-      ? row["Farm Name"] || ""
-      : "";
+    row["Farm Name"] || "";
 
 
   document.getElementById(
-    "dailyAge"
+    "dailyPlacementDate"
   ).value =
-    row
-      ? "Day " +
-        (
-          row["Age"] || ""
-        )
-      : "";
+    formatDate(
+      row["Placement Date"]
+    );
+
+
+  // --------------------------------------------------------
+  // AGE
+  // Placement Date = Day 1
+  // --------------------------------------------------------
+
+  if (
+    placementDate &&
+    entryDate &&
+    entryDate >= placementDate
+  ) {
+
+    const age =
+      daysBetween(
+        placementDate,
+        entryDate
+      ) + 1;
+
+
+    document.getElementById(
+      "dailyAge"
+    ).value =
+      "Day " + age;
+
+  }
+
+  else {
+
+    document.getElementById(
+      "dailyAge"
+    ).value =
+      "";
+
+  }
+
+
+  // --------------------------------------------------------
+  // CURRENT LIVE BIRDS
+  // --------------------------------------------------------
+
+  const currentBirds =
+    Number(
+      row["Current Birds"] || 0
+    );
 
 
   document.getElementById(
     "dailyBirds"
   ).value =
-    row
-      ? row["Birds"] || ""
-      : "";
+    currentBirds;
+
+
+  document.getElementById(
+    "dailyBirdsDisplay"
+  ).textContent =
+    currentBirds.toLocaleString();
+
+
+  calculateClosingBirds();
 
 }
 
 
-/* ==========================================================
-   DAILY ENTRY SAVE
-========================================================== */
+// ==========================================================
+// CLEAR DAILY BATCH
+// ==========================================================
+
+function clearDailyBatchFields() {
+
+  document.getElementById(
+    "dailyFarmName"
+  ).value = "";
+
+
+  document.getElementById(
+    "dailyPlacementDate"
+  ).value = "";
+
+
+  document.getElementById(
+    "dailyAge"
+  ).value = "";
+
+
+  document.getElementById(
+    "dailyBirds"
+  ).value = "";
+
+
+  document.getElementById(
+    "dailyBirdsDisplay"
+  ).textContent = "-";
+
+
+  document.getElementById(
+    "dailyClosingBirds"
+  ).value = "";
+
+
+  document.getElementById(
+    "dailyClosingBirdsDisplay"
+  ).textContent = "-";
+
+}
+
+
+// ==========================================================
+// CALCULATE CLOSING BIRDS
+// ==========================================================
+
+function calculateClosingBirds() {
+
+  const currentBirds =
+    Number(
+      document.getElementById(
+        "dailyBirds"
+      ).value || 0
+    );
+
+
+  const mortality =
+    Number(
+      document.getElementById(
+        "dailyMortality"
+      ).value || 0
+    );
+
+
+  const closingBirds =
+    Math.max(
+      0,
+      currentBirds -
+      mortality
+    );
+
+
+  document.getElementById(
+    "dailyClosingBirds"
+  ).value =
+    closingBirds;
+
+
+  document.getElementById(
+    "dailyClosingBirdsDisplay"
+  ).textContent =
+    closingBirds.toLocaleString();
+
+}
+
+
+// ==========================================================
+// SAVE DAILY ENTRY
+// ==========================================================
 
 async function saveDailyEntry() {
 
@@ -3186,72 +3405,129 @@ async function saveDailyEntry() {
   message.innerHTML = "";
 
 
+  const date =
+    document.getElementById(
+      "dailyDate"
+    ).value;
+
+
+  const batchId =
+    document.getElementById(
+      "dailyBatch"
+    ).value;
+
+
+  const farmName =
+    document.getElementById(
+      "dailyFarmName"
+    ).value;
+
+
+  const currentBirds =
+    Number(
+      document.getElementById(
+        "dailyBirds"
+      ).value || 0
+    );
+
+
+  const mortality =
+    Number(
+      document.getElementById(
+        "dailyMortality"
+      ).value || 0
+    );
+
+
+  const feedType =
+    document.getElementById(
+      "dailyFeedType"
+    ).value;
+
+
+  const remainingFeedStock =
+    document.getElementById(
+      "dailyRemainingFeed"
+    ).value;
+
+
+  if (
+    !date ||
+    !batchId ||
+    !farmName
+  ) {
+
+    message.innerHTML =
+      `<div class="error-box">
+
+        Please select the date and farm/batch.
+
+      </div>`;
+
+    return;
+
+  }
+
+
+  if (
+    mortality < 0
+  ) {
+
+    message.innerHTML =
+      `<div class="error-box">
+
+        Mortality cannot be negative.
+
+      </div>`;
+
+    return;
+
+  }
+
+
+  if (
+    mortality > currentBirds
+  ) {
+
+    message.innerHTML =
+      `<div class="error-box">
+
+        Mortality cannot exceed current live birds.
+
+      </div>`;
+
+    return;
+
+  }
+
+
   const payload = {
 
     action:
       "dailyEntry",
 
     date:
-      document.getElementById(
-        "dailyDate"
-      ).value,
+      date,
 
     batchId:
-      document.getElementById(
-        "dailyBatch"
-      ).value,
+      batchId,
 
     farmName:
-      document.getElementById(
-        "dailyFarmName"
-      ).value,
-
-    age:
-      document.getElementById(
-        "dailyAge"
-      ).value
-      .replace(
-        "Day ",
-        ""
-      ),
+      farmName,
 
     birds:
-      document.getElementById(
-        "dailyBirds"
-      ).value,
+      currentBirds,
 
     mortality:
-      document.getElementById(
-        "dailyMortality"
-      ).value || 0,
+      mortality,
 
     feedType:
-      document.getElementById(
-        "dailyFeedType"
-      ).value,
+      feedType,
 
     remainingFeedStock:
-      document.getElementById(
-        "dailyRemainingFeed"
-      ).value
+      remainingFeedStock
 
   };
-
-
-  if (
-    !payload.date ||
-    !payload.batchId ||
-    !payload.farmName
-  ) {
-
-    message.innerHTML =
-      `<div class="error-box">
-        Please complete the required fields.
-      </div>`;
-
-    return;
-
-  }
 
 
   try {
@@ -3261,11 +3537,14 @@ async function saveDailyEntry() {
         API_URL,
         {
 
-          method: "POST",
+          method:
+            "POST",
 
           headers: {
+
             "Content-Type":
               "text/plain;charset=utf-8"
+
           },
 
           body:
@@ -3288,39 +3567,104 @@ async function saveDailyEntry() {
 
       throw new Error(
         result.message ||
-        "Failed to save"
+        "Failed to save daily entry"
       );
 
     }
 
 
     message.innerHTML =
+
       `<div class="success-box">
-        Daily entry saved successfully.
+
+        Daily entry saved successfully.<br><br>
+
+        <strong>
+          ${escapeHtml(
+            result.data.farmName
+          )}
+        </strong>
+
+        ·
+
+        Day ${escapeHtml(
+          result.data.age
+        )}
+
+        <br>
+
+        Current Birds:
+        ${Number(
+          result.data.openingBirds
+        ).toLocaleString()}
+
+        <br>
+
+        Mortality:
+        ${Number(
+          result.data.mortality
+        ).toLocaleString()}
+
+        <br>
+
+        Birds After Mortality:
+        <strong>
+          ${Number(
+            result.data.closingBirds
+          ).toLocaleString()}
+        </strong>
+
       </div>`;
 
 
     document.getElementById(
       "dailyMortality"
-    ).value = 0;
+    ).value =
+      0;
 
 
     document.getElementById(
       "dailyRemainingFeed"
-    ).value = "";
+    ).value =
+      "";
+
+
+    document.getElementById(
+      "dailyClosingBirds"
+    ).value =
+      result.data.closingBirds;
+
+
+    document.getElementById(
+      "dailyClosingBirdsDisplay"
+    ).textContent =
+      Number(
+        result.data.closingBirds
+      ).toLocaleString();
 
 
     await loadData();
+
+
+    document.getElementById(
+      "dailyBatch"
+    ).value =
+      batchId;
+
+
+    updateDailyBatch();
 
   }
 
   catch(error) {
 
     message.innerHTML =
+
       `<div class="error-box">
 
-        Failed to save.<br>
-        ${escapeHtml(error.message)}
+        ${escapeHtml(
+          error.message
+        )}
 
       </div>`;
 
@@ -3329,9 +3673,9 @@ async function saveDailyEntry() {
 }
 
 
-/* ==========================================================
-   FEED
-========================================================== */
+// ==========================================================
+// FEED
+// ==========================================================
 
 function renderFeed() {
 
@@ -3487,7 +3831,9 @@ function renderFeed() {
 
               ${
                 balance > 0
+
                   ? pending
+
                     ? `
 
                       <button
@@ -3499,13 +3845,14 @@ function renderFeed() {
                           '${escapeAttribute(
                             row["Feed Stage"]
                           )}'
-                        )">
+                        ">
 
                         VIEW PENDING ORDER
 
                       </button>
 
                     `
+
                     : `
 
                       <button
@@ -3517,6 +3864,7 @@ function renderFeed() {
                       </button>
 
                     `
+
                   : ""
               }
 
@@ -3531,9 +3879,9 @@ function renderFeed() {
 }
 
 
-/* ==========================================================
-   OPEN ORDER FROM DASHBOARD
-========================================================== */
+// ==========================================================
+// OPEN ORDER BY BATCH
+// ==========================================================
 
 function openOrderByBatch(
   batchId,
@@ -3571,9 +3919,9 @@ function openOrderByBatch(
 }
 
 
-/* ==========================================================
-   FIND PENDING ORDER
-========================================================== */
+// ==========================================================
+// FIND PENDING ORDER
+// ==========================================================
 
 function findPendingOrder(
   batchId,
@@ -3607,9 +3955,9 @@ function findPendingOrder(
 }
 
 
-/* ==========================================================
-   OPEN ORDER
-========================================================== */
+// ==========================================================
+// OPEN ORDER
+// ==========================================================
 
 function openOrder(
   index
@@ -3716,10 +4064,13 @@ function openOrder(
     );
 
 
-  button.disabled = false;
+  button.disabled =
+    false;
+
 
   button.textContent =
     "CREATE ORDER";
+
 
   button.className =
     "primary";
@@ -3732,9 +4083,9 @@ function openOrder(
 }
 
 
-/* ==========================================================
-   EXISTING ORDER
-========================================================== */
+// ==========================================================
+// EXISTING ORDER
+// ==========================================================
 
 function openExistingOrder(
   batchId,
@@ -3833,8 +4184,10 @@ function openExistingOrder(
   button.disabled =
     true;
 
+
   button.textContent =
     "ORDER ALREADY CREATED";
+
 
   button.className =
     "warning";
@@ -3847,9 +4200,9 @@ function openExistingOrder(
 }
 
 
-/* ==========================================================
-   CREATE ORDER
-========================================================== */
+// ==========================================================
+// CREATE ORDER
+// ==========================================================
 
 async function createFeedOrder() {
 
@@ -3869,7 +4222,9 @@ async function createFeedOrder() {
     );
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
+
 
   button.textContent =
     "Creating Order...";
@@ -3929,11 +4284,14 @@ async function createFeedOrder() {
         API_URL,
         {
 
-          method: "POST",
+          method:
+            "POST",
 
           headers: {
+
             "Content-Type":
               "text/plain;charset=utf-8"
+
           },
 
           body:
@@ -3956,10 +4314,12 @@ async function createFeedOrder() {
 
       await loadData();
 
+
       openExistingOrder(
         selectedOrder.batchId,
         selectedOrder.feedType
       );
+
 
       return;
 
@@ -4006,6 +4366,7 @@ async function createFeedOrder() {
     button.disabled =
       false;
 
+
     button.textContent =
       "CREATE ORDER";
 
@@ -4014,9 +4375,9 @@ async function createFeedOrder() {
 }
 
 
-/* ==========================================================
-   ORDERS
-========================================================== */
+// ==========================================================
+// ORDERS
+// ==========================================================
 
 function renderOrders() {
 
@@ -4244,9 +4605,9 @@ function renderOrders() {
 }
 
 
-/* ==========================================================
-   ORDER STATUS
-========================================================== */
+// ==========================================================
+// ORDER STATUS
+// ==========================================================
 
 async function markOrderSupplied(
   rowNumber
@@ -4306,11 +4667,14 @@ async function updateOrderStatus(
         API_URL,
         {
 
-          method: "POST",
+          method:
+            "POST",
 
           headers: {
+
             "Content-Type":
               "text/plain;charset=utf-8"
+
           },
 
           body:
@@ -4364,9 +4728,9 @@ async function updateOrderStatus(
 }
 
 
-/* ==========================================================
-   SHARE ORDER
-========================================================== */
+// ==========================================================
+// SHARE ORDER
+// ==========================================================
 
 async function shareOrderByIndex(
   index
@@ -4484,9 +4848,9 @@ async function shareText(
 }
 
 
-/* ==========================================================
-   SUPPLY BATCH
-========================================================== */
+// ==========================================================
+// SUPPLY BATCH
+// ==========================================================
 
 function updateSupplyBatch() {
 
@@ -4497,7 +4861,7 @@ function updateSupplyBatch() {
 
 
   const row =
-    dashboardData.find(
+    batchMasterData.find(
       item =>
         item["Batch ID"] ===
         id
@@ -4514,9 +4878,9 @@ function updateSupplyBatch() {
 }
 
 
-/* ==========================================================
-   SAVE FEED SUPPLY
-========================================================== */
+// ==========================================================
+// SAVE FEED SUPPLY
+// ==========================================================
 
 async function saveFeedSupply() {
 
@@ -4572,7 +4936,9 @@ async function saveFeedSupply() {
     !payload.batchId ||
     !payload.farmName ||
     !payload.feedType ||
-    Number(payload.bags) <= 0
+    Number(
+      payload.bags
+    ) <= 0
   ) {
 
     message.innerHTML =
@@ -4594,11 +4960,14 @@ async function saveFeedSupply() {
         API_URL,
         {
 
-          method: "POST",
+          method:
+            "POST",
 
           headers: {
+
             "Content-Type":
               "text/plain;charset=utf-8"
+
           },
 
           body:
@@ -4655,7 +5024,9 @@ async function saveFeedSupply() {
       `<div class="error-box">
 
         Failed to save feed supply.<br>
-        ${escapeHtml(error.message)}
+        ${escapeHtml(
+          error.message
+        )}
 
       </div>`;
 
@@ -4664,9 +5035,9 @@ async function saveFeedSupply() {
 }
 
 
-/* ==========================================================
-   VACCINES
-========================================================== */
+// ==========================================================
+// VACCINES
+// ==========================================================
 
 function renderVaccines() {
 
@@ -4678,6 +5049,10 @@ function renderVaccines() {
 
 }
 
+
+// ==========================================================
+// UPCOMING VACCINES
+// ==========================================================
 
 function renderUpcomingVaccines() {
 
@@ -4749,10 +5124,7 @@ function renderUpcomingVaccines() {
 
   container.innerHTML =
     rows
-      .slice(
-        0,
-        8
-      )
+      .slice(0,8)
       .map(
         vaccine => `
 
@@ -4816,6 +5188,10 @@ function renderUpcomingVaccines() {
 
 }
 
+
+// ==========================================================
+// DATE-WISE VACCINES
+// ==========================================================
 
 function renderDateWiseVaccines() {
 
@@ -4912,10 +5288,7 @@ function renderDateWiseVaccines() {
   const groups =
     Object
       .values(grouped)
-      .slice(
-        0,
-        7
-      );
+      .slice(0,7);
 
 
   if (!groups.length) {
@@ -5006,6 +5379,10 @@ function renderDateWiseVaccines() {
 }
 
 
+// ==========================================================
+// BATCH-WISE VACCINES
+// ==========================================================
+
 function renderBatchWiseVaccines() {
 
   const container =
@@ -5054,9 +5431,28 @@ function renderBatchWiseVaccines() {
   );
 
 
+  const entries =
+    Object.entries(
+      batches
+    );
+
+
+  if (!entries.length) {
+
+    container.innerHTML =
+      `<div class="empty">
+
+        No vaccine schedules found.
+
+      </div>`;
+
+    return;
+
+  }
+
+
   container.innerHTML =
-    Object
-      .entries(batches)
+    entries
       .map(
         ([batchId,batch]) => `
 
@@ -5150,9 +5546,9 @@ function renderBatchWiseVaccines() {
 }
 
 
-/* ==========================================================
-   DATE FUNCTIONS
-========================================================== */
+// ==========================================================
+// DATE PARSING
+// ==========================================================
 
 function parseSheetDate(
   value
@@ -5198,6 +5594,25 @@ function parseSheetDate(
 
   }
 
+  else if (
+    /^\d{4}-\d{2}-\d{2}$/.test(
+      text
+    )
+  ) {
+
+    const parts =
+      text.split("-");
+
+
+    date =
+      new Date(
+        Number(parts[0]),
+        Number(parts[1]) - 1,
+        Number(parts[2])
+      );
+
+  }
+
   else {
 
     date =
@@ -5219,7 +5634,10 @@ function parseSheetDate(
 
 
   date.setHours(
-    0,0,0,0
+    0,
+    0,
+    0,
+    0
   );
 
 
@@ -5227,6 +5645,57 @@ function parseSheetDate(
 
 }
 
+
+// ==========================================================
+// INPUT DATE
+// ==========================================================
+
+function parseInputDate(
+  value
+) {
+
+  if (!value) {
+    return null;
+  }
+
+
+  const parts =
+    value.split("-");
+
+
+  if (
+    parts.length !== 3
+  ) {
+
+    return null;
+
+  }
+
+
+  const date =
+    new Date(
+      Number(parts[0]),
+      Number(parts[1]) - 1,
+      Number(parts[2])
+    );
+
+
+  date.setHours(
+    0,
+    0,
+    0,
+    0
+  );
+
+
+  return date;
+
+}
+
+
+// ==========================================================
+// FORMAT DATE
+// ==========================================================
 
 function formatDate(
   value
@@ -5260,6 +5729,10 @@ function formatDate(
 }
 
 
+// ==========================================================
+// DATE KEY
+// ==========================================================
+
 function dateKey(
   date
 ) {
@@ -5276,6 +5749,10 @@ function dateKey(
 
 }
 
+
+// ==========================================================
+// DAYS BETWEEN
+// ==========================================================
 
 function daysBetween(
   from,
@@ -5298,9 +5775,9 @@ function daysBetween(
 }
 
 
-/* ==========================================================
-   SAFETY
-========================================================== */
+// ==========================================================
+// ESCAPE HTML
+// ==========================================================
 
 function escapeHtml(
   value
@@ -5346,6 +5823,10 @@ function escapeHtml(
 }
 
 
+// ==========================================================
+// ESCAPE ATTRIBUTE
+// ==========================================================
+
 function escapeAttribute(
   value
 ) {
@@ -5357,9 +5838,9 @@ function escapeAttribute(
 }
 
 
-/* ==========================================================
-   SERVICE WORKER
-========================================================== */
+// ==========================================================
+// SERVICE WORKER
+// ==========================================================
 
 function registerServiceWorker() {
 
