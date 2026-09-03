@@ -193,6 +193,7 @@ textarea {
 
 textarea {
   min-height: 80px;
+  resize: vertical;
 }
 
 .form-group {
@@ -280,6 +281,15 @@ button:disabled {
   font-size: 13px;
 }
 
+.info-box {
+  background: #eef5ff;
+  color: #285b9f;
+  padding: 12px;
+  border-radius: 9px;
+  margin-bottom: 14px;
+  font-size: 13px;
+}
+
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -347,6 +357,7 @@ hr {
 
 <body>
 
+
 <header>
 
   <div class="header-title">
@@ -378,23 +389,58 @@ hr {
   <div class="stat-grid">
 
     <div class="stat">
-      <div class="stat-label">Farms</div>
-      <div id="totalFarms" class="stat-value">-</div>
+
+      <div class="stat-label">
+        Farms
+      </div>
+
+      <div id="totalFarms"
+           class="stat-value">
+        -
+      </div>
+
     </div>
 
-    <div class="stat">
-      <div class="stat-label">Total Birds</div>
-      <div id="totalBirds" class="stat-value">-</div>
-    </div>
 
     <div class="stat">
-      <div class="stat-label">Feed To Supply</div>
-      <div id="totalFeedBalance" class="stat-value">-</div>
+
+      <div class="stat-label">
+        Total Birds
+      </div>
+
+      <div id="totalBirds"
+           class="stat-value">
+        -
+      </div>
+
     </div>
 
+
     <div class="stat">
-      <div class="stat-label">Orders Required</div>
-      <div id="ordersRequired" class="stat-value">-</div>
+
+      <div class="stat-label">
+        Feed To Supply
+      </div>
+
+      <div id="totalFeedBalance"
+           class="stat-value">
+        -
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-label">
+        Orders Required
+      </div>
+
+      <div id="ordersRequired"
+           class="stat-value">
+        -
+      </div>
+
     </div>
 
   </div>
@@ -405,6 +451,7 @@ hr {
     <div class="row">
 
       <div>
+
         <div class="card-title">
           Feed
         </div>
@@ -412,7 +459,9 @@ hr {
         <div class="muted">
           Current feed requirements
         </div>
+
       </div>
+
 
       <button class="secondary small-btn"
               onclick="showPage('feedPage')">
@@ -442,10 +491,13 @@ hr {
     Farms
   </div>
 
+
   <div id="farmsList">
+
     <div class="loading">
       Loading farms...
     </div>
+
   </div>
 
 </section>
@@ -465,6 +517,7 @@ hr {
 
   </button>
 
+
   <div id="farmDetails"></div>
 
 </section>
@@ -481,13 +534,17 @@ hr {
     Daily Farm Entry
   </div>
 
+
   <div id="dailyMessage"></div>
+
 
   <div class="card">
 
     <div class="form-group">
 
-      <label>Date</label>
+      <label>
+        Date
+      </label>
 
       <input type="date"
              id="dailyDate">
@@ -497,7 +554,9 @@ hr {
 
     <div class="form-group">
 
-      <label>Farm / Batch</label>
+      <label>
+        Farm / Batch
+      </label>
 
       <select id="dailyBatch"
               onchange="updateDailyBatch()">
@@ -513,7 +572,9 @@ hr {
 
     <div class="form-group">
 
-      <label>Farm Name</label>
+      <label>
+        Farm Name
+      </label>
 
       <input type="text"
              id="dailyFarmName"
@@ -524,7 +585,9 @@ hr {
 
     <div class="form-group">
 
-      <label>Age</label>
+      <label>
+        Age
+      </label>
 
       <input type="text"
              id="dailyAge"
@@ -535,7 +598,9 @@ hr {
 
     <div class="form-group">
 
-      <label>Birds</label>
+      <label>
+        Birds
+      </label>
 
       <input type="number"
              id="dailyBirds"
@@ -546,7 +611,9 @@ hr {
 
     <div class="form-group">
 
-      <label>Mortality</label>
+      <label>
+        Mortality
+      </label>
 
       <input type="number"
              id="dailyMortality"
@@ -558,7 +625,9 @@ hr {
 
     <div class="form-group">
 
-      <label>Feed Type</label>
+      <label>
+        Feed Type
+      </label>
 
       <select id="dailyFeedType">
 
@@ -611,7 +680,7 @@ hr {
 
 
 <!-- ======================================================
-     FEED
+     FEED MANAGEMENT
 ====================================================== -->
 
 <section id="feedPage" class="page">
@@ -619,6 +688,7 @@ hr {
   <div class="section-title">
     Feed Management
   </div>
+
 
   <div id="feedMessage"></div>
 
@@ -638,6 +708,7 @@ hr {
         </div>
 
       </div>
+
 
       <button class="secondary small-btn"
               onclick="showPage('feedSupplyPage')">
@@ -671,10 +742,11 @@ hr {
         </div>
 
         <div class="muted">
-          Purchase/order history
+          Purchase / order history
         </div>
 
       </div>
+
 
       <button class="secondary small-btn"
               onclick="showPage('ordersPage')">
@@ -692,7 +764,7 @@ hr {
 
 
 <!-- ======================================================
-     SUPPLY FEED
+     FEED SUPPLY
 ====================================================== -->
 
 <section id="feedSupplyPage" class="page">
@@ -717,7 +789,9 @@ hr {
 
     <div class="form-group">
 
-      <label>Date</label>
+      <label>
+        Date
+      </label>
 
       <input type="date"
              id="supplyDate">
@@ -727,7 +801,9 @@ hr {
 
     <div class="form-group">
 
-      <label>Farm / Batch</label>
+      <label>
+        Farm / Batch
+      </label>
 
       <select id="supplyBatch"
               onchange="updateSupplyBatch()">
@@ -743,7 +819,9 @@ hr {
 
     <div class="form-group">
 
-      <label>Farm Name</label>
+      <label>
+        Farm Name
+      </label>
 
       <input type="text"
              id="supplyFarmName"
@@ -754,7 +832,9 @@ hr {
 
     <div class="form-group">
 
-      <label>Feed Type</label>
+      <label>
+        Feed Type
+      </label>
 
       <select id="supplyFeedType">
 
@@ -781,7 +861,9 @@ hr {
 
     <div class="form-group">
 
-      <label>Bags Supplied</label>
+      <label>
+        Bags Supplied
+      </label>
 
       <input type="number"
              id="supplyBags"
@@ -793,7 +875,9 @@ hr {
 
     <div class="form-group">
 
-      <label>Remarks</label>
+      <label>
+        Remarks
+      </label>
 
       <textarea id="supplyRemarks"
                 placeholder="Optional"></textarea>
@@ -815,7 +899,7 @@ hr {
 
 
 <!-- ======================================================
-     ORDERS
+     FEED ORDERS
 ====================================================== -->
 
 <section id="ordersPage" class="page">
@@ -849,7 +933,7 @@ hr {
 
 
 <!-- ======================================================
-     ORDER CREATE / VIEW
+     FEED ORDER
 ====================================================== -->
 
 <section id="orderPage" class="page">
@@ -972,7 +1056,7 @@ hr {
 
 
 <!-- ======================================================
-     NAVIGATION
+     BOTTOM NAVIGATION
 ====================================================== -->
 
 <div class="bottom-nav">
@@ -981,7 +1065,10 @@ hr {
           id="navHome"
           onclick="showPage('homePage')">
 
-    <span class="nav-icon">⌂</span>
+    <span class="nav-icon">
+      ⌂
+    </span>
+
     Home
 
   </button>
@@ -991,7 +1078,10 @@ hr {
           id="navFarms"
           onclick="showPage('farmsPage')">
 
-    <span class="nav-icon">▣</span>
+    <span class="nav-icon">
+      ▣
+    </span>
+
     Farms
 
   </button>
@@ -1001,7 +1091,10 @@ hr {
           id="navDaily"
           onclick="showPage('dailyPage')">
 
-    <span class="nav-icon">＋</span>
+    <span class="nav-icon">
+      ＋
+    </span>
+
     Daily
 
   </button>
@@ -1011,7 +1104,10 @@ hr {
           id="navFeed"
           onclick="showPage('feedPage')">
 
-    <span class="nav-icon">▤</span>
+    <span class="nav-icon">
+      ▤
+    </span>
+
     Feed
 
   </button>
@@ -1021,7 +1117,10 @@ hr {
           id="navVaccines"
           onclick="showPage('vaccinesPage')">
 
-    <span class="nav-icon">✓</span>
+    <span class="nav-icon">
+      ✓
+    </span>
+
     Vaccines
 
   </button>
@@ -1032,8 +1131,9 @@ hr {
 
 <script>
 
+
 /* ==========================================================
-   API
+   API URL
 ========================================================== */
 
 const API_URL =
@@ -1072,7 +1172,7 @@ document.addEventListener(
 
 
 /* ==========================================================
-   TODAY
+   SET TODAY
 ========================================================== */
 
 function setToday() {
@@ -1096,7 +1196,7 @@ function setToday() {
 
 
 /* ==========================================================
-   LOAD ALL DATA
+   LOAD DATA
 ========================================================== */
 
 async function loadData() {
@@ -1108,9 +1208,11 @@ async function loadData() {
 
 
     if (!response.ok) {
+
       throw new Error(
         "Unable to connect to server"
       );
+
     }
 
 
@@ -1119,22 +1221,31 @@ async function loadData() {
 
 
     if (result.status !== "success") {
+
       throw new Error(
-        result.message || "API error"
+        result.message ||
+        "API error"
       );
+
     }
 
 
     dashboardData =
-      convertData(result.data || []);
+      convertData(
+        result.data || []
+      );
 
 
     feedData =
-      convertData(result.feed || []);
+      convertData(
+        result.feed || []
+      );
 
 
     orderData =
-      convertData(result.orders || []);
+      convertData(
+        result.orders || []
+      );
 
 
     renderHome();
@@ -1162,7 +1273,9 @@ async function loadData() {
 
       `<div class="error-box">
         Failed to load data.<br>
-        ${escapeHtml(error.message)}
+        ${escapeHtml(
+          error.message
+        )}
       </div>`;
 
   }
@@ -1171,13 +1284,18 @@ async function loadData() {
 
 
 /* ==========================================================
-   CONVERT ARRAY TO OBJECTS
+   CONVERT API DATA
 ========================================================== */
 
 function convertData(data) {
 
-  if (!data || data.length < 2) {
+  if (
+    !data ||
+    data.length < 2
+  ) {
+
     return [];
+
   }
 
 
@@ -1185,26 +1303,32 @@ function convertData(data) {
     data[0];
 
 
-  return data.slice(1).map(row => {
+  return data
+    .slice(1)
+    .map(row => {
 
-    const obj = {};
-
-    headers.forEach(
-      (header, index) => {
-        obj[header] = row[index];
-      }
-    );
+      const obj = {};
 
 
-    return obj;
+      headers.forEach(
+        (header, index) => {
 
-  });
+          obj[header] =
+            row[index];
+
+        }
+      );
+
+
+      return obj;
+
+    });
 
 }
 
 
 /* ==========================================================
-   NAVIGATION
+   PAGE NAVIGATION
 ========================================================== */
 
 function showPage(pageId) {
@@ -1212,7 +1336,11 @@ function showPage(pageId) {
   document
     .querySelectorAll(".page")
     .forEach(page => {
-      page.classList.remove("active");
+
+      page.classList.remove(
+        "active"
+      );
+
     });
 
 
@@ -1224,29 +1352,70 @@ function showPage(pageId) {
   document
     .querySelectorAll(".nav-btn")
     .forEach(btn => {
-      btn.classList.remove("active");
+
+      btn.classList.remove(
+        "active"
+      );
+
     });
 
 
-  if (pageId === "homePage")
-    navHome.classList.add("active");
+  if (
+    pageId === "homePage"
+  ) {
 
-  if (pageId === "farmsPage")
-    navFarms.classList.add("active");
+    navHome.classList.add(
+      "active"
+    );
 
-  if (pageId === "dailyPage")
-    navDaily.classList.add("active");
+  }
+
+
+  if (
+    pageId === "farmsPage"
+  ) {
+
+    navFarms.classList.add(
+      "active"
+    );
+
+  }
+
+
+  if (
+    pageId === "dailyPage"
+  ) {
+
+    navDaily.classList.add(
+      "active"
+    );
+
+  }
+
 
   if (
     pageId === "feedPage" ||
     pageId === "feedSupplyPage" ||
     pageId === "ordersPage" ||
     pageId === "orderPage"
-  )
-    navFeed.classList.add("active");
+  ) {
 
-  if (pageId === "vaccinesPage")
-    navVaccines.classList.add("active");
+    navFeed.classList.add(
+      "active"
+    );
+
+  }
+
+
+  if (
+    pageId === "vaccinesPage"
+  ) {
+
+    navVaccines.classList.add(
+      "active"
+    );
+
+  }
 
 
   window.scrollTo({
@@ -1258,7 +1427,7 @@ function showPage(pageId) {
 
 
 /* ==========================================================
-   HOME
+   HOME DASHBOARD
 ========================================================== */
 
 function renderHome() {
@@ -1266,60 +1435,77 @@ function renderHome() {
   const batches =
     new Set(
       dashboardData
-        .map(row => row["Batch ID"])
+        .map(
+          row =>
+            row["Batch ID"]
+        )
         .filter(Boolean)
     );
 
 
   let birds = 0;
 
-  dashboardData.forEach(row => {
 
-    birds += Number(
-      row["Birds"] || 0
-    );
+  dashboardData.forEach(
+    row => {
 
-  });
+      birds += Number(
+        row["Birds"] || 0
+      );
+
+    }
+  );
 
 
   let balance = 0;
 
 
-  feedData.forEach(row => {
+  feedData.forEach(
+    row => {
 
-    balance += Number(
-      row[
-        "Balance To Be Supplied (Bags)"
-      ] || 0
-    );
-
-  });
-
-
-  const requiring =
-    feedData.filter(row =>
-      Number(
+      balance += Number(
         row[
           "Balance To Be Supplied (Bags)"
         ] || 0
-      ) > 0
+      );
+
+    }
+  );
+
+
+  const requiring =
+    feedData.filter(
+      row =>
+        Number(
+          row[
+            "Balance To Be Supplied (Bags)"
+          ] || 0
+        ) > 0
     );
 
 
-  totalFarms.textContent =
+  document.getElementById(
+    "totalFarms"
+  ).textContent =
     batches.size;
 
 
-  totalBirds.textContent =
+  document.getElementById(
+    "totalBirds"
+  ).textContent =
     birds.toLocaleString();
 
 
-  totalFeedBalance.textContent =
+  document.getElementById(
+    "totalFeedBalance"
+  ).textContent =
     balance.toLocaleString() +
     " bags";
 
 
-  ordersRequired.textContent =
+  document.getElementById(
+    "ordersRequired"
+  ).textContent =
     requiring.length;
 
 
@@ -1329,7 +1515,7 @@ function renderHome() {
 
 
 /* ==========================================================
-   HOME FEED
+   HOME FEED PREVIEW
 ========================================================== */
 
 function renderHomeFeedPreview() {
@@ -1341,12 +1527,13 @@ function renderHomeFeedPreview() {
 
 
   const rows =
-    feedData.filter(row =>
-      Number(
-        row[
-          "Balance To Be Supplied (Bags)"
-        ] || 0
-      ) > 0
+    feedData.filter(
+      row =>
+        Number(
+          row[
+            "Balance To Be Supplied (Bags)"
+          ] || 0
+        ) > 0
     );
 
 
@@ -1365,47 +1552,53 @@ function renderHomeFeedPreview() {
 
 
   container.innerHTML =
-    rows.slice(0, 4)
-      .map(row => `
+    rows
+      .slice(0, 4)
+      .map(
+        row => `
 
-        <div class="card feed-card">
+          <div class="card feed-card">
 
-          <div class="row">
+            <div class="row">
 
-            <div>
+              <div>
 
-              <div class="feed-type">
-                ${escapeHtml(
-                  row["Feed Stage"]
-                )}
+                <div class="feed-type">
+                  ${escapeHtml(
+                    row["Feed Stage"]
+                  )}
+                </div>
+
+                <div class="muted">
+                  ${escapeHtml(
+                    row["Farm Name"]
+                  )}
+                  ·
+                  ${escapeHtml(
+                    row["Batch ID"]
+                  )}
+                </div>
+
               </div>
 
-              <div class="muted">
-                ${escapeHtml(
-                  row["Farm Name"]
+
+              <span class="badge badge-orange">
+
+                ${Number(
+                  row[
+                    "Balance To Be Supplied (Bags)"
+                  ]
                 )}
-                ·
-                ${escapeHtml(
-                  row["Batch ID"]
-                )}
-              </div>
+                bags
+
+              </span>
 
             </div>
 
-
-            <span class="badge badge-orange">
-              ${Number(
-                row[
-                  "Balance To Be Supplied (Bags)"
-                ]
-              )} bags
-            </span>
-
           </div>
 
-        </div>
-
-      `)
+        `
+      )
       .join("");
 
 }
@@ -1426,23 +1619,33 @@ function renderFarms() {
   const batches = {};
 
 
-  dashboardData.forEach(row => {
+  dashboardData.forEach(
+    row => {
 
-    const id =
-      row["Batch ID"];
+      const id =
+        row["Batch ID"];
 
 
-    if (!id || batches[id]) {
-      return;
+      if (
+        !id ||
+        batches[id]
+      ) {
+
+        return;
+
+      }
+
+
+      batches[id] =
+        row;
+
     }
+  );
 
 
-    batches[id] = row;
-
-  });
-
-
-  if (!Object.keys(batches).length) {
+  if (
+    !Object.keys(batches).length
+  ) {
 
     container.innerHTML =
       `<div class="empty">
@@ -1455,69 +1658,74 @@ function renderFarms() {
 
 
   container.innerHTML =
-    Object.values(batches)
-      .map(row => `
+    Object
+      .values(batches)
+      .map(
+        row => `
 
-        <div class="card farm-card"
-             onclick="openFarm('${escapeAttribute(
-               row["Batch ID"]
-             )}')">
+          <div class="card farm-card"
+               onclick="openFarm('${escapeAttribute(
+                 row["Batch ID"]
+               )}')">
 
-          <div class="row">
+            <div class="row">
 
-            <div>
+              <div>
 
-              <div class="card-title">
-                ${escapeHtml(
-                  row["Farm Name"]
-                )}
+                <div class="card-title">
+                  ${escapeHtml(
+                    row["Farm Name"]
+                  )}
+                </div>
+
+                <div class="muted">
+                  Batch:
+                  ${escapeHtml(
+                    row["Batch ID"]
+                  )}
+                </div>
+
               </div>
 
-              <div class="muted">
-                Batch:
-                ${escapeHtml(
-                  row["Batch ID"]
-                )}
+
+              <div style="text-align:right">
+
+                <div class="big-number">
+                  ${Number(
+                    row["Birds"] || 0
+                  ).toLocaleString()}
+                </div>
+
+                <div class="muted">
+                  Birds
+                </div>
+
               </div>
 
             </div>
 
 
-            <div style="text-align:right">
+            <hr>
 
-              <div class="big-number">
-                ${Number(
-                  row["Birds"] || 0
-                ).toLocaleString()}
-              </div>
 
-              <div class="muted">
-                Birds
-              </div>
+            <div class="feed-line">
+
+              <span>
+                Age
+              </span>
+
+              <strong>
+                Day ${escapeHtml(
+                  row["Age"] || ""
+                )}
+              </strong>
 
             </div>
 
           </div>
 
-
-          <hr>
-
-
-          <div class="feed-line">
-
-            <span>Age</span>
-
-            <strong>
-              Day ${escapeHtml(
-                row["Age"] || ""
-              )}
-            </strong>
-
-          </div>
-
-        </div>
-
-      `)
+        `
+      )
       .join("");
 
 }
@@ -1532,17 +1740,21 @@ function openFarm(batchId) {
   const row =
     dashboardData.find(
       item =>
-        item["Batch ID"] === batchId
+        item["Batch ID"] ===
+        batchId
     );
 
 
-  if (!row) return;
+  if (!row) {
+    return;
+  }
 
 
   const feeds =
     feedData.filter(
       item =>
-        item["Batch ID"] === batchId
+        item["Batch ID"] ===
+        batchId
     );
 
 
@@ -1559,36 +1771,58 @@ function openFarm(batchId) {
       </div>
 
       <div class="muted">
-        Batch ${escapeHtml(batchId)}
+        Batch ${escapeHtml(
+          batchId
+        )}
       </div>
+
 
       <hr>
 
+
       <div class="feed-line">
-        <span>Birds</span>
+
+        <span>
+          Birds
+        </span>
+
         <strong>
           ${Number(
             row["Birds"] || 0
           ).toLocaleString()}
         </strong>
+
       </div>
 
+
       <div class="feed-line">
-        <span>Age</span>
+
+        <span>
+          Age
+        </span>
+
         <strong>
           Day ${escapeHtml(
             row["Age"] || ""
           )}
         </strong>
+
       </div>
 
+
       <div class="feed-line">
-        <span>Current Feed</span>
+
+        <span>
+          Current Feed
+        </span>
+
         <strong>
           ${escapeHtml(
-            row["Current Feed"] || "—"
+            row["Current Feed"] ||
+            "—"
           )}
         </strong>
+
       </div>
 
     </div>
@@ -1600,83 +1834,105 @@ function openFarm(batchId) {
         Feed
       </div>
 
+
       ${
-        feeds.map(item => {
+        feeds
+          .map(item => {
 
-          const balance =
-            Number(
-              item[
-                "Balance To Be Supplied (Bags)"
-              ] || 0
-            );
+            const balance =
+              Number(
+                item[
+                  "Balance To Be Supplied (Bags)"
+                ] || 0
+              );
 
 
-          return `
+            return `
 
-            <div class="feed-card"
-                 style="padding:10px;margin-bottom:10px">
+              <div class="feed-card"
+                   style="padding:10px;margin-bottom:10px">
 
-              <div class="row">
+                <div class="row">
 
-                <div class="feed-type">
-                  ${escapeHtml(
-                    item["Feed Stage"]
-                  )}
+                  <div class="feed-type">
+                    ${escapeHtml(
+                      item["Feed Stage"]
+                    )}
+                  </div>
+
+
+                  <span class="badge ${
+                    balance > 0
+                      ? "badge-orange"
+                      : "badge-green"
+                  }">
+
+                    ${
+                      balance > 0
+                        ? "To Be Supplied"
+                        : "Complete"
+                    }
+
+                  </span>
+
                 </div>
 
-                <span class="badge ${
-                  balance > 0
-                    ? "badge-orange"
-                    : "badge-green"
-                }">
 
-                  ${
-                    balance > 0
-                      ? "To Be Supplied"
-                      : "Complete"
-                  }
+                <div class="feed-line">
 
-                </span>
+                  <span>
+                    Required
+                  </span>
+
+                  <strong>
+                    ${Number(
+                      item[
+                        "Feed Required (50kg Bags)"
+                      ] || 0
+                    )}
+                    bags
+                  </strong>
+
+                </div>
+
+
+                <div class="feed-line">
+
+                  <span>
+                    Supplied
+                  </span>
+
+                  <strong>
+                    ${Number(
+                      item[
+                        "Feed Supplied (Bags)"
+                      ] || 0
+                    )}
+                    bags
+                  </strong>
+
+                </div>
+
+
+                <div class="feed-line">
+
+                  <span>
+                    To Supply
+                  </span>
+
+                  <strong>
+                    ${balance}
+                    bags
+                  </strong>
+
+                </div>
 
               </div>
 
+            `;
 
-              <div class="feed-line">
-                <span>Required</span>
-                <strong>
-                  ${Number(
-                    item[
-                      "Feed Required (50kg Bags)"
-                    ] || 0
-                  )} bags
-                </strong>
-              </div>
-
-
-              <div class="feed-line">
-                <span>Supplied</span>
-                <strong>
-                  ${Number(
-                    item[
-                      "Feed Supplied (Bags)"
-                    ] || 0
-                  )} bags
-                </strong>
-              </div>
-
-
-              <div class="feed-line">
-                <span>To Supply</span>
-                <strong>
-                  ${balance} bags
-                </strong>
-              </div>
-
-            </div>
-
-          `;
-
-        }).join("")
+          })
+          .join("")
       }
 
     </div>
@@ -1684,7 +1940,9 @@ function openFarm(batchId) {
   `;
 
 
-  showPage("farmDetailsPage");
+  showPage(
+    "farmDetailsPage"
+  );
 
 }
 
@@ -1698,60 +1956,82 @@ function populateBatchSelects() {
   const batches = {};
 
 
-  dashboardData.forEach(row => {
+  dashboardData.forEach(
+    row => {
 
-    const id =
-      row["Batch ID"];
+      const id =
+        row["Batch ID"];
 
 
-    if (!id || batches[id]) {
-      return;
+      if (
+        !id ||
+        batches[id]
+      ) {
+
+        return;
+
+      }
+
+
+      batches[id] =
+        row;
+
     }
-
-
-    batches[id] = row;
-
-  });
+  );
 
 
   const selects = [
-    document.getElementById("dailyBatch"),
-    document.getElementById("supplyBatch")
+
+    document.getElementById(
+      "dailyBatch"
+    ),
+
+    document.getElementById(
+      "supplyBatch"
+    )
+
   ];
 
 
-  selects.forEach(select => {
+  selects.forEach(
+    select => {
 
-    select.innerHTML =
-      `<option value="">
-        Select Farm / Batch
-      </option>`;
-
-
-    Object.values(batches)
-      .forEach(row => {
-
-        const option =
-          document.createElement(
-            "option"
-          );
+      select.innerHTML =
+        `<option value="">
+          Select Farm / Batch
+        </option>`;
 
 
-        option.value =
-          row["Batch ID"];
+      Object
+        .values(batches)
+        .forEach(
+          row => {
+
+            const option =
+              document.createElement(
+                "option"
+              );
 
 
-        option.textContent =
-          row["Batch ID"] +
-          " — " +
-          row["Farm Name"];
+            option.value =
+              row["Batch ID"];
 
 
-        select.appendChild(option);
+            option.textContent =
+              row["Batch ID"] +
+              " — " +
+              row["Farm Name"];
 
-      });
 
-  });
+            select.appendChild(
+              option
+            );
+
+          }
+        );
+
+    }
+  );
 
 }
 
@@ -1771,73 +2051,113 @@ function updateDailyBatch() {
   const row =
     dashboardData.find(
       item =>
-        item["Batch ID"] === id
+        item["Batch ID"] ===
+        id
     );
 
 
   if (!row) {
 
-    dailyFarmName.value = "";
-    dailyAge.value = "";
-    dailyBirds.value = "";
+    document.getElementById(
+      "dailyFarmName"
+    ).value = "";
+
+
+    document.getElementById(
+      "dailyAge"
+    ).value = "";
+
+
+    document.getElementById(
+      "dailyBirds"
+    ).value = "";
+
 
     return;
 
   }
 
 
-  dailyFarmName.value =
+  document.getElementById(
+    "dailyFarmName"
+  ).value =
     row["Farm Name"] || "";
 
 
-  dailyAge.value =
+  document.getElementById(
+    "dailyAge"
+  ).value =
     "Day " +
     (row["Age"] || "");
 
 
-  dailyBirds.value =
+  document.getElementById(
+    "dailyBirds"
+  ).value =
     row["Birds"] || "";
 
 }
 
 
 /* ==========================================================
-   DAILY ENTRY SAVE
+   DAILY ENTRY
 ========================================================== */
 
 async function saveDailyEntry() {
 
-  dailyMessage.innerHTML = "";
+  document.getElementById(
+    "dailyMessage"
+  ).innerHTML = "";
 
 
   const payload = {
 
-    action: "dailyEntry",
+    action:
+      "dailyEntry",
 
     date:
-      dailyDate.value,
+      document.getElementById(
+        "dailyDate"
+      ).value,
 
     batchId:
-      dailyBatch.value,
+      document.getElementById(
+        "dailyBatch"
+      ).value,
 
     farmName:
-      dailyFarmName.value,
+      document.getElementById(
+        "dailyFarmName"
+      ).value,
 
     age:
-      dailyAge.value
-        .replace("Day ", ""),
+      document.getElementById(
+        "dailyAge"
+      ).value
+      .replace(
+        "Day ",
+        ""
+      ),
 
     birds:
-      dailyBirds.value,
+      document.getElementById(
+        "dailyBirds"
+      ).value,
 
     mortality:
-      dailyMortality.value || 0,
+      document.getElementById(
+        "dailyMortality"
+      ).value || 0,
 
     feedType:
-      dailyFeedType.value,
+      document.getElementById(
+        "dailyFeedType"
+      ).value,
 
     remainingFeedStock:
-      dailyRemainingFeed.value
+      document.getElementById(
+        "dailyRemainingFeed"
+      ).value
 
   };
 
@@ -1848,7 +2168,10 @@ async function saveDailyEntry() {
     !payload.farmName
   ) {
 
-    dailyMessage.innerHTML =
+    document.getElementById(
+      "dailyMessage"
+    ).innerHTML =
+
       `<div class="error-box">
         Please complete the required fields.
       </div>`;
@@ -1861,26 +2184,37 @@ async function saveDailyEntry() {
   try {
 
     const response =
-      await fetch(API_URL, {
+      await fetch(
+        API_URL,
+        {
 
-        method: "POST",
+          method:
+            "POST",
 
-        headers: {
-          "Content-Type":
-            "text/plain;charset=utf-8"
-        },
+          headers: {
 
-        body:
-          JSON.stringify(payload)
+            "Content-Type":
+              "text/plain;charset=utf-8"
 
-      });
+          },
+
+          body:
+            JSON.stringify(
+              payload
+            )
+
+        }
+      );
 
 
     const result =
       await response.json();
 
 
-    if (result.status !== "success") {
+    if (
+      result.status !==
+      "success"
+    ) {
 
       throw new Error(
         result.message ||
@@ -1890,15 +2224,23 @@ async function saveDailyEntry() {
     }
 
 
-    dailyMessage.innerHTML =
+    document.getElementById(
+      "dailyMessage"
+    ).innerHTML =
+
       `<div class="success-box">
         Daily entry saved successfully.
       </div>`;
 
 
-    dailyMortality.value = 0;
+    document.getElementById(
+      "dailyMortality"
+    ).value = 0;
 
-    dailyRemainingFeed.value = "";
+
+    document.getElementById(
+      "dailyRemainingFeed"
+    ).value = "";
 
 
     await loadData();
@@ -1907,10 +2249,15 @@ async function saveDailyEntry() {
 
   catch(error) {
 
-    dailyMessage.innerHTML =
+    document.getElementById(
+      "dailyMessage"
+    ).innerHTML =
+
       `<div class="error-box">
         Failed to save.<br>
-        ${escapeHtml(error.message)}
+        ${escapeHtml(
+          error.message
+        )}
       </div>`;
 
   }
@@ -1919,7 +2266,7 @@ async function saveDailyEntry() {
 
 
 /* ==========================================================
-   FEED
+   FEED RENDER
 ========================================================== */
 
 function renderFeed() {
@@ -1943,100 +2290,100 @@ function renderFeed() {
 
 
   container.innerHTML =
-    feedData.map((row, index) => {
+    feedData
+      .map(
+        (row, index) => {
 
-      const required =
-        Number(
-          row[
-            "Feed Required (50kg Bags)"
-          ] || 0
-        );
-
-
-      const supplied =
-        Number(
-          row[
-            "Feed Supplied (Bags)"
-          ] || 0
-        );
+          const required =
+            Number(
+              row[
+                "Feed Required (50kg Bags)"
+              ] || 0
+            );
 
 
-      const balance =
-        Number(
-          row[
-            "Balance To Be Supplied (Bags)"
-          ] || 0
-        );
+          const supplied =
+            Number(
+              row[
+                "Feed Supplied (Bags)"
+              ] || 0
+            );
 
 
-      return `
-
-        <div class="card feed-card">
-
-          <div class="row">
-
-            <div>
-
-              <div class="feed-type">
-                ${escapeHtml(
-                  row["Feed Stage"]
-                )}
-              </div>
-
-              <div class="muted">
-                ${escapeHtml(
-                  row["Farm Name"]
-                )}
-                ·
-                ${escapeHtml(
-                  row["Batch ID"]
-                )}
-              </div>
-
-            </div>
+          const balance =
+            Number(
+              row[
+                "Balance To Be Supplied (Bags)"
+              ] || 0
+            );
 
 
-            <span class="badge ${
-              balance > 0
-                ? "badge-orange"
-                : "badge-green"
-            }">
+          /*
+           * Check whether a pending order
+           * already exists for this batch/feed.
+           */
 
-              ${
-                balance > 0
-                  ? "To Be Supplied"
-                  : "Complete"
-              }
-
-            </span>
-
-          </div>
+          const pendingOrder =
+            findPendingOrder(
+              row["Batch ID"],
+              row["Feed Stage"]
+            );
 
 
-          <hr>
+          let statusHtml = "";
+
+          let actionHtml = "";
 
 
-          <div class="feed-line">
-            <span>Required</span>
-            <strong>${required} bags</strong>
-          </div>
+          /* ------------------------------------------------
+             BALANCE EXISTS
+          ------------------------------------------------ */
+
+          if (balance > 0) {
+
+            if (pendingOrder) {
+
+              statusHtml =
+
+                `<span class="badge badge-orange">
+                  Order Pending
+                </span>`;
 
 
-          <div class="feed-line">
-            <span>Supplied</span>
-            <strong>${supplied} bags</strong>
-          </div>
+              actionHtml = `
+
+                <br>
+
+                <button
+                  class="warning full-btn"
+                  onclick="openExistingOrder(
+                    '${escapeAttribute(
+                      row["Batch ID"]
+                    )}',
+                    '${escapeAttribute(
+                      row["Feed Stage"]
+                    )}'
+                  )">
+
+                  ORDER PENDING
+
+                </button>
+
+              `;
+
+            }
+
+            else {
+
+              statusHtml =
+
+                `<span class="badge badge-orange">
+                  To Be Supplied
+                </span>`;
 
 
-          <div class="feed-line">
-            <span>To Supply</span>
-            <strong>${balance} bags</strong>
-          </div>
+              actionHtml = `
 
-
-          ${
-            balance > 0
-              ? `
                 <br>
 
                 <button
@@ -2046,15 +2393,180 @@ function renderFeed() {
                   ORDER ${balance} BAGS
 
                 </button>
-              `
-              : ""
+
+              `;
+
+            }
+
           }
 
-        </div>
 
-      `;
+          /* ------------------------------------------------
+             BALANCE COMPLETE
+          ------------------------------------------------ */
 
-    }).join("");
+          else {
+
+            statusHtml =
+
+              `<span class="badge badge-green">
+                Complete
+              </span>`;
+
+
+            /*
+             * If a pending order is still present
+             * even though the balance is complete,
+             * show that separately.
+             */
+
+            if (pendingOrder) {
+
+              actionHtml = `
+
+                <br>
+
+                <button
+                  class="warning full-btn"
+                  onclick="openExistingOrder(
+                    '${escapeAttribute(
+                      row["Batch ID"]
+                    )}',
+                    '${escapeAttribute(
+                      row["Feed Stage"]
+                    )}'
+                  )">
+
+                  PENDING ORDER EXISTS
+
+                </button>
+
+              `;
+
+            }
+
+          }
+
+
+          return `
+
+            <div class="card feed-card">
+
+              <div class="row">
+
+                <div>
+
+                  <div class="feed-type">
+                    ${escapeHtml(
+                      row["Feed Stage"]
+                    )}
+                  </div>
+
+                  <div class="muted">
+                    ${escapeHtml(
+                      row["Farm Name"]
+                    )}
+                    ·
+                    ${escapeHtml(
+                      row["Batch ID"]
+                    )}
+                  </div>
+
+                </div>
+
+
+                <div>
+                  ${statusHtml}
+                </div>
+
+              </div>
+
+
+              <hr>
+
+
+              <div class="feed-line">
+
+                <span>
+                  Required
+                </span>
+
+                <strong>
+                  ${required} bags
+                </strong>
+
+              </div>
+
+
+              <div class="feed-line">
+
+                <span>
+                  Supplied
+                </span>
+
+                <strong>
+                  ${supplied} bags
+                </strong>
+
+              </div>
+
+
+              <div class="feed-line">
+
+                <span>
+                  To Supply
+                </span>
+
+                <strong>
+                  ${balance} bags
+                </strong>
+
+              </div>
+
+
+              ${actionHtml}
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* ==========================================================
+   FIND PENDING ORDER
+========================================================== */
+
+function findPendingOrder(
+  batchId,
+  feedType
+) {
+
+  return orderData.find(
+    order =>
+
+      String(
+        order["Batch ID"]
+      ) === String(batchId)
+
+      &&
+
+      String(
+        order["Feed Type"]
+      ) === String(feedType)
+
+      &&
+
+      String(
+        order["Status"]
+      ).toLowerCase() ===
+      "pending"
+
+  ) || null;
 
 }
 
@@ -2069,7 +2581,9 @@ function openOrder(index) {
     feedData[index];
 
 
-  if (!row) return;
+  if (!row) {
+    return;
+  }
 
 
   const quantity =
@@ -2080,12 +2594,39 @@ function openOrder(index) {
     );
 
 
-  if (quantity <= 0) return;
+  if (quantity <= 0) {
+    return;
+  }
+
+
+  /*
+   * Double protection:
+   * Check pending order one more time.
+   */
+
+  const pending =
+    findPendingOrder(
+      row["Batch ID"],
+      row["Feed Stage"]
+    );
+
+
+  if (pending) {
+
+    openExistingOrder(
+      row["Batch ID"],
+      row["Feed Stage"]
+    );
+
+    return;
+
+  }
 
 
   selectedOrder = {
 
-    newOrder: true,
+    existing:
+      false,
 
     farmName:
       row["Farm Name"],
@@ -2102,50 +2643,34 @@ function openOrder(index) {
   };
 
 
-  orderFarm.textContent =
+  document.getElementById(
+    "orderFarm"
+  ).textContent =
     selectedOrder.farmName;
 
 
-  orderBatch.textContent =
+  document.getElementById(
+    "orderBatch"
+  ).textContent =
     selectedOrder.batchId;
 
 
-  orderFeed.textContent =
+  document.getElementById(
+    "orderFeed"
+  ).textContent =
     selectedOrder.feedType;
 
 
-  orderQuantity.textContent =
+  document.getElementById(
+    "orderQuantity"
+  ).textContent =
     selectedOrder.quantity +
     " bags";
 
 
-  orderMessage.innerHTML = "";
-
-
-  createOrderButton.disabled =
-    false;
-
-
-  createOrderButton.textContent =
-    "CREATE ORDER";
-
-
-  createOrderButton.className =
-    "primary";
-
-
-  showPage("orderPage");
-
-}
-
-
-/* ==========================================================
-   CREATE ORDER
-========================================================== */
-
-async function createFeedOrder() {
-
-  if (!selectedOrder) return;
+  document.getElementById(
+    "orderMessage"
+  ).innerHTML = "";
 
 
   const button =
@@ -2154,13 +2679,212 @@ async function createFeedOrder() {
     );
 
 
-  button.disabled = true;
+  button.disabled =
+    false;
+
+
+  button.textContent =
+    "CREATE ORDER";
+
+
+  button.className =
+    "primary";
+
+
+  showPage(
+    "orderPage"
+  );
+
+}
+
+
+/* ==========================================================
+   OPEN EXISTING PENDING ORDER
+========================================================== */
+
+function openExistingOrder(
+  batchId,
+  feedType
+) {
+
+  const existingOrder =
+    findPendingOrder(
+      batchId,
+      feedType
+    );
+
+
+  if (!existingOrder) {
+
+    alert(
+      "Pending order could not be found."
+    );
+
+
+    loadData();
+
+    return;
+
+  }
+
+
+  selectedOrder = {
+
+    existing:
+      true,
+
+    farmName:
+      existingOrder["Farm Name"],
+
+    batchId:
+      existingOrder["Batch ID"],
+
+    feedType:
+      existingOrder["Feed Type"],
+
+    quantity:
+      Number(
+        existingOrder[
+          "Order Qty (Bags)"
+        ] || 0
+      ),
+
+    status:
+      existingOrder["Status"],
+
+    orderDate:
+      existingOrder["Order Date"]
+
+  };
+
+
+  document.getElementById(
+    "orderFarm"
+  ).textContent =
+    selectedOrder.farmName;
+
+
+  document.getElementById(
+    "orderBatch"
+  ).textContent =
+    selectedOrder.batchId;
+
+
+  document.getElementById(
+    "orderFeed"
+  ).textContent =
+    selectedOrder.feedType;
+
+
+  document.getElementById(
+    "orderQuantity"
+  ).textContent =
+    selectedOrder.quantity +
+    " bags";
+
+
+  document.getElementById(
+    "orderMessage"
+  ).innerHTML =
+
+    `<div class="info-box">
+
+      A pending order already exists
+      for this batch and feed type.
+
+    </div>`;
+
+
+  const button =
+    document.getElementById(
+      "createOrderButton"
+    );
+
+
+  button.disabled =
+    true;
+
+
+  button.textContent =
+    "ORDER ALREADY CREATED";
+
+
+  button.className =
+    "warning";
+
+
+  showPage(
+    "orderPage"
+  );
+
+}
+
+
+/* ==========================================================
+   CREATE FEED ORDER
+========================================================== */
+
+async function createFeedOrder() {
+
+  if (!selectedOrder) {
+    return;
+  }
+
+
+  /*
+   * If this is an existing order,
+   * never submit it again.
+   */
+
+  if (
+    selectedOrder.existing
+  ) {
+
+    return;
+
+  }
+
+
+  const button =
+    document.getElementById(
+      "createOrderButton"
+    );
+
+
+  button.disabled =
+    true;
+
 
   button.textContent =
     "Creating Order...";
 
 
-  orderMessage.innerHTML = "";
+  document.getElementById(
+    "orderMessage"
+  ).innerHTML = "";
+
+
+  /*
+   * Final browser-side duplicate check.
+   */
+
+  const existing =
+    findPendingOrder(
+      selectedOrder.batchId,
+      selectedOrder.feedType
+    );
+
+
+  if (existing) {
+
+    openExistingOrder(
+      selectedOrder.batchId,
+      selectedOrder.feedType
+    );
+
+    return;
+
+  }
 
 
   const today =
@@ -2198,49 +2922,98 @@ async function createFeedOrder() {
   try {
 
     const response =
-      await fetch(API_URL, {
+      await fetch(
+        API_URL,
+        {
 
-        method: "POST",
+          method:
+            "POST",
 
-        headers: {
-          "Content-Type":
-            "text/plain;charset=utf-8"
-        },
+          headers: {
 
-        body:
-          JSON.stringify(payload)
+            "Content-Type":
+              "text/plain;charset=utf-8"
 
-      });
+          },
+
+          body:
+            JSON.stringify(
+              payload
+            )
+
+        }
+      );
 
 
     const result =
       await response.json();
 
 
+    /* ------------------------------------------------------
+       DUPLICATE RESPONSE
+    ------------------------------------------------------ */
+
     if (
       result.status ===
       "duplicate"
     ) {
 
-      orderMessage.innerHTML =
-        `<div class="error-box">
-          ${escapeHtml(
-            result.message
-          )}
-        </div>`;
+      /*
+       * Refresh first so we get
+       * the existing order.
+       */
+
+      await loadData();
 
 
-      button.disabled = false;
+      const existingOrder =
+        findPendingOrder(
+          selectedOrder.batchId,
+          selectedOrder.feedType
+        );
 
-      button.textContent =
-        "CREATE ORDER";
+
+      if (existingOrder) {
+
+        openExistingOrder(
+          selectedOrder.batchId,
+          selectedOrder.feedType
+        );
+
+      }
+
+      else {
+
+        document.getElementById(
+          "orderMessage"
+        ).innerHTML =
+
+          `<div class="error-box">
+            ${escapeHtml(
+              result.message
+            )}
+          </div>`;
+
+
+        button.disabled =
+          false;
+
+
+        button.textContent =
+          "CREATE ORDER";
+
+      }
+
 
       return;
 
     }
 
 
-    if (result.status !== "success") {
+    if (
+      result.status !==
+      "success"
+    ) {
 
       throw new Error(
         result.message ||
@@ -2250,9 +3023,14 @@ async function createFeedOrder() {
     }
 
 
-    orderMessage.innerHTML =
+    document.getElementById(
+      "orderMessage"
+    ).innerHTML =
+
       `<div class="success-box">
+
         Feed order created successfully.
+
       </div>`;
 
 
@@ -2266,20 +3044,50 @@ async function createFeedOrder() {
 
     await loadData();
 
+
+    /*
+     * Convert the screen to the
+     * existing-order state.
+     */
+
+    const createdOrder =
+      findPendingOrder(
+        selectedOrder.batchId,
+        selectedOrder.feedType
+      );
+
+
+    if (createdOrder) {
+
+      openExistingOrder(
+        selectedOrder.batchId,
+        selectedOrder.feedType
+      );
+
+    }
+
   }
 
   catch(error) {
 
-    orderMessage.innerHTML =
+    document.getElementById(
+      "orderMessage"
+    ).innerHTML =
+
       `<div class="error-box">
+
         Failed to create order.<br>
+
         ${escapeHtml(
           error.message
         )}
+
       </div>`;
 
 
-    button.disabled = false;
+    button.disabled =
+      false;
+
 
     button.textContent =
       "CREATE ORDER";
@@ -2290,7 +3098,7 @@ async function createFeedOrder() {
 
 
 /* ==========================================================
-   RENDER ORDERS
+   FEED ORDERS HISTORY
 ========================================================== */
 
 function renderOrders() {
@@ -2305,9 +3113,11 @@ function renderOrders() {
 
     container.innerHTML =
       `<div class="card">
+
         <div class="empty">
           No feed orders yet.
         </div>
+
       </div>`;
 
     return;
@@ -2319,170 +3129,224 @@ function renderOrders() {
     orderData
       .slice()
       .reverse()
-      .map((order, reverseIndex) => {
-
-        const originalIndex =
-          orderData.length -
-          1 -
-          reverseIndex;
-
-
-        const rowNumber =
-          originalIndex + 2;
+      .map(
+        (
+          order,
+          reverseIndex
+        ) => {
 
 
-        const status =
-          order["Status"] ||
-          "Pending";
+          const originalIndex =
+            orderData.length -
+            1 -
+            reverseIndex;
 
 
-        let badgeClass =
-          "badge-orange";
+          /*
+           * Header is row 1,
+           * therefore sheet row is index + 2.
+           */
+
+          const sheetRow =
+            originalIndex + 2;
 
 
-        if (status === "Supplied") {
-          badgeClass =
-            "badge-green";
-        }
+          const status =
+            order["Status"] ||
+            "Pending";
 
 
-        if (status === "Cancelled") {
-          badgeClass =
-            "badge-red";
-        }
+          let badgeClass =
+            "badge-orange";
 
 
-        return `
+          if (
+            status ===
+            "Supplied"
+          ) {
 
-          <div class="card order-card">
+            badgeClass =
+              "badge-green";
 
-            <div class="row">
+          }
 
-              <div>
 
-                <div class="card-title">
-                  ${escapeHtml(
-                    order["Farm Name"]
-                  )}
+          if (
+            status ===
+            "Cancelled"
+          ) {
+
+            badgeClass =
+              "badge-red";
+
+          }
+
+
+          return `
+
+            <div class="card order-card">
+
+              <div class="row">
+
+                <div>
+
+                  <div class="card-title">
+
+                    ${escapeHtml(
+                      order["Farm Name"]
+                    )}
+
+                  </div>
+
+
+                  <div class="muted">
+
+                    Batch:
+                    ${escapeHtml(
+                      order["Batch ID"]
+                    )}
+
+                  </div>
+
                 </div>
 
-                <div class="muted">
-                  Batch:
+
+                <span class="badge ${badgeClass}">
+
                   ${escapeHtml(
-                    order["Batch ID"]
+                    status
                   )}
-                </div>
+
+                </span>
 
               </div>
 
 
-              <span class="badge ${badgeClass}">
-                ${escapeHtml(status)}
-              </span>
-
-            </div>
+              <hr>
 
 
-            <hr>
+              <div class="feed-line">
+
+                <span>
+                  Order Date
+                </span>
+
+                <strong>
+                  ${formatDate(
+                    order["Order Date"]
+                  )}
+                </strong>
+
+              </div>
 
 
-            <div class="feed-line">
+              <div class="feed-line">
 
-              <span>Order Date</span>
+                <span>
+                  Feed
+                </span>
 
-              <strong>
-                ${formatDate(
-                  order["Order Date"]
-                )}
-              </strong>
+                <strong>
+                  ${escapeHtml(
+                    order["Feed Type"]
+                  )}
+                </strong>
 
-            </div>
-
-
-            <div class="feed-line">
-
-              <span>Feed</span>
-
-              <strong>
-                ${escapeHtml(
-                  order["Feed Type"]
-                )}
-              </strong>
-
-            </div>
+              </div>
 
 
-            <div class="feed-line">
+              <div class="feed-line">
 
-              <span>Quantity</span>
+                <span>
+                  Quantity
+                </span>
 
-              <strong>
-                ${Number(
-                  order[
-                    "Order Qty (Bags)"
-                  ] || 0
-                )} bags
-              </strong>
+                <strong>
+                  ${Number(
+                    order[
+                      "Order Qty (Bags)"
+                    ] || 0
+                  )}
+                  bags
+                </strong>
 
-            </div>
-
-
-            ${
-              order["Remarks"]
-                ? `
-                  <div class="muted"
-                       style="margin-top:8px">
-
-                    ${escapeHtml(
-                      order["Remarks"]
-                    )}
-
-                  </div>
-                `
-                : ""
-            }
-
-
-            <div class="order-actions">
-
-              <button
-                class="secondary"
-                onclick="shareOrderByIndex(${originalIndex})">
-
-                Share
-
-              </button>
+              </div>
 
 
               ${
-                status === "Pending"
+                order["Remarks"]
                   ? `
-                    <button
-                      class="primary"
-                      onclick="markOrderSupplied(${rowNumber})">
 
-                      Supplied
+                    <div class="muted"
+                         style="margin-top:8px">
 
-                    </button>
+                      ${escapeHtml(
+                        order["Remarks"]
+                      )}
 
-                    <button
-                      class="danger"
-                      onclick="cancelOrder(${rowNumber})">
+                    </div>
 
-                      Cancel
-
-                    </button>
                   `
                   : ""
               }
 
+
+              <div class="order-actions">
+
+
+                <button
+                  class="secondary"
+                  onclick="shareOrderByIndex(
+                    ${originalIndex}
+                  )">
+
+                  Share
+
+                </button>
+
+
+                ${
+                  status ===
+                  "Pending"
+
+                    ? `
+
+                      <button
+                        class="primary"
+                        onclick="markOrderSupplied(
+                          ${sheetRow}
+                        )">
+
+                        Supplied
+
+                      </button>
+
+
+                      <button
+                        class="danger"
+                        onclick="cancelOrder(
+                          ${sheetRow}
+                        )">
+
+                        Cancel
+
+                      </button>
+
+                    `
+
+                    : ""
+                }
+
+
+              </div>
+
             </div>
 
-          </div>
+          `;
 
-        `;
-
-      }).join("");
+        }
+      )
+      .join("");
 
 }
 
@@ -2491,13 +3355,17 @@ function renderOrders() {
    SHARE ORDER FROM HISTORY
 ========================================================== */
 
-async function shareOrderByIndex(index) {
+async function shareOrderByIndex(
+  index
+) {
 
   const order =
     orderData[index];
 
 
-  if (!order) return;
+  if (!order) {
+    return;
+  }
 
 
   const text =
@@ -2518,7 +3386,9 @@ Quantity: ${order["Order Qty (Bags)"]} Bags
 Status: ${order["Status"] || "Pending"}`;
 
 
-  await shareText(text);
+  await shareText(
+    text
+  );
 
 }
 
@@ -2529,7 +3399,25 @@ Status: ${order["Status"] || "Pending"}`;
 
 async function shareCurrentOrder() {
 
-  if (!selectedOrder) return;
+  if (!selectedOrder) {
+    return;
+  }
+
+
+  const dateText =
+    selectedOrder.orderDate
+      ? formatDate(
+          selectedOrder.orderDate
+        )
+      : new Date()
+          .toLocaleDateString(
+            "en-IN"
+          );
+
+
+  const status =
+    selectedOrder.status ||
+    "Pending";
 
 
   const text =
@@ -2537,8 +3425,7 @@ async function shareCurrentOrder() {
 `KG FARMS
 FEED ORDER
 
-Date: ${new Date()
-  .toLocaleDateString("en-IN")}
+Date: ${dateText}
 
 Farm: ${selectedOrder.farmName}
 Batch: ${selectedOrder.batchId}
@@ -2546,23 +3433,29 @@ Batch: ${selectedOrder.batchId}
 Feed: ${selectedOrder.feedType}
 Quantity: ${selectedOrder.quantity} Bags
 
-Status: PENDING`;
+Status: ${status}`;
 
 
-  await shareText(text);
+  await shareText(
+    text
+  );
 
 }
 
 
 /* ==========================================================
-   SHARING
+   SHARE TEXT
 ========================================================== */
 
-async function shareText(text) {
+async function shareText(
+  text
+) {
 
   try {
 
-    if (navigator.share) {
+    if (
+      navigator.share
+    ) {
 
       await navigator.share({
 
@@ -2578,7 +3471,8 @@ async function shareText(text) {
 
     else {
 
-      await navigator.clipboard
+      await navigator
+        .clipboard
         .writeText(text);
 
 
@@ -2616,7 +3510,9 @@ async function markOrderSupplied(
     );
 
 
-  if (!confirmed) return;
+  if (!confirmed) {
+    return;
+  }
 
 
   await updateOrderStatus(
@@ -2641,7 +3537,9 @@ async function cancelOrder(
     );
 
 
-  if (!confirmed) return;
+  if (!confirmed) {
+    return;
+  }
 
 
   await updateOrderStatus(
@@ -2664,37 +3562,46 @@ async function updateOrderStatus(
   try {
 
     const response =
-      await fetch(API_URL, {
+      await fetch(
+        API_URL,
+        {
 
-        method: "POST",
+          method:
+            "POST",
 
-        headers: {
-          "Content-Type":
-            "text/plain;charset=utf-8"
-        },
+          headers: {
 
-        body:
-          JSON.stringify({
+            "Content-Type":
+              "text/plain;charset=utf-8"
 
-            action:
-              "updateFeedOrderStatus",
+          },
 
-            rowNumber:
-              rowNumber,
+          body:
+            JSON.stringify({
 
-            status:
-              status
+              action:
+                "updateFeedOrderStatus",
 
-          })
+              rowNumber:
+                rowNumber,
 
-      });
+              status:
+                status
+
+            })
+
+        }
+      );
 
 
     const result =
       await response.json();
 
 
-    if (result.status !== "success") {
+    if (
+      result.status !==
+      "success"
+    ) {
 
       throw new Error(
         result.message ||
@@ -2735,11 +3642,14 @@ function updateSupplyBatch() {
   const row =
     dashboardData.find(
       item =>
-        item["Batch ID"] === id
+        item["Batch ID"] ===
+        id
     );
 
 
-  supplyFarmName.value =
+  document.getElementById(
+    "supplyFarmName"
+  ).value =
     row
       ? row["Farm Name"] || ""
       : "";
@@ -2753,8 +3663,9 @@ function updateSupplyBatch() {
 
 async function saveFeedSupply() {
 
-  feedSupplyMessage.innerHTML =
-    "";
+  document.getElementById(
+    "feedSupplyMessage"
+  ).innerHTML = "";
 
 
   const payload = {
@@ -2763,22 +3674,34 @@ async function saveFeedSupply() {
       "feedSupply",
 
     date:
-      supplyDate.value,
+      document.getElementById(
+        "supplyDate"
+      ).value,
 
     batchId:
-      supplyBatch.value,
+      document.getElementById(
+        "supplyBatch"
+      ).value,
 
     farmName:
-      supplyFarmName.value,
+      document.getElementById(
+        "supplyFarmName"
+      ).value,
 
     feedType:
-      supplyFeedType.value,
+      document.getElementById(
+        "supplyFeedType"
+      ).value,
 
     bags:
-      supplyBags.value,
+      document.getElementById(
+        "supplyBags"
+      ).value,
 
     remarks:
-      supplyRemarks.value
+      document.getElementById(
+        "supplyRemarks"
+      ).value
 
   };
 
@@ -2788,12 +3711,19 @@ async function saveFeedSupply() {
     !payload.batchId ||
     !payload.farmName ||
     !payload.feedType ||
-    Number(payload.bags) <= 0
+    Number(
+      payload.bags
+    ) <= 0
   ) {
 
-    feedSupplyMessage.innerHTML =
+    document.getElementById(
+      "feedSupplyMessage"
+    ).innerHTML =
+
       `<div class="error-box">
+
         Please complete all required fields.
+
       </div>`;
 
     return;
@@ -2804,44 +3734,65 @@ async function saveFeedSupply() {
   try {
 
     const response =
-      await fetch(API_URL, {
+      await fetch(
+        API_URL,
+        {
 
-        method: "POST",
+          method:
+            "POST",
 
-        headers: {
-          "Content-Type":
-            "text/plain;charset=utf-8"
-        },
+          headers: {
 
-        body:
-          JSON.stringify(payload)
+            "Content-Type":
+              "text/plain;charset=utf-8"
 
-      });
+          },
+
+          body:
+            JSON.stringify(
+              payload
+            )
+
+        }
+      );
 
 
     const result =
       await response.json();
 
 
-    if (result.status !== "success") {
+    if (
+      result.status !==
+      "success"
+    ) {
 
       throw new Error(
         result.message ||
-        "Failed to save supply"
+        "Failed to save feed supply"
       );
 
     }
 
 
-    feedSupplyMessage.innerHTML =
+    document.getElementById(
+      "feedSupplyMessage"
+    ).innerHTML =
+
       `<div class="success-box">
+
         Feed supply saved successfully.
+
       </div>`;
 
 
-    supplyBags.value = "";
+    document.getElementById(
+      "supplyBags"
+    ).value = "";
 
-    supplyRemarks.value = "";
+
+    document.getElementById(
+      "supplyRemarks"
+    ).value = "";
 
 
     await loadData();
@@ -2850,12 +3801,18 @@ async function saveFeedSupply() {
 
   catch(error) {
 
-    feedSupplyMessage.innerHTML =
+    document.getElementById(
+      "feedSupplyMessage"
+    ).innerHTML =
+
       `<div class="error-box">
+
         Failed to save feed supply.<br>
+
         ${escapeHtml(
           error.message
         )}
+
       </div>`;
 
   }
@@ -2878,48 +3835,57 @@ function renderVaccines() {
   const vaccines = [];
 
 
-  dashboardData.forEach(batch => {
+  dashboardData.forEach(
+    batch => {
 
-    const batchId =
-      batch["Batch ID"];
-
-
-    if (!batchId) return;
+      const batchId =
+        batch["Batch ID"];
 
 
-    [
-      ["F1/B1", 6],
-      ["IBD", 12],
-      ["NDVH", 18],
-      ["Zenda", 22]
-    ].forEach(item => {
+      if (!batchId) {
+        return;
+      }
 
-      vaccines.push({
 
-        batchId:
-          batchId,
+      [
+        ["F1/B1", 6],
+        ["IBD", 12],
+        ["NDVH", 18],
+        ["Zenda", 22]
+      ]
+      .forEach(
+        item => {
 
-        farmName:
-          batch["Farm Name"],
+          vaccines.push({
 
-        vaccine:
-          item[0],
+            batchId:
+              batchId,
 
-        age:
-          item[1]
+            farmName:
+              batch["Farm Name"],
 
-      });
+            vaccine:
+              item[0],
 
-    });
+            age:
+              item[1]
 
-  });
+          });
+
+        }
+      );
+
+    }
+  );
 
 
   if (!vaccines.length) {
 
     container.innerHTML =
       `<div class="empty">
+
         No vaccine schedule available.
+
       </div>`;
 
     return;
@@ -2928,49 +3894,55 @@ function renderVaccines() {
 
 
   container.innerHTML =
-    vaccines.map(item => `
+    vaccines
+      .map(
+        item => `
 
-      <div class="card">
+          <div class="card">
 
-        <div class="row">
+            <div class="row">
 
-          <div>
+              <div>
 
-            <div class="card-title">
-              ${escapeHtml(
-                item.vaccine
-              )}
+                <div class="card-title">
+                  ${escapeHtml(
+                    item.vaccine
+                  )}
+                </div>
+
+                <div class="muted">
+                  ${escapeHtml(
+                    item.farmName
+                  )}
+                </div>
+
+              </div>
+
+
+              <span class="badge badge-green">
+
+                Day ${item.age}
+
+              </span>
+
             </div>
 
-            <div class="muted">
+
+            <div class="muted"
+                 style="margin-top:10px">
+
+              Batch:
               ${escapeHtml(
-                item.farmName
+                item.batchId
               )}
+
             </div>
 
           </div>
 
-
-          <span class="badge badge-green">
-            Day ${item.age}
-          </span>
-
-        </div>
-
-
-        <div class="muted"
-             style="margin-top:10px">
-
-          Batch:
-          ${escapeHtml(
-            item.batchId
-          )}
-
-        </div>
-
-      </div>
-
-    `).join("");
+        `
+      )
+      .join("");
 
 }
 
@@ -2979,17 +3951,27 @@ function renderVaccines() {
    DATE FORMAT
 ========================================================== */
 
-function formatDate(value) {
+function formatDate(
+  value
+) {
 
-  if (!value) return "";
+  if (!value) {
+    return "";
+  }
 
 
   const date =
     new Date(value);
 
 
-  if (isNaN(date)) {
+  if (
+    isNaN(
+      date.getTime()
+    )
+  ) {
+
     return String(value);
+
   }
 
 
@@ -3004,30 +3986,61 @@ function formatDate(value) {
    HTML SAFETY
 ========================================================== */
 
-function escapeHtml(value) {
+function escapeHtml(
+  value
+) {
 
   if (
     value === null ||
     value === undefined
   ) {
+
     return "";
+
   }
 
 
   return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
 
-function escapeAttribute(value) {
+function escapeAttribute(
+  value
+) {
 
-  return escapeHtml(value)
-    .replace(/"/g, "&quot;");
+  return escapeHtml(
+    value
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  );
 
 }
 
@@ -3042,22 +4055,26 @@ function registerServiceWorker() {
     "serviceWorker" in navigator
   ) {
 
-    navigator.serviceWorker
+    navigator
+      .serviceWorker
       .register("./sw.js")
-      .catch(error => {
+      .catch(
+        error => {
 
-        console.log(
-          "Service worker error:",
-          error
-        );
+          console.log(
+            "Service worker error:",
+            error
+          );
 
-      });
+        }
+      );
 
   }
 
 }
 
 </script>
+
 
 </body>
 
