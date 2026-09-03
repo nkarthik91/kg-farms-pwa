@@ -24,6 +24,7 @@
       font-family: Arial, sans-serif;
       background: #f4f6f8;
       color: #222;
+      padding-bottom: 72px;
     }
 
     /* HEADER */
@@ -31,16 +32,19 @@
     header {
       background: #1f7a45;
       color: white;
-      padding: 20px 18px;
+      padding: 18px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     header h1 {
       margin: 0;
-      font-size: 24px;
+      font-size: 23px;
     }
 
     header p {
-      margin: 5px 0 0;
+      margin: 4px 0 0;
       font-size: 13px;
       opacity: 0.9;
     }
@@ -51,6 +55,14 @@
       padding: 16px;
       max-width: 700px;
       margin: auto;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
     }
 
     .section-title {
@@ -167,32 +179,56 @@
       margin-bottom: 20px;
     }
 
-    .refresh-button:active {
-      transform: scale(0.98);
-    }
+    /* PLACEHOLDER */
 
-    /* LOADING */
-
-    .loading {
+    .placeholder {
+      background: white;
+      border-radius: 14px;
+      padding: 30px 20px;
       text-align: center;
-      padding: 35px 10px;
       color: #777;
     }
 
-    .error {
+    /* BOTTOM NAVIGATION */
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
       background: white;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      color: #b00020;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 100;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
     }
 
-    .empty {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      text-align: center;
+    .nav-item {
+      flex: 1;
+      height: 100%;
+      border: none;
+      background: transparent;
       color: #777;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .nav-icon {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .nav-item.active {
+      color: #1f7a45;
+      font-weight: bold;
     }
 
   </style>
@@ -211,101 +247,234 @@
 
 <div class="container">
 
-  <!-- SUMMARY -->
 
-  <div class="section-title">
-    Overview
+  <!-- =====================================================
+       HOME
+  ====================================================== -->
+
+  <div id="homePage" class="page active">
+
+    <div class="section-title">
+      Overview
+    </div>
+
+    <div class="summary-grid">
+
+      <div class="summary-card">
+
+        <div class="summary-label">
+          Active Farms
+        </div>
+
+        <div class="summary-value"
+             id="totalFarms">
+          -
+        </div>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-label">
+          Total Birds
+        </div>
+
+        <div class="summary-value"
+             id="totalBirds">
+          -
+        </div>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-label">
+          Feed To Supply
+        </div>
+
+        <div class="summary-value"
+             id="totalFeed">
+          -
+        </div>
+
+        <div class="summary-label">
+          bags
+        </div>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-label">
+          Orders Required
+        </div>
+
+        <div class="summary-value"
+             id="ordersRequired">
+          -
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <button class="refresh-button"
+            onclick="loadDashboard()">
+
+      Refresh Dashboard
+
+    </button>
+
+
+    <div class="section-title">
+      Farm Overview
+    </div>
+
+
+    <div id="farmList">
+
+      <div class="placeholder">
+        Loading farm data...
+      </div>
+
+    </div>
+
   </div>
 
-  <div class="summary-grid">
 
-    <div class="summary-card">
+  <!-- =====================================================
+       FARMS
+  ====================================================== -->
 
-      <div class="summary-label">
-        Active Farms
-      </div>
+  <div id="farmsPage" class="page">
 
-      <div class="summary-value"
-           id="totalFarms">
-        -
-      </div>
-
+    <div class="section-title">
+      Farms
     </div>
 
+    <div class="placeholder">
 
-    <div class="summary-card">
-
-      <div class="summary-label">
-        Total Birds
-      </div>
-
-      <div class="summary-value"
-           id="totalBirds">
-        -
-      </div>
-
-    </div>
-
-
-    <div class="summary-card">
-
-      <div class="summary-label">
-        Feed To Supply
-      </div>
-
-      <div class="summary-value"
-           id="totalFeed">
-        -
-      </div>
-
-      <div class="summary-label">
-        bags
-      </div>
-
-    </div>
-
-
-    <div class="summary-card">
-
-      <div class="summary-label">
-        Orders Required
-      </div>
-
-      <div class="summary-value"
-           id="ordersRequired">
-        -
-      </div>
+      Farm list will be displayed here.
 
     </div>
 
   </div>
 
 
-  <!-- REFRESH -->
+  <!-- =====================================================
+       DAILY ENTRY
+  ====================================================== -->
 
-  <button class="refresh-button"
-          onclick="loadDashboard()">
+  <div id="dailyPage" class="page">
 
-    Refresh Dashboard
+    <div class="section-title">
+      Daily Entry
+    </div>
 
-  </button>
+    <div class="placeholder">
 
+      Daily farm entry will be added here.
 
-  <!-- FARM LIST -->
+    </div>
 
-  <div class="section-title">
-    Farm Overview
   </div>
 
-  <div id="farmList">
 
-    <div class="loading">
-      Loading farm data...
+  <!-- =====================================================
+       FEED
+  ====================================================== -->
+
+  <div id="feedPage" class="page">
+
+    <div class="section-title">
+      Feed
+    </div>
+
+    <div class="placeholder">
+
+      Feed management will be added here.
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       VACCINES
+  ====================================================== -->
+
+  <div id="vaccinePage" class="page">
+
+    <div class="section-title">
+      Vaccines
+    </div>
+
+    <div class="placeholder">
+
+      Vaccinator schedule will be added here.
+
     </div>
 
   </div>
 
 </div>
+
+
+<!-- =======================================================
+     BOTTOM NAVIGATION
+======================================================== -->
+
+<nav class="bottom-nav">
+
+  <button class="nav-item active"
+          onclick="showPage('homePage', this)">
+
+    <span class="nav-icon">⌂</span>
+    <span>Home</span>
+
+  </button>
+
+
+  <button class="nav-item"
+          onclick="showPage('farmsPage', this)">
+
+    <span class="nav-icon">🏠</span>
+    <span>Farms</span>
+
+  </button>
+
+
+  <button class="nav-item"
+          onclick="showPage('dailyPage', this)">
+
+    <span class="nav-icon">＋</span>
+    <span>Daily Entry</span>
+
+  </button>
+
+
+  <button class="nav-item"
+          onclick="showPage('feedPage', this)">
+
+    <span class="nav-icon">🌾</span>
+    <span>Feed</span>
+
+  </button>
+
+
+  <button class="nav-item"
+          onclick="showPage('vaccinePage', this)">
+
+    <span class="nav-icon">💉</span>
+    <span>Vaccines</span>
+
+  </button>
+
+</nav>
 
 
 <script>
@@ -319,6 +488,43 @@
 
 
   // ==========================================================
+  // NAVIGATION
+  // ==========================================================
+
+  function showPage(pageId, button) {
+
+    document
+      .querySelectorAll(".page")
+      .forEach(page => {
+
+        page.classList.remove("active");
+
+      });
+
+
+    document
+      .getElementById(pageId)
+      .classList.add("active");
+
+
+    document
+      .querySelectorAll(".nav-item")
+      .forEach(item => {
+
+        item.classList.remove("active");
+
+      });
+
+
+    button.classList.add("active");
+
+
+    window.scrollTo(0, 0);
+
+  }
+
+
+  // ==========================================================
   // LOAD DASHBOARD
   // ==========================================================
 
@@ -327,8 +533,9 @@
     const farmList =
       document.getElementById("farmList");
 
+
     farmList.innerHTML = `
-      <div class="loading">
+      <div class="placeholder">
         Loading farm data...
       </div>
     `;
@@ -372,13 +579,16 @@
           "totalFarms"
         ).textContent = "0";
 
+
         document.getElementById(
           "totalBirds"
         ).textContent = "0";
 
+
         document.getElementById(
           "totalFeed"
         ).textContent = "0";
+
 
         document.getElementById(
           "ordersRequired"
@@ -386,23 +596,23 @@
 
 
         farmList.innerHTML = `
-          <div class="empty">
+          <div class="placeholder">
             No active farms found.
           </div>
         `;
+
 
         return;
 
       }
 
 
-      // First row = headers
       const rows =
         data.slice(1);
 
 
       // ========================================================
-      // SUMMARY CALCULATIONS
+      // SUMMARY
       // ========================================================
 
       let totalBirds = 0;
@@ -414,23 +624,16 @@
 
       rows.forEach(row => {
 
-        const birds =
+        totalBirds +=
           Number(row[2]) || 0;
 
-        const balance =
+
+        totalFeedBalance +=
           Number(row[7]) || 0;
-
-        const status =
-          row[8] || "";
-
-
-        totalBirds += birds;
-
-        totalFeedBalance += balance;
 
 
         if (
-          status === "ORDER REQUIRED"
+          row[8] === "ORDER REQUIRED"
         ) {
 
           ordersRequired++;
@@ -442,7 +645,8 @@
 
       document.getElementById(
         "totalFarms"
-      ).textContent = rows.length;
+      ).textContent =
+        rows.length;
 
 
       document.getElementById(
@@ -520,12 +724,9 @@
             Batch: ${escapeHtml(batch)}
           </div>
 
-
           <div class="divider"></div>
 
-
           <div class="data-row">
-
             <span class="data-label">
               Birds
             </span>
@@ -533,12 +734,9 @@
             <span class="data-value">
               ${escapeHtml(birds)}
             </span>
-
           </div>
 
-
           <div class="data-row">
-
             <span class="data-label">
               Age
             </span>
@@ -550,27 +748,19 @@
                 : "-"
               }
             </span>
-
           </div>
 
-
           <div class="data-row">
-
             <span class="data-label">
               Current Feed
             </span>
 
             <span class="data-value">
-              ${
-                escapeHtml(feed || "-")
-              }
+              ${escapeHtml(feed || "-")}
             </span>
-
           </div>
 
-
           <div class="data-row">
-
             <span class="data-label">
               Feed Required
             </span>
@@ -583,12 +773,9 @@
                 : "-"
               }
             </span>
-
           </div>
 
-
           <div class="data-row">
-
             <span class="data-label">
               Feed Supplied
             </span>
@@ -601,9 +788,7 @@
                 : "-"
               }
             </span>
-
           </div>
-
 
           ${
             balance !== ""
@@ -616,7 +801,8 @@
                 </div>
 
                 <div class="balance-value">
-                  ${escapeHtml(balance)} bags
+                  ${escapeHtml(balance)}
+                  bags
                 </div>
 
               </div>
@@ -624,7 +810,6 @@
             :
             ""
           }
-
 
           ${
             status
@@ -654,18 +839,9 @@
 
 
       farmList.innerHTML = `
-
-        <div class="error">
-
+        <div class="placeholder">
           Unable to load farm data.
-
-          <br><br>
-
-          Please check your internet
-          connection.
-
         </div>
-
       `;
 
     }
@@ -680,15 +856,10 @@
   function escapeHtml(value) {
 
     return String(value)
-
       .replace(/&/g, "&amp;")
-
       .replace(/</g, "&lt;")
-
       .replace(/>/g, "&gt;")
-
       .replace(/"/g, "&quot;")
-
       .replace(/'/g, "&#039;");
 
   }
