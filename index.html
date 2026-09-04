@@ -370,6 +370,8 @@ textarea{
     border-right:1px solid #e5e7eb;
   }
 }
+
+.sales-summary{margin-bottom:12px}.capacity-good{border-left:4px solid #16a34a}.capacity-zero{border-left:4px solid #dc2626}.cage-row{display:grid;grid-template-columns:.8fr 1fr 1fr auto;gap:6px;align-items:end;margin-bottom:8px}.cage-row input{padding:9px}.remove-cage{border:none;background:#fee2e2;color:#991b1b;border-radius:8px;padding:9px}.money{font-weight:700}@media(max-width:500px){.cage-row{grid-template-columns:1fr 1fr 1fr}.remove-cage{grid-column:1/-1}}
 </style>
 </head>
 
@@ -853,6 +855,162 @@ textarea{
      BOTTOM NAVIGATION
 ===================================================== -->
 
+<!-- SALES MODULE -->
+<div id="page-sales" class="page">
+  <div class="section-title">Sales & Traders</div>
+  <div class="tab-row">
+    <button class="tab-btn active" onclick="showSalesTab('capacity',this)">Selling Capacity</button>
+    <button class="tab-btn" onclick="showSalesTab('challan',this)">Delivery Challan</button>
+    <button class="tab-btn" onclick="showSalesTab('traders',this)">Traders</button>
+    <button class="tab-btn" onclick="showSalesTab('ledger',this)">Ledger</button>
+    <button class="tab-btn" onclick="showSalesTab('receipt',this)">Receipt</button>
+  </div>
+  <div id="salesCapacityTab"><div id="salesCapacityList"><div class="loading">Loading selling capacity...</div></div></div>
+  <div id="salesChallanTab" class="hidden"><div id="challanMessage"></div><div class="card">
+    <div class="card-title">Create Delivery Challan</div>
+    <label>Date</label><input type="date" id="challanDate">
+    <label>Trader</label><select id="challanTrader" onchange="updateChallanTrader()"><option value="">Select Trader</option></select><div id="challanTraderInfo"></div>
+    <label>Batch</label><select id="challanBatch" onchange="updateChallanBatch()"><option value="">Select Batch</option></select><div id="challanBatchInfo"></div>
+    <label>Birds</label><input type="number" id="challanBirds" min="1" step="1" placeholder="Number of birds">
+    <label>Rate Per Kg</label><input type="number" id="challanRate" min="0.01" step="0.01" placeholder="₹ / kg">
+    <div class="divider"></div><div class="card-title">Weighment</div><div id="cageRows"></div>
+    <button type="button" class="btn btn-secondary" onclick="addCageRow()">+ Add Cage Row</button>
+    <label>Net Weight (Kg)</label><input type="number" id="challanNetWeight" min="0.01" step="0.01" placeholder="Use only when no cage rows are entered"><div id="challanWeightInfo"></div>
+    <label>Vehicle No.</label><input type="text" id="challanVehicle"><label>Driver Name</label><input type="text" id="challanDriver"><label>Supervisor Name</label><input type="text" id="challanSupervisor"><label>Weighment Time</label><input type="time" id="challanTime"><label>Remarks</label><textarea id="challanRemarks" placeholder="Optional"></textarea>
+    <button class="btn btn-success" onclick="saveChallan()">Create Delivery Challan</button>
+  </div><div class="card"><div class="card-title">Recent Challans</div><div id="challanHistory"></div></div></div>
+  <div id="salesTradersTab" class="hidden"><div id="traderMessage"></div><div class="card">
+    <div class="card-title">Add Trader</div><label>Trader Name</label><input type="text" id="traderName"><label>Mobile</label><input type="text" id="traderMobile"><label>Address</label><textarea id="traderAddress"></textarea><label>Opening Balance</label><input type="number" id="traderOpening" min="0" step="0.01" value="0"><label>Remarks</label><textarea id="traderRemarks" placeholder="Optional"></textarea><button class="btn btn-primary" onclick="createTraderUI()">Add Trader</button>
+  </div><div id="traderList"></div></div>
+  <div id="salesLedgerTab" class="hidden"><div id="ledgerSummary"></div><div class="card"><div class="card-title">Trader Ledger</div><label>Trader</label><select id="ledgerTrader" onchange="renderTraderLedger()"><option value="">All Traders</option></select><div id="ledgerList"></div></div></div>
+  <div id="salesReceiptTab" class="hidden"><div id="receiptMessage"></div><div class="card"><div class="card-title">Receive Payment</div><label>Date</label><input type="date" id="receiptDate"><label>Trader</label><select id="receiptTrader" onchange="updateReceiptTrader()"><option value="">Select Trader</option></select><div id="receiptOutstanding"></div><label>Amount</label><input type="number" id="receiptAmount" min="0.01" step="0.01"><label>Payment Mode</label><select id="receiptMode"><option>Cash</option><option>Bank Transfer</option><option>UPI</option><option>Cheque</option><option>Other</option></select><label>Reference No.</label><input type="text" id="receiptReference"><label>Remarks</label><textarea id="receiptRemarks"></textarea><button class="btn btn-success" onclick="saveReceipt()">Save Receipt</button></div><div class="card"><div class="card-title">Recent Receipts</div><div id="receiptHistory"></div></div></div>
+</div>
+
+
+/*************************************************
+ * SALES MODULE
+ *************************************************/
+let cageRows=[];
+
+function showSalesTab(tab,button){
+  ["capacity","challan","traders","ledger","receipt"].forEach(t=>{
+    const el=document.getElementById("sales"+t.charAt(0).toUpperCase()+t.slice(1)+"Tab");
+    if(el)el.classList.toggle("hidden",t!==tab);
+  });
+  document.querySelectorAll("#page-sales .tab-btn").forEach(b=>b.classList.remove("active"));
+  if(button)button.classList.add("active");
+}
+function renderSalesModules(){
+  renderSellingCapacity();renderSalesTraderOptions();renderTraderList();renderTraderLedger();renderChallanHistory();renderReceiptHistory();
+  if(!cageRows.length){cageRows=[{cages:"",emptyWeight:"",loadWeight:""}];renderCageRows();}
+  ["challanDate","receiptDate"].forEach(id=>{const e=document.getElementById(id);if(e&&!e.value)e.value=getTodayISO();});
+}
+function getTodayISO(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function renderSellingCapacity(){
+  const el=document.getElementById("salesCapacityList");if(!el)return;
+  if(!sellingCapacityData.length){el.innerHTML='<div class="empty">No batches found.</div>';return;}
+  el.innerHTML=sellingCapacityData.map(x=>`<div class="card ${x.availableForSale>0?"capacity-good":"capacity-zero"}">
+    <div class="row-flex"><div><div class="row-main">${escapeHtml(x.farmName)}</div><div class="row-sub">${escapeHtml(x.batchId)}</div></div>
+    <span class="badge ${x.availableForSale>0?"badge-green":"badge-red"}">${escapeHtml(x.status)}</span></div>
+    <div class="grid" style="margin-top:12px">
+      <div class="stat"><div class="stat-label">Current Birds</div><div class="stat-value">${x.currentBirds}</div></div>
+      <div class="stat"><div class="stat-label">Birds Sold</div><div class="stat-value">${x.birdsSold}</div></div>
+      <div class="stat"><div class="stat-label">Available For Sale</div><div class="stat-value">${x.availableForSale}</div></div>
+      <div class="stat"><div class="stat-label">Chicks Placed</div><div class="stat-value">${x.chicksPlaced}</div></div>
+    </div></div>`).join("");
+}
+function renderSalesTraderOptions(){
+  [["challanTrader","Select Trader"],["receiptTrader","Select Trader"],["ledgerTrader","All Traders"]].forEach(([id,first])=>{
+    const s=document.getElementById(id);if(!s)return;const cur=s.value;
+    s.innerHTML=`<option value="">${first}</option>`+tradersData.filter(t=>String(t.status).toLowerCase()!=="inactive").map(t=>`<option value="${escapeHtml(t.traderId)}">${escapeHtml(t.traderName)}</option>`).join("");
+    if(cur)s.value=cur;
+  });renderChallanBatchOptions();
+}
+function renderChallanBatchOptions(){
+  const s=document.getElementById("challanBatch");if(!s)return;const cur=s.value;
+  s.innerHTML='<option value="">Select Batch</option>'+sellingCapacityData.filter(x=>x.availableForSale>0).map(x=>`<option value="${escapeHtml(x.batchId)}">${escapeHtml(x.batchId)} — ${escapeHtml(x.farmName)} — ${x.availableForSale} birds</option>`).join("");
+  if(cur)s.value=cur;
+}
+function updateChallanTrader(){
+  const t=tradersData.find(x=>String(x.traderId)===String(document.getElementById("challanTrader").value));
+  document.getElementById("challanTraderInfo").innerHTML=t?`<div class="info-box"><div class="info-label">Address</div><div class="info-value">${escapeHtml(t.address||"—")}</div><div class="info-label" style="margin-top:8px">Mobile</div><div class="info-value">${escapeHtml(t.mobile||"—")}</div></div>`:"";
+}
+function updateChallanBatch(){
+  const x=sellingCapacityData.find(b=>String(b.batchId)===String(document.getElementById("challanBatch").value));
+  document.getElementById("challanBatchInfo").innerHTML=x?`<div class="info-box"><div class="grid"><div><div class="info-label">Farm</div><div class="info-value">${escapeHtml(x.farmName)}</div></div><div><div class="info-label">Available For Sale</div><div class="info-value">${x.availableForSale} birds</div></div></div></div>`:"";
+  const birds=document.getElementById("challanBirds");if(birds)birds.max=x?x.availableForSale:"";
+}
+function addCageRow(){cageRows.push({cages:"",emptyWeight:"",loadWeight:""});renderCageRows();}
+function removeCageRow(i){cageRows.splice(i,1);if(!cageRows.length)cageRows=[{cages:"",emptyWeight:"",loadWeight:""}];renderCageRows();}
+function renderCageRows(){
+  const el=document.getElementById("cageRows");if(!el)return;
+  el.innerHTML=cageRows.map((r,i)=>`<div class="cage-row">
+    <input type="number" min="0" step="1" placeholder="Cages" value="${r.cages}" oninput="cageRows[${i}].cages=this.value;updateChallanWeight()">
+    <input type="number" min="0" step="0.01" placeholder="Empty Kg" value="${r.emptyWeight}" oninput="cageRows[${i}].emptyWeight=this.value;updateChallanWeight()">
+    <input type="number" min="0" step="0.01" placeholder="Load Kg" value="${r.loadWeight}" oninput="cageRows[${i}].loadWeight=this.value;updateChallanWeight()">
+    <button type="button" class="remove-cage" onclick="removeCageRow(${i})">Remove</button></div>`).join("");updateChallanWeight();
+}
+function updateChallanWeight(){
+  const rows=cageRows.filter(r=>r.cages||r.emptyWeight||r.loadWeight),empty=rows.reduce((s,r)=>s+Number(r.emptyWeight||0),0),load=rows.reduce((s,r)=>s+Number(r.loadWeight||0),0);
+  const manual=Number(document.getElementById("challanNetWeight")?.value||0),net=rows.length?load-empty:manual,birds=Number(document.getElementById("challanBirds")?.value||0),rate=Number(document.getElementById("challanRate")?.value||0),avg=birds&&net?net/birds:0,amt=net&&rate?net*rate:0;
+  const el=document.getElementById("challanWeightInfo");if(el)el.innerHTML=`<div class="info-box"><div class="grid">
+    <div><div class="info-label">Empty Weight</div><div class="info-value">${empty.toFixed(2)} Kg</div></div>
+    <div><div class="info-label">Load Weight</div><div class="info-value">${load.toFixed(2)} Kg</div></div>
+    <div><div class="info-label">Net Weight</div><div class="info-value">${net.toFixed(2)} Kg</div></div>
+    <div><div class="info-label">Average Weight</div><div class="info-value">${avg.toFixed(3)} Kg</div></div></div>
+    <div style="margin-top:10px"><div class="info-label">Sale Amount</div><div class="info-value money">₹ ${amt.toFixed(2)}</div></div></div>`;
+}
+document.addEventListener("input",e=>{if(["challanBirds","challanRate","challanNetWeight"].includes(e.target.id))updateChallanWeight();});
+async function saveChallan(){
+  try{
+    const d=await postData({action:"createChallan",date:document.getElementById("challanDate").value,batchId:document.getElementById("challanBatch").value,traderId:document.getElementById("challanTrader").value,birds:document.getElementById("challanBirds").value,ratePerKg:document.getElementById("challanRate").value,netWeight:document.getElementById("challanNetWeight").value,cageDetails:cageRows.filter(r=>r.cages||r.emptyWeight||r.loadWeight),vehicleNo:document.getElementById("challanVehicle").value.trim(),driverName:document.getElementById("challanDriver").value.trim(),supervisorName:document.getElementById("challanSupervisor").value.trim(),weighmentTime:document.getElementById("challanTime").value,remarks:document.getElementById("challanRemarks").value.trim()});
+    showMessage("challanMessage",`${d.challanNo} created. Sale ₹${Number(d.saleAmount).toFixed(2)}. Ledger updated.`,"success");
+    ["challanBirds","challanRate","challanNetWeight","challanVehicle","challanDriver","challanSupervisor","challanTime","challanRemarks"].forEach(id=>{const e=document.getElementById(id);if(e)e.value="";});
+    cageRows=[{cages:"",emptyWeight:"",loadWeight:""}];renderCageRows();await loadData();
+  }catch(e){showMessage("challanMessage",e.message,"error");}
+}
+function renderChallanHistory(){
+  const el=document.getElementById("challanHistory");if(!el)return;
+  if(!challansData.length){el.innerHTML='<div class="empty">No challans created.</div>';return;}
+  el.innerHTML=[...challansData].reverse().slice(0,20).map(x=>`<div class="list-row"><div class="row-flex"><div><div class="row-main">${escapeHtml(x.challanNo)} • ${escapeHtml(x.traderName)}</div><div class="row-sub">${escapeHtml(x.date)} • ${escapeHtml(x.batchId)} • ${x.birds} birds</div></div><div style="text-align:right"><div class="row-main">₹ ${Number(x.saleAmount).toFixed(2)}</div><div class="row-sub">${Number(x.netWeight).toFixed(2)} Kg</div></div></div></div>`).join("");
+}
+async function createTraderUI(){
+  try{
+    const d=await postData({action:"createTrader",traderName:document.getElementById("traderName").value.trim(),mobile:document.getElementById("traderMobile").value.trim(),address:document.getElementById("traderAddress").value.trim(),openingBalance:document.getElementById("traderOpening").value,remarks:document.getElementById("traderRemarks").value.trim()});
+    showMessage("traderMessage",`Trader ${d.traderId} created successfully.`,"success");
+    ["traderName","traderMobile","traderAddress","traderRemarks"].forEach(id=>document.getElementById(id).value="");document.getElementById("traderOpening").value="0";await loadData();
+  }catch(e){showMessage("traderMessage",e.message,"error");}
+}
+function renderTraderList(){
+  const el=document.getElementById("traderList");if(!el)return;
+  if(!tradersData.length){el.innerHTML='<div class="empty">No traders found.</div>';return;}
+  el.innerHTML=tradersData.map(t=>{const o=getTraderOutstandingUI(t.traderId);return`<div class="card"><div class="row-flex"><div><div class="row-main">${escapeHtml(t.traderName)}</div><div class="row-sub">${escapeHtml(t.traderId)} • ${escapeHtml(t.mobile||"—")}</div></div><span class="badge ${o>0?"badge-orange":"badge-green"}">₹ ${o.toFixed(2)}</span></div><div class="row-sub" style="margin-top:8px">${escapeHtml(t.address||"—")}</div></div>`}).join("");
+}
+function getTraderOutstandingUI(id){
+  const t=tradersData.find(x=>String(x.traderId)===String(id));let b=t?Number(t.openingBalance)||0:0;
+  traderLedgerData.filter(x=>String(x.traderId)===String(id)).forEach(x=>b+=(Number(x.debit)||0)-(Number(x.credit)||0));return Math.max(0,b);
+}
+function renderTraderLedger(){
+  const el=document.getElementById("ledgerList"),summary=document.getElementById("ledgerSummary");if(!el)return;const id=document.getElementById("ledgerTrader")?.value||"";
+  let total=0;tradersData.forEach(t=>total+=getTraderOutstandingUI(t.traderId));
+  if(summary)summary.innerHTML=`<div class="grid sales-summary"><div class="stat"><div class="stat-label">Traders</div><div class="stat-value">${tradersData.length}</div></div><div class="stat"><div class="stat-label">Total Outstanding</div><div class="stat-value">₹ ${total.toFixed(2)}</div></div></div>`;
+  const rows=traderLedgerData.filter(x=>!id||String(x.traderId)===String(id));if(!rows.length){el.innerHTML='<div class="empty">No ledger transactions.</div>';return;}
+  el.innerHTML=[...rows].reverse().map(x=>`<div class="list-row"><div class="row-flex"><div><div class="row-main">${escapeHtml(x.transactionType)} • ${escapeHtml(x.referenceNo||x.transactionId)}</div><div class="row-sub">${escapeHtml(x.date)} • ${escapeHtml(x.traderName)}</div></div><div style="text-align:right">${x.debit?`<div class="row-main">Dr ₹ ${Number(x.debit).toFixed(2)}</div>`:""}${x.credit?`<div class="row-main">Cr ₹ ${Number(x.credit).toFixed(2)}</div>`:""}<div class="row-sub">Bal ₹ ${Number(x.balance).toFixed(2)}</div></div></div></div>`).join("");
+}
+function updateReceiptTrader(){const id=document.getElementById("receiptTrader").value,b=getTraderOutstandingUI(id);document.getElementById("receiptOutstanding").innerHTML=id?`<div class="notice ${b>0?"notice-info":"notice-success"}">Outstanding: <strong>₹ ${b.toFixed(2)}</strong></div>`:"";}
+async function saveReceipt(){
+  try{
+    const d=await postData({action:"createCollection",date:document.getElementById("receiptDate").value,traderId:document.getElementById("receiptTrader").value,amount:document.getElementById("receiptAmount").value,paymentMode:document.getElementById("receiptMode").value,referenceNo:document.getElementById("receiptReference").value.trim(),remarks:document.getElementById("receiptRemarks").value.trim()});
+    showMessage("receiptMessage",`${d.receiptNo} saved. Remaining outstanding ₹${Number(d.remainingBalance).toFixed(2)}.`,"success");
+    ["receiptAmount","receiptReference","receiptRemarks"].forEach(id=>document.getElementById(id).value="");await loadData();updateReceiptTrader();
+  }catch(e){showMessage("receiptMessage",e.message,"error");}
+}
+function renderReceiptHistory(){
+  const el=document.getElementById("receiptHistory");if(!el)return;
+  if(!collectionsData.length){el.innerHTML='<div class="empty">No receipts recorded.</div>';return;}
+  el.innerHTML=[...collectionsData].reverse().slice(0,20).map(x=>`<div class="list-row"><div class="row-flex"><div><div class="row-main">${escapeHtml(x.receiptNo)} • ${escapeHtml(x.traderName)}</div><div class="row-sub">${escapeHtml(x.date)} • ${escapeHtml(x.paymentMode||"")}</div></div><div class="row-main">₹ ${Number(x.amount).toFixed(2)}</div></div></div>`).join("");
+}
+
 <div class="bottom-nav">
 
   <button class="nav-btn active"
@@ -896,7 +1054,10 @@ textarea{
     <span class="nav-icon">☰</span>
     Batches
   </button>
-
+  <button class="nav-btn" onclick="showPage('sales',this)">
+    <span class="nav-icon">₹</span>
+    Sales
+  </button>
 </div>
 
 
@@ -923,6 +1084,11 @@ let batchesData = [];
 let medicineMaster = [];
 let medicineStock = [];
 let medicineUsage = [];
+let tradersData = [];
+let sellingCapacityData = [];
+let challansData = [];
+let traderLedgerData = [];
+let collectionsData = [];
 
 
 /*************************************************
@@ -1064,6 +1230,12 @@ async function loadData(){
 
     }
 
+    tradersData = Array.isArray(data.traders) ? data.traders : [];
+    sellingCapacityData = Array.isArray(data.sellingCapacity) ? data.sellingCapacity : [];
+    challansData = Array.isArray(data.challans) ? data.challans : [];
+    traderLedgerData = Array.isArray(data.traderLedger) ? data.traderLedger : [];
+    collectionsData = Array.isArray(data.collections) ? data.collections : [];
+
     renderAll();
 
   }catch(err){
@@ -1125,6 +1297,7 @@ function renderAll(){
   renderMedicineMaster();
   renderMedicineMedicineOptions();
   renderMedicineUsageHistory();
+  renderSalesModules();
 }
 
 
@@ -2966,7 +3139,9 @@ function setDefaultDates(){
     "feedSupplyDate",
     "batchPlacementDate",
     "medicineReceiveDate",
-    "medicineUsageDate"
+    "medicineUsageDate",
+    "challanDate",
+    "receiptDate"
   ];
 
   ids.forEach(id => {
@@ -3000,4 +3175,4 @@ document.addEventListener(
 </script>
 
 </body>
-</html>
+</html>[[]]
