@@ -593,6 +593,65 @@ body{background:var(--c-bg);overscroll-behavior-y:none}
 .api-retry button{border:0;border-radius:10px;background:var(--c-brand);color:#fff;padding:9px 14px;font-weight:800}
 @media(max-width:700px){#appStatusBar{font-size:10px;padding:7px 12px}.loading-card{padding:15px 18px}}
 </style>
+
+<style id="phase-d-production-polish">
+/* =========================================================
+   PHASE D — FINAL PRODUCTION POLISH
+   ========================================================= */
+:root{--pd-brand:#16804f;--pd-ink:#17202a;--pd-muted:#667085;--pd-line:#e4ebe7}
+*{box-sizing:border-box}
+button,input,select,textarea{font-family:inherit}
+button{touch-action:manipulation}
+.page{min-height:calc(100vh - 150px)}
+.section-subtitle{line-height:1.45}
+.empty{padding:22px 14px;text-align:center;color:#7b8794;border:1px dashed #dce5df;border-radius:12px;background:#fbfcfb}
+.loading{padding:18px;text-align:center;color:#7b8794}
+.notice{border-radius:12px;padding:11px 13px;margin:10px 0;font-size:12px;line-height:1.45}
+.notice-success{background:#ecfdf3;color:#087443;border:1px solid #b7ebca}
+.notice-error{background:#fff1f0;color:#b42318;border:1px solid #f3c1bd}
+.notice-warning{background:#fff8eb;color:#9a5b00;border:1px solid #f1d39a}
+/* Header actions */
+.header-actions{gap:8px}
+.header-actions .icon-btn{position:relative}
+.header-actions .icon-btn .alert-count{position:absolute;top:-3px;right:-3px;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:#dc2626;color:#fff;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+/* Notification drawer */
+#notificationPanel{position:fixed;right:14px;top:70px;width:min(380px,calc(100vw - 28px));max-height:min(70vh,560px);overflow:auto;background:#fff;border:1px solid var(--pd-line);border-radius:18px;box-shadow:0 18px 50px rgba(15,23,42,.18);z-index:850;display:none}
+#notificationPanel.open{display:block}
+.notification-head{position:sticky;top:0;background:#fff;border-bottom:1px solid #edf1ef;padding:14px 15px;display:flex;justify-content:space-between;align-items:center;z-index:1}
+.notification-title{font-size:14px;font-weight:850;color:var(--pd-ink)}
+.notification-close{border:0;background:#f3f5f4;width:30px;height:30px;border-radius:50%;font-size:18px;color:#52606d}
+.notification-item{display:flex;gap:10px;padding:13px 15px;border-bottom:1px solid #f0f2f1}
+.notification-item:last-child{border-bottom:0}
+.notification-dot{width:9px;height:9px;border-radius:50%;background:#f59e0b;margin-top:5px;flex:0 0 auto}
+.notification-dot.danger{background:#dc2626}
+.notification-copy{min-width:0;flex:1}
+.notification-item-title{font-size:12px;font-weight:800;color:#1f2937}
+.notification-item-sub{font-size:10px;color:#667085;margin-top:3px;line-height:1.4}
+/* Production tools */
+.production-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.production-tools .btn{min-height:40px}
+.page-tools{display:flex;justify-content:flex-end;gap:7px;margin:-2px 0 12px}
+.page-tools button{border:1px solid var(--pd-line);background:#fff;border-radius:10px;padding:8px 11px;font-size:11px;font-weight:750;color:#344054}
+/* Better desktop rhythm */
+@media(min-width:901px){.container{padding-top:22px}.page{padding-bottom:40px}.card{box-shadow:0 2px 12px rgba(15,23,42,.035)}}
+@media(max-width:700px){#notificationPanel{top:62px;right:10px;width:calc(100vw - 20px);max-height:68vh}.page{min-height:calc(100vh - 125px)}}
+/* Print-ready output: only the currently active page prints. */
+@media print{
+  @page{size:A4;margin:12mm}
+  html,body{background:#fff!important;padding:0!important;margin:0!important;color:#111!important}
+  .header,.bottom-nav,#moreSheet,#notificationPanel,#appStatusBar,#appLoading,.detail-overlay,.page-tools,.quick-actions,.btn,.primary-btn,.secondary-btn,.icon-btn,button:not(.print-safe){display:none!important}
+  .container{max-width:none!important;padding:0!important;margin:0!important}
+  .page{display:none!important;min-height:auto!important;padding:0!important;margin:0!important}
+  .page.active{display:block!important}
+  .card{break-inside:avoid;box-shadow:none!important;border:1px solid #ddd!important;margin-bottom:10px!important}
+  .section-title{font-size:20px!important}
+  .section-subtitle{color:#555!important}
+  table{font-size:10px!important}
+  .data-table{width:100%!important}
+  a{color:#111!important;text-decoration:none!important}
+}
+</style>
+
 </head>
 
 <body>
@@ -607,10 +666,15 @@ body{background:var(--c-bg);overscroll-behavior-y:none}
       <div><div class="header-title">KG Farms</div><div class="header-sub">Poultry Management System</div></div>
     </div>
     <div class="header-actions">
-      <button class="icon-btn" title="Alerts" onclick="openMorePage('erp','system')">♢</button>
+      <button class="icon-btn" id="headerAlertButton" title="Alerts" aria-label="Alerts" onclick="toggleNotificationPanel()">♢<span id="headerAlertCount" class="alert-count" style="display:none">0</span></button>
       <button class="icon-btn" title="More" onclick="toggleMoreMenu()">⋯</button>
     </div>
   </div>
+</div>
+
+<div id="notificationPanel" aria-label="KG Farms notifications">
+  <div class="notification-head"><div><div class="notification-title">Notifications</div><div class="row-sub">Items needing attention</div></div><button class="notification-close" onclick="toggleNotificationPanel(false)" aria-label="Close">×</button></div>
+  <div id="notificationList"><div class="empty">No notifications.</div></div>
 </div>
 
 <div class="container">
@@ -4595,6 +4659,83 @@ function openVendorDetail(id){
     `<div class="detail-actions"><button class="btn btn-primary" onclick="closeDetailView();openMorePage('erp','operations')">New Purchase</button><button class="btn btn-secondary" onclick="closeDetailView();openMorePage('erp','ledgers')">Vendor Ledger</button></div>`;
   openDetailShell("Vendor Detail",v.name,`${escapeHtml(v.id)} · ${(rawPick(v.raw,"Status")||"Active").toString().toUpperCase()}`,html);
 }
+
+
+
+/* =========================================================
+   PHASE D — FINAL PRODUCTION POLISH JS
+   ========================================================= */
+function toggleNotificationPanel(force){
+  const p=document.getElementById("notificationPanel");
+  if(!p)return;
+  const open=typeof force==="boolean"?force:!p.classList.contains("open");
+  p.classList.toggle("open",open);
+  if(open)renderNotificationPanel();
+}
+function renderNotificationPanel(){
+  const list=document.getElementById("notificationList");
+  if(!list)return;
+  const items=[];
+  (Array.isArray(dashboardData)?dashboardData:[]).forEach(x=>{
+    const balance=Number(x.balanceToSupply)||0;
+    if(balance>0)items.push({danger:false,title:`Feed order required — ${x.batchId||""}`,sub:`${x.farmName||""} · ${balance} bags to be supplied`});
+    if(x.nextVaccine)items.push({danger:false,title:`Vaccine scheduled — ${x.nextVaccine}`,sub:`${x.farmName||""} · ${x.batchId||""}${x.nextVaccineDate?' · '+x.nextVaccineDate:''}`});
+  });
+  const alerts=(erpData&&Array.isArray(erpData.alerts))?erpData.alerts:[];
+  alerts.slice(0,8).forEach(x=>items.push({danger:String(x.severity||"").toLowerCase().includes("high")||String(x.severity||"").toLowerCase().includes("critical"),title:x.module||"System alert",sub:x.message||""}));
+  const unique=[];const seen=new Set();
+  items.forEach(x=>{const k=x.title+"|"+x.sub;if(!seen.has(k)){seen.add(k);unique.push(x);}});
+  list.innerHTML=unique.length?unique.slice(0,12).map(x=>`<div class="notification-item"><span class="notification-dot ${x.danger?'danger':''}"></span><div class="notification-copy"><div class="notification-item-title">${escapeHtml(x.title)}</div><div class="notification-item-sub">${escapeHtml(x.sub)}</div></div></div>`).join(""):'<div class="empty">No notifications. Everything looks clear.</div>';
+}
+function updateHeaderAlertCount(){
+  const countEl=document.getElementById("headerAlertCount");
+  if(!countEl)return;
+  let count=0;
+  (Array.isArray(dashboardData)?dashboardData:[]).forEach(x=>{if((Number(x.balanceToSupply)||0)>0)count++;if(x.nextVaccine)count++;});
+  count+=Array.isArray(erpData?.alerts)?erpData.alerts.length:0;
+  count=Math.min(count,99);
+  countEl.textContent=count;
+  countEl.style.display=count?"flex":"none";
+}
+function closeNotificationOnOutside(e){
+  const p=document.getElementById("notificationPanel"),b=document.getElementById("headerAlertButton");
+  if(p&&p.classList.contains("open")&&!p.contains(e.target)&&!b?.contains(e.target))p.classList.remove("open");
+}
+document.addEventListener("click",closeNotificationOnOutside);
+
+function printCurrentPage(){
+  toggleNotificationPanel(false);
+  closeDetailView?.();
+  window.print();
+}
+function addPagePrintTools(){
+  document.querySelectorAll(".page").forEach(page=>{
+    if(page.id==="page-dashboard"||page.querySelector(".page-tools"))return;
+    const title=page.querySelector(".section-title");
+    if(!title)return;
+    const tools=document.createElement("div");
+    tools.className="page-tools";
+    tools.innerHTML='<button type="button" onclick="printCurrentPage()">Print page</button>';
+    title.parentElement.insertBefore(tools,title.nextElementSibling);
+  });
+}
+function showProductionReady(){
+  updateHeaderAlertCount();
+  addPagePrintTools();
+}
+const __kgOriginalRenderDashboard=window.renderDashboard;
+if(typeof __kgOriginalRenderDashboard==="function"){
+  window.renderDashboard=function(){
+    const r=__kgOriginalRenderDashboard.apply(this,arguments);
+    updateHeaderAlertCount();
+    return r;
+  };
+}
+window.addEventListener("load",()=>setTimeout(showProductionReady,250));
+window.addEventListener("error",e=>{
+  console.error("KG Farms UI error",e.error||e.message);
+  if(typeof showAppStatus==="function")showAppStatus("Something went wrong · please retry","offline",3200);
+});
 
 </script>
 
