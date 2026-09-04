@@ -867,6 +867,7 @@ textarea{
     <button class="tab-btn" onclick="showSalesTab('receipt',this)">Receipt</button>
     <button class="tab-btn" onclick="showSalesTab('settlement',this);renderFarmerSettlement()">Settlement</button>
     <button class="tab-btn" onclick="showSalesTab('profitability',this);renderBatchProfitability()">Profitability</button>
+    <button class="tab-btn" onclick="showSalesTab('expenses',this);renderExpenses()">Expenses</button>
     <button class="tab-btn" onclick="showSalesTab('reports',this);renderSalesReports()">Reports</button>
   </div>
   <div id="salesCapacityTab"><div id="salesCapacityList"><div class="loading">Loading selling capacity...</div></div></div>
@@ -964,6 +965,32 @@ textarea{
     <div class="card">
       <div class="card-title">Profitability Summary</div>
       <div id="batchProfitabilityList"><div class="empty">No batches found.</div></div>
+    </div>
+  </div>
+
+
+  <div id="salesExpensesTab" class="hidden">
+    <div class="card">
+      <div class="card-title">Batch Expense Entry</div>
+      <div class="info-box">
+        <div class="info-label">Purpose</div>
+        <div class="info-value">Record additional batch expenses such as labour, electricity, transport, litter, repairs and other operating expenses.</div>
+      </div>
+      <div id="expenseMessage"></div>
+      <div class="grid">
+        <div><label>Date</label><input type="date" id="expenseDate"></div>
+        <div><label>Batch</label><select id="expenseBatch"><option value="">Select Batch</option></select></div>
+        <div><label>Category</label><select id="expenseCategory"><option value="">Select Category</option><option>Labour</option><option>Electricity</option><option>Transport</option><option>Litter</option><option>Repairs</option><option>Miscellaneous</option><option>Other</option></select></div>
+        <div><label>Amount</label><input type="number" id="expenseAmount" min="0.01" step="0.01" placeholder="₹"></div>
+        <div><label>Payment Mode</label><select id="expenseMode"><option>Cash</option><option>Bank Transfer</option><option>UPI</option><option>Cheque</option><option>Other</option></select></div>
+        <div><label>Reference No.</label><input type="text" id="expenseReference" placeholder="Optional"></div>
+      </div>
+      <label>Remarks</label><textarea id="expenseRemarks" placeholder="Optional"></textarea>
+      <button class="btn btn-success" onclick="saveExpenseUI()">Save Expense</button>
+    </div>
+    <div class="card">
+      <div class="card-title">Recent Batch Expenses</div>
+      <div id="expenseHistory"><div class="empty">No expenses recorded.</div></div>
     </div>
   </div>
 
@@ -1112,6 +1139,7 @@ let batchSalesSettlementData = [];
 let salesReturnsData = [];
 let farmerSettlementData = [];
 let batchProfitabilityData = [];
+let expensesData = [];
 
 
 /*************************************************
@@ -1120,7 +1148,7 @@ let batchProfitabilityData = [];
 let cageRows=[];
 
 function showSalesTab(tab,button){
-  ["capacity","challan","returns","traders","ledger","receipt","settlement","profitability","reports"].forEach(t=>{
+  ["capacity","challan","returns","traders","ledger","receipt","settlement","profitability","expenses","reports"].forEach(t=>{
     const el=document.getElementById("sales"+t.charAt(0).toUpperCase()+t.slice(1)+"Tab");
     if(el)el.classList.toggle("hidden",t!==tab);
   });
@@ -1129,7 +1157,7 @@ function showSalesTab(tab,button){
 }
 function renderSalesModules(){
   renderSellingCapacity();renderSalesTraderOptions();renderTraderList();renderTraderLedger();renderChallanHistory();renderReceiptHistory();
-  renderFarmerSettlement();renderBatchProfitability();
+  renderFarmerSettlement();renderBatchProfitability();renderExpenses();
   if(!cageRows.length){cageRows=[{cages:"",emptyWeight:"",loadWeight:""}];renderCageRows();}
   ["challanDate","receiptDate"].forEach(id=>{const e=document.getElementById(id);if(e&&!e.value)e.value=getTodayISO();});
 }
@@ -1457,19 +1485,56 @@ function renderBatchProfitability(){
     el.innerHTML='<div class="empty">No batches found.</div>';return;
   }
   el.innerHTML=`<div style="overflow-x:auto"><table class="data-table">
-    <thead><tr><th>Batch</th><th>Farm</th><th>Birds Sold</th><th>Net Kg</th><th>Sales Revenue</th><th>Operating Cost</th><th>Farmer Settlement</th><th>Total Cost</th><th>Profit</th><th>Margin</th></tr></thead>
+    <thead><tr><th>Batch</th><th>Farm</th><th>Birds Sold</th><th>Net Kg</th><th>Sales Revenue</th><th>Operating Cost</th><th>Logged Expenses</th><th>Farmer Settlement</th><th>Total Cost</th><th>Profit</th><th>Margin</th></tr></thead>
     <tbody>${batchProfitabilityData.map(x=>`<tr>
       <td>${escapeHtml(x.batchId)}</td><td>${escapeHtml(x.farmName)}</td>
       <td>${Number(x.birdsSold||0).toLocaleString("en-IN")}</td>
       <td>${Number(x.netWeight||0).toFixed(2)}</td>
       <td>${moneyReport(x.salesRevenue)}</td>
       <td>${moneyReport(x.operatingCost)}</td>
+      <td>${moneyReport(x.expenseLogTotal)}</td>
       <td>${moneyReport(x.farmerSettlement)}</td>
       <td>${moneyReport(x.totalCost)}</td>
       <td>${moneyReport(x.profit)}</td>
       <td>${Number(x.profitMargin||0).toFixed(2)}%</td>
     </tr>`).join("")}</tbody>
   </table></div>`;
+}
+
+
+/*************************************************
+ * MILESTONE 22 – EXPENSES
+ *************************************************/
+function renderExpenseBatchOptions(){
+  const el=document.getElementById("expenseBatch");if(!el)return;
+  const cur=el.value;
+  el.innerHTML='<option value="">Select Batch</option>'+batchesData.filter(b=>String(b.batchId||"").trim()).map(b=>`<option value="${escapeHtml(b.batchId)}">${escapeHtml(b.batchId)} — ${escapeHtml(b.farmName||"")}</option>`).join("");
+  if(cur)el.value=cur;
+}
+function saveExpenseUI(){
+  postData({
+    action:"createExpense",
+    date:document.getElementById("expenseDate")?.value||"",
+    batchId:document.getElementById("expenseBatch")?.value||"",
+    category:document.getElementById("expenseCategory")?.value||"",
+    amount:document.getElementById("expenseAmount")?.value||"",
+    paymentMode:document.getElementById("expenseMode")?.value||"",
+    referenceNo:document.getElementById("expenseReference")?.value.trim()||"",
+    remarks:document.getElementById("expenseRemarks")?.value.trim()||""
+  }).then(d=>{
+    showMessage("expenseMessage",`${d.expenseId} recorded for ${d.batchId}. Amount ₹${Number(d.amount||0).toFixed(2)}.`,"success");
+    const a=["expenseAmount","expenseReference","expenseRemarks"];a.forEach(id=>{const e=document.getElementById(id);if(e)e.value="";});
+    document.getElementById("expenseCategory").value="";
+    loadData().then(()=>renderExpenses());
+  }).catch(e=>showMessage("expenseMessage",e.message,"error"));
+}
+function renderExpenses(){
+  renderExpenseBatchOptions();
+  const date=document.getElementById("expenseDate");if(date&&!date.value)date.value=getTodayISO();
+  const el=document.getElementById("expenseHistory");if(!el)return;
+  if(!expensesData.length){el.innerHTML='<div class="empty">No expenses recorded.</div>';return;}
+  const rows=[...expensesData].reverse().slice(0,50);
+  el.innerHTML=`<div style="overflow-x:auto"><table class="data-table"><thead><tr><th>Expense ID</th><th>Date</th><th>Batch</th><th>Farm</th><th>Category</th><th>Amount</th><th>Mode</th><th>Reference</th><th>Remarks</th></tr></thead><tbody>${rows.map(x=>`<tr><td>${escapeHtml(x.expenseId)}</td><td>${escapeHtml(x.date)}</td><td>${escapeHtml(x.batchId)}</td><td>${escapeHtml(x.farmName)}</td><td>${escapeHtml(x.category)}</td><td>${moneyReport(x.amount)}</td><td>${escapeHtml(x.paymentMode||"")}</td><td>${escapeHtml(x.referenceNo||"")}</td><td>${escapeHtml(x.remarks||"")}</td></tr>`).join("")}</tbody></table></div>`;
 }
 
 /*************************************************
@@ -1998,6 +2063,7 @@ async function loadData(){
     batchSalesSettlementData = Array.isArray(data.batchSalesSettlement) ? data.batchSalesSettlement : [];
     farmerSettlementData = Array.isArray(data.farmerSettlement) ? data.farmerSettlement : [];
     batchProfitabilityData = Array.isArray(data.batchProfitability) ? data.batchProfitability : [];
+    expensesData = Array.isArray(data.expenses) ? data.expenses : [];
 
     renderAll();
 
