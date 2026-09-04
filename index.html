@@ -573,10 +573,32 @@ body{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))!important}
   .detail-stats{grid-template-columns:repeat(4,minmax(0,1fr))}
 }
 
+
+/* =========================================================
+   PHASE C — PERFORMANCE / RELIABILITY POLISH
+   ========================================================= */
+:root{--c-brand:#16804f;--c-brand-dark:#0f6a41;--c-bg:#f4f7f5;--c-line:#e4ebe7}
+body{background:var(--c-bg);overscroll-behavior-y:none}
+#appStatusBar{position:fixed;top:0;left:50%;transform:translate(-50%,-110%);z-index:1000;background:#17202a;color:#fff;border-radius:0 0 12px 12px;padding:8px 14px;font-size:11px;font-weight:700;box-shadow:0 8px 22px rgba(0,0,0,.15);transition:transform .22s ease;max-width:92vw;text-align:center;pointer-events:none}
+#appStatusBar.show{transform:translate(-50%,0)}
+#appStatusBar.offline{background:#b42318}
+#appStatusBar.online{background:#16804f}
+#appStatusBar.sync{background:#2563eb}
+#appLoading{position:fixed;inset:0;background:rgba(244,247,245,.72);backdrop-filter:blur(3px);z-index:900;display:none;align-items:center;justify-content:center}
+#appLoading.show{display:flex}
+.loading-card{background:#fff;border:1px solid var(--c-line);border-radius:16px;padding:18px 22px;box-shadow:0 12px 35px rgba(15,23,42,.12);display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700}
+.spinner{width:20px;height:20px;border:3px solid #dce8e2;border-top-color:var(--c-brand);border-radius:50%;animation:kgspin .75s linear infinite}
+@keyframes kgspin{to{transform:rotate(360deg)}}
+.api-retry{margin-top:10px}
+.api-retry button{border:0;border-radius:10px;background:var(--c-brand);color:#fff;padding:9px 14px;font-weight:800}
+@media(max-width:700px){#appStatusBar{font-size:10px;padding:7px 12px}.loading-card{padding:15px 18px}}
 </style>
 </head>
 
 <body>
+<div id="appStatusBar" role="status" aria-live="polite"></div>
+<div id="appLoading"><div class="loading-card"><span class="spinner"></span><span id="appLoadingText">Loading KG Farms…</span></div></div>
+
 
 <div class="header">
   <div class="header-inner">
@@ -2411,129 +2433,126 @@ function escapeHtml(value){
 
 
 /*************************************************
- * API GET
+ * API / RELIABILITY LAYER
  *************************************************/
+const KG_CACHE_KEY = "kgfarms:last-good-data:v1";
+const KG_API_TIMEOUT = 20000;
+let kgLoadInFlight = null;
+let kgLoadingCount = 0;
 
-async function loadData(){
-
-  try{
-
-    const response =
-      await fetch(API_URL + "?t=" + Date.now());
-
-    const data =
-      await response.json();
-
-    if(data.status !== "success"){
-      throw new Error(
-        data.message || "Unable to load data."
-      );
-    }
-
-    dashboardData =
-      Array.isArray(data.data)
-        ? data.data
-        : [];
-
-    feedData =
-      Array.isArray(data.feed)
-        ? data.feed
-        : [];
-
-    ordersData =
-      Array.isArray(data.orders)
-        ? data.orders
-        : [];
-
-    vaccineData =
-      Array.isArray(data.vaccines)
-        ? data.vaccines
-        : [];
-
-    batchesData =
-      Array.isArray(data.batches)
-        ? data.batches
-        : [];
-
-    if(data.medicine){
-
-      medicineMaster =
-        Array.isArray(data.medicine.master)
-          ? data.medicine.master
-          : [];
-
-      medicineStock =
-        Array.isArray(data.medicine.stock)
-          ? data.medicine.stock
-          : [];
-
-      medicineUsage =
-        Array.isArray(data.medicine.usage)
-          ? data.medicine.usage
-          : [];
-
-    }else{
-
-      medicineMaster = [];
-      medicineStock = [];
-      medicineUsage = [];
-
-    }
-
-    tradersData = Array.isArray(data.traders) ? data.traders : [];
-    sellingCapacityData = Array.isArray(data.sellingCapacity) ? data.sellingCapacity : [];
-    challansData = Array.isArray(data.challans) ? data.challans : [];
-    traderLedgerData = Array.isArray(data.traderLedger) ? data.traderLedger : [];
-    collectionsData = Array.isArray(data.collections) ? data.collections : [];
-    salesReturnsData = Array.isArray(data.salesReturns) ? data.salesReturns : [];
-    batchSalesSettlementData = Array.isArray(data.batchSalesSettlement) ? data.batchSalesSettlement : [];
-    farmerSettlementData = Array.isArray(data.farmerSettlement) ? data.farmerSettlement : [];
-    batchProfitabilityData = Array.isArray(data.batchProfitability) ? data.batchProfitability : [];
-    expensesData = Array.isArray(data.expenses) ? data.expenses : [];
-    batchClosureData = Array.isArray(data.batchClosure) ? data.batchClosure : [];
-
-    renderAll();
-
-  }catch(err){
-
-    console.error(err);
-
-    document.getElementById("dashboardList").innerHTML =
-      `<div class="notice notice-error">
-        Unable to load data.<br>
-        ${escapeHtml(err.message)}
-      </div>`;
+function setAppLoading(show,text){
+  const el=document.getElementById("appLoading");
+  const tx=document.getElementById("appLoadingText");
+  if(tx&&text)tx.textContent=text;
+  if(!el)return;
+  if(show){kgLoadingCount++;el.classList.add("show");}
+  else{kgLoadingCount=Math.max(0,kgLoadingCount-1);if(!kgLoadingCount)el.classList.remove("show");}
+}
+function showAppStatus(text,type="sync",ms=2600){
+  const el=document.getElementById("appStatusBar");if(!el)return;
+  el.textContent=text;el.className="show "+type;
+  clearTimeout(window.__kgStatusTimer);
+  if(ms)window.__kgStatusTimer=setTimeout(()=>el.className="",ms);
+}
+function updateNetworkStatus(){
+  if(navigator.onLine){
+    if(window.__kgWasOffline)showAppStatus("Back online · KG Farms connected","online",2800);
+    window.__kgWasOffline=false;
+  }else{
+    window.__kgWasOffline=true;
+    showAppStatus("Offline · showing last saved data","offline",0);
   }
 }
+window.addEventListener("online",()=>{updateNetworkStatus();setTimeout(()=>loadData({silent:true}),350);});
+window.addEventListener("offline",updateNetworkStatus);
 
+function cacheCurrentData(){
+  try{
+    localStorage.setItem(KG_CACHE_KEY,JSON.stringify({savedAt:Date.now(),dashboardData,feedData,ordersData,vaccineData,batchesData,medicineMaster,medicineStock,medicineUsage,tradersData,sellingCapacityData,challansData,traderLedgerData,collectionsData,salesReturnsData,batchSalesSettlementData,farmerSettlementData,batchProfitabilityData,expensesData,batchClosureData,erpData}));
+  }catch(e){console.warn("KG cache unavailable",e);}
+}
+function restoreCachedData(){
+  try{
+    const x=JSON.parse(localStorage.getItem(KG_CACHE_KEY)||"null");
+    if(!x)return false;
+    const keys=["dashboardData","feedData","ordersData","vaccineData","batchesData","medicineMaster","medicineStock","medicineUsage","tradersData","sellingCapacityData","challansData","traderLedgerData","collectionsData","salesReturnsData","batchSalesSettlementData","farmerSettlementData","batchProfitabilityData","expensesData","batchClosureData","erpData"];
+    keys.forEach(k=>{if(k in x)window[k]=x[k];});
+    renderAll();
+    const age=Math.max(0,Date.now()-Number(x.savedAt||0));
+    const mins=Math.floor(age/60000);
+    showAppStatus(mins<1?"Offline · saved data loaded":`Offline · data from ${mins} min ago`,"offline",0);
+    return true;
+  }catch(e){console.warn("KG cache restore failed",e);return false;}
+}
+async function fetchWithTimeout(url,options={},timeout=KG_API_TIMEOUT){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),timeout);
+  try{return await fetch(url,{...options,signal:controller.signal,cache:"no-store"});}
+  catch(e){if(e.name==="AbortError")throw new Error("Connection timed out. Please check your internet and try again.");throw e;}
+  finally{clearTimeout(timer);}
+}
 
-/*************************************************
- * API POST
- *************************************************/
+async function loadData(options={}){
+  if(kgLoadInFlight)return kgLoadInFlight;
+  kgLoadInFlight=(async()=>{
+    const silent=!!options.silent;
+    if(!navigator.onLine){restoreCachedData();return;}
+    if(!silent)setAppLoading(true,"Loading KG Farms…");
+    try{
+      const response=await fetchWithTimeout(API_URL+"?t="+Date.now());
+      if(!response.ok)throw new Error("Server returned HTTP "+response.status+".");
+      const data=await response.json();
+      if(data.status!=="success")throw new Error(data.message||"Unable to load data.");
+      dashboardData=Array.isArray(data.data)?data.data:[];
+      feedData=Array.isArray(data.feed)?data.feed:[];
+      ordersData=Array.isArray(data.orders)?data.orders:[];
+      vaccineData=Array.isArray(data.vaccines)?data.vaccines:[];
+      batchesData=Array.isArray(data.batches)?data.batches:[];
+      if(data.medicine){medicineMaster=Array.isArray(data.medicine.master)?data.medicine.master:[];medicineStock=Array.isArray(data.medicine.stock)?data.medicine.stock:[];medicineUsage=Array.isArray(data.medicine.usage)?data.medicine.usage:[];}else{medicineMaster=[];medicineStock=[];medicineUsage=[];}
+      tradersData=Array.isArray(data.traders)?data.traders:[];
+      sellingCapacityData=Array.isArray(data.sellingCapacity)?data.sellingCapacity:[];
+      challansData=Array.isArray(data.challans)?data.challans:[];
+      traderLedgerData=Array.isArray(data.traderLedger)?data.traderLedger:[];
+      collectionsData=Array.isArray(data.collections)?data.collections:[];
+      salesReturnsData=Array.isArray(data.salesReturns)?data.salesReturns:[];
+      batchSalesSettlementData=Array.isArray(data.batchSalesSettlement)?data.batchSalesSettlement:[];
+      farmerSettlementData=Array.isArray(data.farmerSettlement)?data.farmerSettlement:[];
+      batchProfitabilityData=Array.isArray(data.batchProfitability)?data.batchProfitability:[];
+      expensesData=Array.isArray(data.expenses)?data.expenses:[];
+      batchClosureData=Array.isArray(data.batchClosure)?data.batchClosure:[];
+      if(data.erp)erpData=data.erp;
+      cacheCurrentData();
+      renderAll();
+      if(!silent)showAppStatus("Updated just now","online",1800);
+    }catch(err){
+      console.error(err);
+      if(restoreCachedData()){
+        showAppStatus("Could not refresh · showing saved data","offline",0);
+      }else{
+        const el=document.getElementById("dashboardList");
+        if(el)el.innerHTML=`<div class="notice notice-error">Unable to load data.<br>${escapeHtml(err.message)}<div class="api-retry"><button onclick="loadData()">Retry</button></div></div>`;
+        showAppStatus("Unable to connect to KG Farms","offline",0);
+      }
+    }finally{if(!silent)setAppLoading(false);}
+  })();
+  try{return await kgLoadInFlight;}finally{kgLoadInFlight=null;}
+}
 
 async function postData(payload){
-
-  const response =
-    await fetch(API_URL,{
-      method:"POST",
-      headers:{
-        "Content-Type":"text/plain;charset=utf-8"
-      },
-      body:JSON.stringify(payload)
-    });
-
-  const data =
-    await response.json();
-
-  if(data.status !== "success"){
-    throw new Error(
-      data.message || "Request failed."
-    );
-  }
-
-  return data;
+  if(!navigator.onLine)throw new Error("You are offline. Connect to the internet before saving this entry.");
+  setAppLoading(true,"Saving…");
+  try{
+    const response=await fetchWithTimeout(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+    if(!response.ok)throw new Error("Server returned HTTP "+response.status+".");
+    const data=await response.json();
+    if(data.status!=="success")throw new Error(data.message||"Request failed.");
+    showAppStatus("Saved successfully","online",1600);
+    return data;
+  }catch(e){
+    showAppStatus("Save failed · nothing was changed","offline",3000);
+    throw e;
+  }finally{setAppLoading(false);}
 }
-
 
 /*************************************************
  * RENDER ALL
@@ -4371,16 +4390,12 @@ function setDefaultDates(){
  * INITIALIZE
  *************************************************/
 
-document.addEventListener(
-  "DOMContentLoaded",
-  async function(){
-
-    setDefaultDates();
-
-    await loadData();
-
-  }
-);
+document.addEventListener("DOMContentLoaded",async function(){
+  updateNetworkStatus();
+  setDefaultDates();
+  if(!navigator.onLine) restoreCachedData();
+  await loadData();
+});
 
 
 
