@@ -898,6 +898,7 @@ textarea{
         <button class="btn btn-primary" onclick="renderSalesReports()">Apply Filter</button>
         <button class="btn btn-secondary" onclick="clearSalesReportFilters()">Clear</button>
         <button class="btn btn-secondary" onclick="printSalesReport()">Print Report</button>
+        <button class="btn btn-secondary" onclick="printBatchSalesSettlement()">Print Batch Report</button>
       </div>
     </div>
 
@@ -911,6 +912,14 @@ textarea{
     <div class="card">
       <div class="card-title">Sales Report</div>
       <div id="salesReportList"><div class="empty">No sales found.</div></div>
+    </div>
+
+
+    <div class="card">
+      <div class="card-title">Batch-wise Sales & Settlement</div>
+      <div id="batchSettlementList">
+        <div class="empty">No batch sales found.</div>
+      </div>
     </div>
 
     <div class="card">
@@ -1000,6 +1009,7 @@ let sellingCapacityData = [];
 let challansData = [];
 let traderLedgerData = [];
 let collectionsData = [];
+let batchSalesSettlementData = [];
 
 
 /*************************************************
@@ -1341,6 +1351,8 @@ function renderSalesReports(){
       </tr>`).join("")}</tbody></table></div>`
     : '<div class="empty">No sales found for the selected filters.</div>';
 
+  renderBatchSalesSettlement();
+
   collectionEl.innerHTML=receipts.length
     ? `<div style="overflow-x:auto"><table class="data-table">
       <thead><tr><th>Date</th><th>Receipt</th><th>Trader</th><th>Mode</th><th>Reference</th><th>Amount</th></tr></thead>
@@ -1402,6 +1414,124 @@ function printSalesReport(){
   setTimeout(()=>w.print(),300);
 }
 
+
+/*************************************************
+ * MILESTONE 19 – BATCH SALES & SETTLEMENT
+ *************************************************/
+function renderBatchSalesSettlement(){
+  const el=document.getElementById("batchSettlementList");
+  if(!el)return;
+
+  const from=document.getElementById("reportFromDate")?.value||"";
+  const to=document.getElementById("reportToDate")?.value||"";
+  const trader=document.getElementById("reportTrader")?.value||"";
+
+  const fromD=from?new Date(from+"T00:00:00"):null;
+  const toD=to?new Date(to+"T23:59:59"):null;
+
+  const salesByBatch={};
+  challansData.forEach(c=>{
+    if(String(c.status||"").toLowerCase()==="cancelled")return;
+    if(trader&&String(c.traderId)!==String(trader))return;
+
+    const d=reportDateObj(c.date);
+    if(fromD&&(!d||d<fromD))return;
+    if(toD&&(!d||d>toD))return;
+
+    const id=String(c.batchId||"").trim();
+    if(!id)return;
+
+    if(!salesByBatch[id])salesByBatch[id]={
+      birdsSold:0,netWeight:0,saleAmount:0
+    };
+
+    salesByBatch[id].birdsSold+=Number(c.birds)||0;
+    salesByBatch[id].netWeight+=Number(c.netWeight)||0;
+    salesByBatch[id].saleAmount+=Number(c.saleAmount)||0;
+  });
+
+  const rows=batchSalesSettlementData.map(b=>{
+    const s=salesByBatch[String(b.batchId).trim()]||{
+      birdsSold:0,netWeight:0,saleAmount:0
+    };
+
+    const current=Number(b.currentBirds)||0;
+    const remaining=Math.max(0,current-s.birdsSold);
+    const avgRate=s.netWeight>0?s.saleAmount/s.netWeight:0;
+
+    return {
+      ...b,
+      birdsSold:s.birdsSold,
+      birdsRemaining:remaining,
+      netWeight:s.netWeight,
+      saleAmount:s.saleAmount,
+      averageRate:avgRate
+    };
+  }).filter(b=>b.saleAmount>0||b.birdsSold>0);
+
+  if(!rows.length){
+    el.innerHTML='<div class="empty">No batch sales found for the selected filters.</div>';
+    return;
+  }
+
+  el.innerHTML=`<div style="overflow-x:auto"><table class="data-table">
+    <thead><tr>
+      <th>Batch</th><th>Farm</th><th>Chicks</th><th>Current</th>
+      <th>Sold</th><th>Remaining</th><th>Net Kg</th>
+      <th>Sale Value</th><th>Avg Rate/Kg</th><th>Settlement</th>
+    </tr></thead>
+    <tbody>
+      ${rows.map(x=>`<tr>
+        <td>${escapeHtml(x.batchId)}</td>
+        <td>${escapeHtml(x.farmName)}</td>
+        <td>${Number(x.chicksPlaced||0).toLocaleString("en-IN")}</td>
+        <td>${Number(x.currentBirds||0).toLocaleString("en-IN")}</td>
+        <td>${Number(x.birdsSold||0).toLocaleString("en-IN")}</td>
+        <td>${Number(x.birdsRemaining||0).toLocaleString("en-IN")}</td>
+        <td>${Number(x.netWeight||0).toFixed(2)}</td>
+        <td>${moneyReport(x.saleAmount)}</td>
+        <td>${moneyReport(x.averageRate)}</td>
+        <td><span class="badge badge-orange">READY</span></td>
+      </tr>`).join("")}
+    </tbody>
+  </table></div>
+  <div class="row-sub" style="margin-top:8px">
+    Settlement payout is not auto-calculated yet because the farmer settlement rate/formula is not defined.
+  </div>`;
+}
+
+function printBatchSalesSettlement(){
+  const rows=batchSalesSettlementData.filter(x=>String(x.batchId||"").trim());
+  const w=window.open("","_blank");
+  if(!w){alert("Please allow pop-ups to print the report.");return;}
+
+  w.document.write(`<!doctype html><html><head><title>KG FARMS - Batch Sales & Settlement</title>
+  <style>
+    @page{size:A4 landscape;margin:10mm}
+    body{font-family:Arial,sans-serif;font-size:10px;color:#111}
+    h1{text-align:center;margin:0;font-size:21px}
+    h2{text-align:center;margin:4px 0 14px;font-size:14px}
+    table{width:100%;border-collapse:collapse}
+    th,td{border:1px solid #999;padding:5px;text-align:center}
+    th{background:#eee}
+  </style></head><body>
+  <h1>KG FARMS</h1>
+  <h2>BATCH-WISE SALES & SETTLEMENT REPORT</h2>
+  <table>
+    <tr><th>Batch</th><th>Farm</th><th>Chicks</th><th>Current Birds</th><th>Birds Sold</th><th>Remaining</th><th>Net Kg</th><th>Sale Value</th><th>Avg Rate/Kg</th><th>Settlement Status</th></tr>
+    ${rows.map(x=>`<tr>
+      <td>${escapeHtml(x.batchId)}</td><td>${escapeHtml(x.farmName)}</td>
+      <td>${Number(x.chicksPlaced||0)}</td><td>${Number(x.currentBirds||0)}</td>
+      <td>${Number(x.birdsSold||0)}</td><td>${Number(x.birdsRemaining||0)}</td>
+      <td>${Number(x.netWeight||0).toFixed(2)}</td><td>${moneyReport(x.saleAmount)}</td>
+      <td>${moneyReport(x.averageRate)}</td><td>${escapeHtml(x.settlementStatus||"READY")}</td>
+    </tr>`).join("")}
+  </table>
+  <p><b>Note:</b> Settlement payout is not calculated because the farmer settlement rate/formula has not been defined.</p>
+  </body></html>`);
+  w.document.close();
+  setTimeout(()=>w.print(),300);
+}
 function showPage(page,button){
 
   document
