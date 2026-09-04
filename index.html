@@ -882,7 +882,7 @@ textarea{
   <div id="salesTradersTab" class="hidden"><div id="traderMessage"></div><div class="card">
     <div class="card-title">Add Trader</div><label>Trader Name</label><input type="text" id="traderName"><label>Mobile</label><input type="text" id="traderMobile"><label>Address</label><textarea id="traderAddress"></textarea><label>Opening Balance</label><input type="number" id="traderOpening" min="0" step="0.01" value="0"><label>Remarks</label><textarea id="traderRemarks" placeholder="Optional"></textarea><button class="btn btn-primary" onclick="createTraderUI()">Add Trader</button>
   </div><div id="traderList"></div></div>
-  <div id="salesLedgerTab" class="hidden"><div id="ledgerSummary"></div><div class="card"><div class="card-title">Trader Ledger</div><label>Trader</label><select id="ledgerTrader" onchange="renderTraderLedger()"><option value="">All Traders</option></select><div id="ledgerList"></div></div></div>
+  <div id="salesLedgerTab" class="hidden"><div id="ledgerSummary"></div><div class="card"><div class="card-title">Trader Ledger</div><div class="grid"><div><label>Trader</label><select id="ledgerTrader" onchange="renderTraderLedger()"><option value="">All Traders</option></select></div><div><label>From Date</label><input type="date" id="ledgerFrom" onchange="renderTraderLedger()"></div><div><label>To Date</label><input type="date" id="ledgerTo" onchange="renderTraderLedger()"></div></div><div id="ledgerList"></div></div><div class="card"><div class="card-title">Trader Outstanding Summary</div><div id="traderSummaryList"></div></div></div>
   <div id="salesReceiptTab" class="hidden"><div id="receiptMessage"></div><div class="card"><div class="card-title">Receive Payment</div><label>Date</label><input type="date" id="receiptDate"><label>Trader</label><select id="receiptTrader" onchange="updateReceiptTrader()"><option value="">Select Trader</option></select><div id="receiptOutstanding"></div><label>Amount</label><input type="number" id="receiptAmount" min="0.01" step="0.01"><label>Payment Mode</label><select id="receiptMode"><option>Cash</option><option>Bank Transfer</option><option>UPI</option><option>Cheque</option><option>Other</option></select><label>Reference No.</label><input type="text" id="receiptReference"><label>Remarks</label><textarea id="receiptRemarks"></textarea><button class="btn btn-success" onclick="saveReceipt()">Save Receipt</button></div><div class="card"><div class="card-title">Recent Receipts</div><div id="receiptHistory"></div></div></div>
 </div>
 
@@ -1098,11 +1098,28 @@ function getTraderOutstandingUI(id){
   traderLedgerData.filter(x=>String(x.traderId)===String(id)).forEach(x=>b+=(Number(x.debit)||0)-(Number(x.credit)||0));return Math.max(0,b);
 }
 function renderTraderLedger(){
-  const el=document.getElementById("ledgerList"),summary=document.getElementById("ledgerSummary");if(!el)return;const id=document.getElementById("ledgerTrader")?.value||"";
-  let total=0;tradersData.forEach(t=>total+=getTraderOutstandingUI(t.traderId));
-  if(summary)summary.innerHTML=`<div class="grid sales-summary"><div class="stat"><div class="stat-label">Traders</div><div class="stat-value">${tradersData.length}</div></div><div class="stat"><div class="stat-label">Total Outstanding</div><div class="stat-value">₹ ${total.toFixed(2)}</div></div></div>`;
-  const rows=traderLedgerData.filter(x=>!id||String(x.traderId)===String(id));if(!rows.length){el.innerHTML='<div class="empty">No ledger transactions.</div>';return;}
-  el.innerHTML=[...rows].reverse().map(x=>`<div class="list-row"><div class="row-flex"><div><div class="row-main">${escapeHtml(x.transactionType)} • ${escapeHtml(x.referenceNo||x.transactionId)}</div><div class="row-sub">${escapeHtml(x.date)} • ${escapeHtml(x.traderName)}</div></div><div style="text-align:right">${x.debit?`<div class="row-main">Dr ₹ ${Number(x.debit).toFixed(2)}</div>`:""}${x.credit?`<div class="row-main">Cr ₹ ${Number(x.credit).toFixed(2)}</div>`:""}<div class="row-sub">Bal ₹ ${Number(x.balance).toFixed(2)}</div></div></div></div>`).join("");
+  const el=document.getElementById("ledgerList"),summary=document.getElementById("ledgerSummary");if(!el)return;
+  const id=document.getElementById("ledgerTrader")?.value||"";
+  const from=document.getElementById("ledgerFrom")?.value||"";
+  const to=document.getElementById("ledgerTo")?.value||"";
+  let total=0,totalSales=0,totalReceipts=0;
+  tradersData.forEach(t=>{total+=getTraderOutstandingUI(t.traderId);});
+  traderLedgerData.forEach(x=>{totalSales+=Number(x.debit)||0;totalReceipts+=Number(x.credit)||0;});
+  if(summary)summary.innerHTML=`<div class="grid sales-summary"><div class="stat"><div class="stat-label">Traders</div><div class="stat-value">${tradersData.length}</div></div><div class="stat"><div class="stat-label">Total Sales</div><div class="stat-value">₹ ${totalSales.toFixed(2)}</div></div><div class="stat"><div class="stat-label">Total Collections</div><div class="stat-value">₹ ${totalReceipts.toFixed(2)}</div></div><div class="stat"><div class="stat-label">Total Outstanding</div><div class="stat-value">₹ ${total.toFixed(2)}</div></div></div>`;
+  const parseDMY=x=>{const a=String(x||"").split("-");return a.length===3?new Date(+a[2],+a[1]-1,+a[0]):null;};
+  const fromD=from?new Date(from+"T00:00:00"):null,toD=to?new Date(to+"T23:59:59"):null;
+  const rows=traderLedgerData.filter(x=>{
+    if(id&&String(x.traderId)!==String(id))return false;
+    const d=parseDMY(x.date);if(fromD&&(!d||d<fromD))return false;if(toD&&(!d||d>toD))return false;return true;
+  });
+  if(!rows.length)el.innerHTML='<div class="empty">No ledger transactions for the selected filters.</div>';
+  else el.innerHTML=[...rows].reverse().map(x=>`<div class="list-row"><div class="row-flex"><div><div class="row-main">${escapeHtml(x.transactionType)} • ${escapeHtml(x.referenceNo||x.transactionId)}</div><div class="row-sub">${escapeHtml(x.date)} • ${escapeHtml(x.traderName)}</div></div><div style="text-align:right">${x.debit?`<div class="row-main">Dr ₹ ${Number(x.debit).toFixed(2)}</div>`:""}${x.credit?`<div class="row-main">Cr ₹ ${Number(x.credit).toFixed(2)}</div>`:""}<div class="row-sub">Bal ₹ ${Number(x.balance).toFixed(2)}</div></div></div></div>`).join("");
+  renderTraderSummary();
+}
+function renderTraderSummary(){
+  const el=document.getElementById("traderSummaryList");if(!el)return;
+  if(!tradersData.length){el.innerHTML='<div class="empty">No traders found.</div>';return;}
+  el.innerHTML=tradersData.map(t=>{const opening=Number(t.openingBalance)||0;let sales=0,receipts=0;traderLedgerData.filter(x=>String(x.traderId)===String(t.traderId)).forEach(x=>{sales+=Number(x.debit)||0;receipts+=Number(x.credit)||0;});const out=getTraderOutstandingUI(t.traderId);return `<div class="list-row"><div class="row-flex"><div><div class="row-main">${escapeHtml(t.traderName)}</div><div class="row-sub">${escapeHtml(t.traderId)} • Opening ₹ ${opening.toFixed(2)}</div></div><div style="text-align:right"><div class="row-main">₹ ${out.toFixed(2)}</div><div class="row-sub">Sales ₹ ${sales.toFixed(2)} • Receipts ₹ ${receipts.toFixed(2)}</div></div></div></div>`;}).join("");
 }
 function updateReceiptTrader(){const id=document.getElementById("receiptTrader").value,b=getTraderOutstandingUI(id);document.getElementById("receiptOutstanding").innerHTML=id?`<div class="notice ${b>0?"notice-info":"notice-success"}">Outstanding: <strong>₹ ${b.toFixed(2)}</strong></div>`:"";}
 async function saveReceipt(){
