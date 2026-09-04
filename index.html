@@ -1087,7 +1087,26 @@ async function saveChallan(){
 function renderChallanHistory(){
   const el=document.getElementById("challanHistory");if(!el)return;
   if(!challansData.length){el.innerHTML='<div class="empty">No challans created.</div>';return;}
-  el.innerHTML=[...challansData].reverse().slice(0,20).map(x=>`<div class="list-row"><div class="row-flex"><div><div class="row-main">${escapeHtml(x.challanNo)} • ${escapeHtml(x.traderName)}</div><div class="row-sub">${escapeHtml(x.date)} • ${escapeHtml(x.batchId)} • ${x.birds} birds</div></div><div style="text-align:right"><div class="row-main">₹ ${Number(x.saleAmount).toFixed(2)}</div><div class="row-sub">${Number(x.netWeight).toFixed(2)} Kg</div><button type="button" class="btn btn-secondary btn-small" style="margin-top:7px" onclick="printChallan('${escapeHtml(x.challanNo)}')">Print Challan</button></div></div></div>`).join("");
+  el.innerHTML=[...challansData].reverse().slice(0,20).map(x=>`<div class="list-row"><div class="row-flex"><div><div class="row-main">${escapeHtml(x.challanNo)} • ${escapeHtml(x.traderName)}</div><div class="row-sub">${escapeHtml(x.date)} • ${escapeHtml(x.batchId)} • ${x.birds} birds${String(x.status||"").toLowerCase()==="cancelled"?" • CANCELLED":""}</div></div><div style="text-align:right"><div class="row-main">₹ ${Number(x.saleAmount).toFixed(2)}</div><div class="row-sub">${Number(x.netWeight).toFixed(2)} Kg</div><button type="button" class="btn btn-secondary btn-small" style="margin-top:7px" onclick="printChallan('${escapeHtml(x.challanNo)}')">Print Challan</button>${String(x.status||"").toLowerCase()!=="cancelled"?`<button type="button" class="btn btn-small" style="margin-top:7px" onclick="cancelChallan('${escapeHtml(x.challanNo)}')">Cancel</button>`:`<div class="row-sub" style="margin-top:7px">CANCELLED</div>`}</div></div></div>`).join("");
+}
+
+
+async function cancelChallan(challanNo){
+  const x=challansData.find(c=>String(c.challanNo)===String(challanNo));
+  if(!x)return;
+  if(String(x.status||"").toLowerCase()==="cancelled"){
+    showMessage("challanMessage","This challan is already cancelled.","error");
+    return;
+  }
+  if(!confirm("Cancel "+challanNo+"?\nThis will restore the birds to selling capacity and reverse the sale from the trader ledger."))return;
+
+  try{
+    const d=await postData({action:"cancelChallan",challanNo:challanNo});
+    showMessage("challanMessage",d.message,"success");
+    await loadData();
+  }catch(e){
+    showMessage("challanMessage",e.message,"error");
+  }
 }
 
 function printChallan(challanNo){
@@ -1166,7 +1185,7 @@ async function saveReceipt(){
 function renderReceiptHistory(){
   const el=document.getElementById("receiptHistory");if(!el)return;
   if(!collectionsData.length){el.innerHTML='<div class="empty">No receipts recorded.</div>';return;}
-  el.innerHTML=[...collectionsData].reverse().slice(0,20).map(x=>`<div class="list-row"><div class="row-flex"><div><div class="row-main">${escapeHtml(x.receiptNo)} • ${escapeHtml(x.traderName)}</div><div class="row-sub">${escapeHtml(x.date)} • ${escapeHtml(x.paymentMode||"")}</div></div><div class="row-main">₹ ${Number(x.amount).toFixed(2)}</div></div></div>`).join("");
+  el.innerHTML=[...collectionsData].reverse().slice(0,20).map(x=>`<div class="list-row"><div class="row-flex"><div><div class="row-main">${escapeHtml(x.receiptNo)} • ${escapeHtml(x.traderName)}</div><div class="row-sub">${escapeHtml(x.date)} • ${escapeHtml(x.paymentMode||"")}</div></div><div style="text-align:right"><div class="row-main">₹ ${Number(x.amount).toFixed(2)}</div><button type="button" class="btn btn-secondary btn-small" style="margin-top:7px" onclick="printReceipt('${escapeHtml(x.receiptNo)}')">Print Receipt</button></div></div></div>`).join("");
 }
 
 
@@ -1179,6 +1198,46 @@ function renderReceiptHistory(){
 /*************************************************
  * MILESTONE 17 – SALES & COLLECTION REPORTS
  *************************************************/
+
+function printReceipt(receiptNo){
+  const x=collectionsData.find(c=>String(c.receiptNo)===String(receiptNo));
+  if(!x){alert("Receipt not found.");return;}
+  const trader=tradersData.find(t=>String(t.traderId)===String(x.traderId));
+  const w=window.open("","_blank","width=700,height=900");
+  if(!w){alert("Please allow pop-ups to print the receipt.");return;}
+
+  w.document.write(`<!doctype html><html><head><title>${escapeHtml(x.receiptNo)} - KG FARMS</title>
+  <style>
+    @page{size:A5 portrait;margin:12mm}
+    body{font-family:Arial,sans-serif;color:#111;margin:0}
+    .receipt{border:1px solid #111;padding:18px;max-width:150mm;margin:auto}
+    h1{text-align:center;margin:0;font-size:22px}.sub{text-align:center;margin:4px 0 18px;font-size:12px}
+    .line{border-top:1px solid #111;margin:12px 0}
+    .row{display:flex;justify-content:space-between;padding:6px 0}
+    .label{font-weight:700}.amount{font-size:18px;font-weight:800}
+    .sign{margin-top:45px;display:flex;justify-content:space-between}
+    .sign div{width:42%;text-align:center;border-top:1px solid #111;padding-top:5px}
+    button{padding:8px 14px;margin-bottom:12px}
+    @media print{button{display:none}}
+  </style></head><body><div class="receipt">
+  <button onclick="window.print()">Print</button>
+  <h1>KG FARMS</h1><div class="sub">COLLECTION RECEIPT</div>
+  <div class="line"></div>
+  <div class="row"><span class="label">Receipt No.</span><span>${escapeHtml(x.receiptNo)}</span></div>
+  <div class="row"><span class="label">Date</span><span>${escapeHtml(x.date)}</span></div>
+  <div class="row"><span class="label">Trader</span><span>${escapeHtml(x.traderName)}</span></div>
+  <div class="row"><span class="label">Trader ID</span><span>${escapeHtml(x.traderId)}</span></div>
+  <div class="row"><span class="label">Payment Mode</span><span>${escapeHtml(x.paymentMode||"")}</span></div>
+  <div class="row"><span class="label">Reference</span><span>${escapeHtml(x.referenceNo||"")}</span></div>
+  <div class="line"></div>
+  <div class="row"><span class="label">Amount Received</span><span class="amount">${moneyReport(x.amount)}</span></div>
+  <div class="row"><span class="label">Remarks</span><span>${escapeHtml(x.remarks||"")}</span></div>
+  <div class="sign"><div>Received By</div><div>Trader</div></div>
+  </div></body></html>`);
+  w.document.close();
+  setTimeout(()=>w.print(),300);
+}
+
 function moneyReport(v){
   return "₹ " + Number(v||0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
 }
