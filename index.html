@@ -861,6 +861,7 @@ textarea{
   <div class="tab-row">
     <button class="tab-btn active" onclick="showSalesTab('capacity',this)">Selling Capacity</button>
     <button class="tab-btn" onclick="showSalesTab('challan',this)">Delivery Challan</button>
+<button class="tab-btn" onclick="showSalesTab('returns',this);renderSalesReturns()">Sales Return</button>
     <button class="tab-btn" onclick="showSalesTab('traders',this)">Traders</button>
     <button class="tab-btn" onclick="showSalesTab('ledger',this)">Ledger</button>
     <button class="tab-btn" onclick="showSalesTab('receipt',this)">Receipt</button>
@@ -927,6 +928,24 @@ textarea{
       <div id="collectionReportList"><div class="empty">No collections found.</div></div>
     </div>
   </div>
+
+<div id="salesReturnsTab" class="hidden">
+  <div class="card">
+    <div class="card-title">Sales Return</div>
+    <div id="salesReturnMessage"></div>
+    <label>Return Date</label><input type="date" id="salesReturnDate">
+    <label>Delivery Challan</label>
+    <select id="salesReturnChallan" onchange="updateSalesReturnChallan()"><option value="">Select Challan</option></select>
+    <div id="salesReturnChallanInfo"></div>
+    <label>Birds Returned</label><input type="number" id="salesReturnBirds" min="1" step="1" placeholder="Number of birds">
+    <label>Net Weight Returned (Kg)</label><input type="number" id="salesReturnWeight" min="0.01" step="0.01" placeholder="Returned net weight">
+    <label>Remarks</label><textarea id="salesReturnRemarks" placeholder="Reason / remarks"></textarea>
+    <button class="btn btn-primary" onclick="saveSalesReturn()">Create Sales Return</button>
+  </div>
+  <div class="card"><div class="card-title">Recent Sales Returns</div>
+    <div id="salesReturnHistory"><div class="empty">No sales returns.</div></div>
+  </div>
+</div>
 </div>
 
 
@@ -1010,6 +1029,7 @@ let challansData = [];
 let traderLedgerData = [];
 let collectionsData = [];
 let batchSalesSettlementData = [];
+let salesReturnsData = [];
 
 
 /*************************************************
@@ -1018,7 +1038,7 @@ let batchSalesSettlementData = [];
 let cageRows=[];
 
 function showSalesTab(tab,button){
-  ["capacity","challan","traders","ledger","receipt","reports"].forEach(t=>{
+  ["capacity","challan","returns","traders","ledger","receipt","reports"].forEach(t=>{
     const el=document.getElementById("sales"+t.charAt(0).toUpperCase()+t.slice(1)+"Tab");
     if(el)el.classList.toggle("hidden",t!==tab);
   });
@@ -1531,6 +1551,56 @@ function printBatchSalesSettlement(){
   </body></html>`);
   w.document.close();
   setTimeout(()=>w.print(),300);
+}
+
+function renderSalesReturnChallanOptions(){
+  const el=document.getElementById("salesReturnChallan");if(!el)return;
+  const used={};
+  salesReturnsData.forEach(r=>{
+    const id=String(r.challanNo||"");used[id]??={birds:0,weight:0};
+    used[id].birds+=+r.birdsReturned||0;used[id].weight+=+r.netWeight||0;
+  });
+  el.innerHTML='<option value="">Select Challan</option>'+challansData
+    .filter(c=>String(c.status||"").toLowerCase()!=="cancelled")
+    .map(c=>{
+      const u=used[String(c.challanNo)]||{birds:0,weight:0};
+      const rem=Math.max(0,(+c.birds||0)-u.birds);
+      return rem>0?`<option value="${escapeHtml(c.challanNo)}">${escapeHtml(c.challanNo)} — ${escapeHtml(c.traderName)} — ${rem} birds returnable</option>`:"";
+    }).join("");
+}
+function updateSalesReturnChallan(){
+  const id=document.getElementById("salesReturnChallan")?.value||"",el=document.getElementById("salesReturnChallanInfo");if(!el)return;
+  const c=challansData.find(x=>String(x.challanNo)===id);
+  if(!c){el.innerHTML="";return;}
+  const rr=salesReturnsData.filter(x=>String(x.challanNo)===id);
+  const b=rr.reduce((n,x)=>n+(+x.birdsReturned||0),0),w=rr.reduce((n,x)=>n+(+x.netWeight||0),0);
+  el.innerHTML=`<div class="row-sub">Trader: <b>${escapeHtml(c.traderName)}</b> · Batch: <b>${escapeHtml(c.batchId)}</b><br>
+  Original: ${(+c.birds||0).toLocaleString("en-IN")} birds · ${(+c.netWeight||0).toFixed(2)} Kg<br>
+  Already returned: ${b.toLocaleString("en-IN")} birds · ${w.toFixed(2)} Kg</div>`;
+}
+function renderSalesReturns(){
+  renderSalesReturnChallanOptions();updateSalesReturnChallan();
+  const el=document.getElementById("salesReturnHistory");if(!el)return;
+  el.innerHTML=salesReturnsData.length?`<div style="overflow-x:auto"><table class="data-table"><thead>
+  <tr><th>Return No</th><th>Date</th><th>Challan</th><th>Trader</th><th>Batch</th><th>Birds</th><th>Net Kg</th><th>Remarks</th></tr></thead><tbody>
+  ${salesReturnsData.slice().reverse().map(r=>`<tr><td>${escapeHtml(r.returnNo)}</td><td>${escapeHtml(r.date)}</td><td>${escapeHtml(r.challanNo)}</td>
+  <td>${escapeHtml(r.traderName)}</td><td>${escapeHtml(r.batchId)}</td><td>${(+r.birdsReturned||0).toLocaleString("en-IN")}</td>
+  <td>${(+r.netWeight||0).toFixed(2)}</td><td>${escapeHtml(r.remarks||"")}</td></tr>`).join("")}
+  </tbody></table></div>`:'<div class="empty">No sales returns.</div>';
+}
+function saveSalesReturn(){
+  const msg=document.getElementById("salesReturnMessage");
+  const p={action:"createSalesReturn",date:document.getElementById("salesReturnDate")?.value||"",
+    challanNo:document.getElementById("salesReturnChallan")?.value||"",
+    birdsReturned:+(document.getElementById("salesReturnBirds")?.value||0),
+    netWeight:+(document.getElementById("salesReturnWeight")?.value||0),
+    remarks:document.getElementById("salesReturnRemarks")?.value||""};
+  if(!p.date||!p.challanNo||p.birdsReturned<=0||p.netWeight<=0){
+    if(msg)msg.innerHTML='<div class="error">Enter return date, challan, birds and net weight.</div>';return;
+  }
+  apiPost(p).then(res=>{if(!res||res.success===false)throw new Error(res?.message||"Sales return failed.");
+    if(msg)msg.innerHTML=`<div class="success">${escapeHtml(res.message||"Sales return created.")}</div>`;refreshData();
+  }).catch(e=>{if(msg)msg.innerHTML=`<div class="error">${escapeHtml(e.message||String(e))}</div>`;});
 }
 function showPage(page,button){
 
