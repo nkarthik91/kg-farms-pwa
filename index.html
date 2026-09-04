@@ -865,6 +865,8 @@ textarea{
     <button class="tab-btn" onclick="showSalesTab('traders',this)">Traders</button>
     <button class="tab-btn" onclick="showSalesTab('ledger',this)">Ledger</button>
     <button class="tab-btn" onclick="showSalesTab('receipt',this)">Receipt</button>
+    <button class="tab-btn" onclick="showSalesTab('settlement',this);renderFarmerSettlement()">Settlement</button>
+    <button class="tab-btn" onclick="showSalesTab('profitability',this);renderBatchProfitability()">Profitability</button>
     <button class="tab-btn" onclick="showSalesTab('reports',this);renderSalesReports()">Reports</button>
   </div>
   <div id="salesCapacityTab"><div id="salesCapacityList"><div class="loading">Loading selling capacity...</div></div></div>
@@ -886,6 +888,84 @@ textarea{
   </div><div id="traderList"></div></div>
   <div id="salesLedgerTab" class="hidden"><div id="ledgerSummary"></div><div class="card"><div class="card-title">Trader Ledger</div><div class="grid"><div><label>Trader</label><select id="ledgerTrader" onchange="renderTraderLedger()"><option value="">All Traders</option></select></div><div><label>From Date</label><input type="date" id="ledgerFrom" onchange="renderTraderLedger()"></div><div><label>To Date</label><input type="date" id="ledgerTo" onchange="renderTraderLedger()"></div></div><div id="ledgerList"></div></div><div class="card"><div class="card-title">Trader Outstanding Summary</div><div id="traderSummaryList"></div></div></div>
   <div id="salesReceiptTab" class="hidden"><div id="receiptMessage"></div><div class="card"><div class="card-title">Receive Payment</div><label>Date</label><input type="date" id="receiptDate"><label>Trader</label><select id="receiptTrader" onchange="updateReceiptTrader()"><option value="">Select Trader</option></select><div id="receiptOutstanding"></div><label>Amount</label><input type="number" id="receiptAmount" min="0.01" step="0.01"><label>Payment Mode</label><select id="receiptMode"><option>Cash</option><option>Bank Transfer</option><option>UPI</option><option>Cheque</option><option>Other</option></select><label>Reference No.</label><input type="text" id="receiptReference"><label>Remarks</label><textarea id="receiptRemarks"></textarea><button class="btn btn-success" onclick="saveReceipt()">Save Receipt</button></div><div class="card"><div class="card-title">Recent Receipts</div><div id="receiptHistory"></div></div></div>
+
+
+  <div id="salesSettlementTab" class="hidden">
+    <div class="card">
+      <div class="card-title">Farmer Settlement</div>
+      <div class="info-box">
+        <div class="info-label">Settlement Rate Rule</div>
+        <div class="info-value">FCR 1.60 = ₹10.00/kg • Every 0.01 FCR lower = +₹0.20/kg</div>
+      </div>
+      <div id="settlementMessage"></div>
+      <div class="grid">
+        <div>
+          <label>Batch</label>
+          <select id="settlementBatch" onchange="updateSettlementBatch()">
+            <option value="">Select Batch</option>
+          </select>
+        </div>
+        <div>
+          <label>FCR</label>
+          <input type="number" id="settlementFcr" min="0.01" step="0.01" placeholder="e.g. 1.55" oninput="previewSettlement()">
+        </div>
+        <div>
+          <label>Settlement Paid</label>
+          <input type="number" id="settlementPaid" min="0" step="0.01" placeholder="Amount already paid" oninput="previewSettlement()">
+        </div>
+      </div>
+      <div id="settlementBatchInfo"></div>
+      <label>Remarks</label>
+      <textarea id="settlementRemarks" placeholder="Optional"></textarea>
+      <button class="btn btn-success" onclick="saveFarmerSettlementUI()">Save Settlement</button>
+    </div>
+    <div class="card">
+      <div class="card-title">Batch Settlement Summary</div>
+      <div id="farmerSettlementList"><div class="empty">No batches found.</div></div>
+    </div>
+  </div>
+
+  <div id="salesProfitabilityTab" class="hidden">
+    <div class="card">
+      <div class="card-title">Batch Profitability</div>
+      <div class="info-box">
+        <div class="info-label">Cost Entry</div>
+        <div class="info-value">Enter batch-level Chick, Feed, Medicine and Other costs. Profit is calculated as Sales Revenue − Operating Costs − Farmer Settlement.</div>
+      </div>
+      <div id="profitabilityMessage"></div>
+      <div class="grid">
+        <div>
+          <label>Batch</label>
+          <select id="costBatch" onchange="updateBatchCostForm()">
+            <option value="">Select Batch</option>
+          </select>
+        </div>
+        <div>
+          <label>Chick Cost</label>
+          <input type="number" id="costChick" min="0" step="0.01" value="0">
+        </div>
+        <div>
+          <label>Feed Cost</label>
+          <input type="number" id="costFeed" min="0" step="0.01" value="0">
+        </div>
+        <div>
+          <label>Medicine Cost</label>
+          <input type="number" id="costMedicine" min="0" step="0.01" value="0">
+        </div>
+        <div>
+          <label>Other Cost</label>
+          <input type="number" id="costOther" min="0" step="0.01" value="0">
+        </div>
+      </div>
+      <label>Remarks</label>
+      <textarea id="costRemarks" placeholder="Optional"></textarea>
+      <button class="btn btn-success" onclick="saveBatchCostUI()">Save Batch Costs</button>
+    </div>
+    <div class="card">
+      <div class="card-title">Profitability Summary</div>
+      <div id="batchProfitabilityList"><div class="empty">No batches found.</div></div>
+    </div>
+  </div>
 
   <div id="salesReportsTab" class="hidden">
     <div class="card">
@@ -1030,6 +1110,8 @@ let traderLedgerData = [];
 let collectionsData = [];
 let batchSalesSettlementData = [];
 let salesReturnsData = [];
+let farmerSettlementData = [];
+let batchProfitabilityData = [];
 
 
 /*************************************************
@@ -1038,7 +1120,7 @@ let salesReturnsData = [];
 let cageRows=[];
 
 function showSalesTab(tab,button){
-  ["capacity","challan","returns","traders","ledger","receipt","reports"].forEach(t=>{
+  ["capacity","challan","returns","traders","ledger","receipt","settlement","profitability","reports"].forEach(t=>{
     const el=document.getElementById("sales"+t.charAt(0).toUpperCase()+t.slice(1)+"Tab");
     if(el)el.classList.toggle("hidden",t!==tab);
   });
@@ -1047,6 +1129,7 @@ function showSalesTab(tab,button){
 }
 function renderSalesModules(){
   renderSellingCapacity();renderSalesTraderOptions();renderTraderList();renderTraderLedger();renderChallanHistory();renderReceiptHistory();
+  renderFarmerSettlement();renderBatchProfitability();
   if(!cageRows.length){cageRows=[{cages:"",emptyWeight:"",loadWeight:""}];renderCageRows();}
   ["challanDate","receiptDate"].forEach(id=>{const e=document.getElementById(id);if(e&&!e.value)e.value=getTodayISO();});
 }
@@ -1219,6 +1302,175 @@ function renderReceiptHistory(){
 }
 
 
+
+
+/*************************************************
+ * MILESTONE 21 – FARMER SETTLEMENT & PROFITABILITY
+ *************************************************/
+
+function settlementRateFromFcr(fcr){
+  const n=Number(fcr);
+  if(!Number.isFinite(n)||n<=0)return 0;
+  return Math.round((10+(1.60-n)*20)*100)/100;
+}
+
+function renderSettlementBatchOptions(){
+  const el=document.getElementById("settlementBatch");
+  if(!el)return;
+  const cur=el.value;
+  el.innerHTML='<option value="">Select Batch</option>'+
+    batchesData.filter(b=>String(b.batchId||"").trim()).map(b=>
+      `<option value="${escapeHtml(b.batchId)}">${escapeHtml(b.batchId)} — ${escapeHtml(b.farmName||"")}</option>`
+    ).join("");
+  if(cur)el.value=cur;
+}
+
+function updateSettlementBatch(){
+  const id=document.getElementById("settlementBatch")?.value||"";
+  const x=farmerSettlementData.find(r=>String(r.batchId)===String(id));
+  const f=document.getElementById("settlementFcr");
+  const p=document.getElementById("settlementPaid");
+  if(x){
+    if(f)f.value=x.fcr||"";
+    if(p)p.value=x.settlementPaid||"";
+  }else{
+    if(f)f.value="";
+    if(p)p.value="";
+  }
+  const el=document.getElementById("settlementBatchInfo");
+  if(!el){previewSettlement();return;}
+  if(!id){el.innerHTML="";return;}
+  const s=x||{};
+  el.innerHTML=`<div class="info-box"><div class="grid">
+    <div><div class="info-label">Net Weight Sold</div><div class="info-value">${Number(s.netWeight||0).toFixed(2)} Kg</div></div>
+    <div><div class="info-label">Sales Revenue</div><div class="info-value money">₹ ${Number(s.saleAmount||0).toFixed(2)}</div></div>
+    <div><div class="info-label">Settlement Rate</div><div class="info-value">₹ ${Number(s.settlementRate||0).toFixed(2)} / Kg</div></div>
+    <div><div class="info-label">Settlement Amount</div><div class="info-value money">₹ ${Number(s.settlementAmount||0).toFixed(2)}</div></div>
+    <div><div class="info-label">Balance</div><div class="info-value">₹ ${Number(s.settlementBalance||0).toFixed(2)}</div></div>
+  </div></div>`;
+  previewSettlement();
+}
+
+function previewSettlement(){
+  const id=document.getElementById("settlementBatch")?.value||"";
+  const x=farmerSettlementData.find(r=>String(r.batchId)===String(id))||{};
+  const fcr=Number(document.getElementById("settlementFcr")?.value||0);
+  const paid=Number(document.getElementById("settlementPaid")?.value||0);
+  const rate=settlementRateFromFcr(fcr);
+  const amount=(Number(x.netWeight)||0)*rate;
+  const balance=Math.max(0,amount-paid);
+  const el=document.getElementById("settlementBatchInfo");
+  if(!el||!id)return;
+  el.innerHTML=`<div class="info-box"><div class="grid">
+    <div><div class="info-label">Net Weight Sold</div><div class="info-value">${Number(x.netWeight||0).toFixed(2)} Kg</div></div>
+    <div><div class="info-label">Settlement Rate</div><div class="info-value">₹ ${rate.toFixed(2)} / Kg</div></div>
+    <div><div class="info-label">Settlement Amount</div><div class="info-value money">₹ ${amount.toFixed(2)}</div></div>
+    <div><div class="info-label">Paid</div><div class="info-value">₹ ${paid.toFixed(2)}</div></div>
+    <div><div class="info-label">Balance</div><div class="info-value">₹ ${balance.toFixed(2)}</div></div>
+  </div></div>`;
+}
+
+async function saveFarmerSettlementUI(){
+  try{
+    const d=await postData({
+      action:"saveFarmerSettlement",
+      batchId:document.getElementById("settlementBatch")?.value||"",
+      fcr:document.getElementById("settlementFcr")?.value||"",
+      settlementPaid:document.getElementById("settlementPaid")?.value||"0",
+      remarks:document.getElementById("settlementRemarks")?.value.trim()||""
+    });
+    showMessage("settlementMessage",
+      `${d.batchId} updated. Rate ₹${Number(d.settlementRate||0).toFixed(2)}/Kg. Settlement ₹${Number(d.settlementAmount||0).toFixed(2)}. Balance ₹${Number(d.balance||0).toFixed(2)}.`,
+      "success");
+    await loadData();
+    renderSettlementBatchOptions();
+    updateSettlementBatch();
+  }catch(e){showMessage("settlementMessage",e.message,"error");}
+}
+
+function renderFarmerSettlement(){
+  renderSettlementBatchOptions();
+  const el=document.getElementById("farmerSettlementList");
+  if(!el)return;
+  if(!farmerSettlementData.length){
+    el.innerHTML='<div class="empty">No batches found.</div>';return;
+  }
+  el.innerHTML=`<div style="overflow-x:auto"><table class="data-table">
+    <thead><tr><th>Batch</th><th>Farm</th><th>FCR</th><th>Rate/Kg</th><th>Net Kg</th><th>Settlement</th><th>Paid</th><th>Balance</th><th>Status</th></tr></thead>
+    <tbody>${farmerSettlementData.map(x=>`<tr>
+      <td>${escapeHtml(x.batchId)}</td><td>${escapeHtml(x.farmName)}</td>
+      <td>${x.fcr?Number(x.fcr).toFixed(2):"—"}</td>
+      <td>${x.settlementRate?moneyReport(x.settlementRate):"—"}</td>
+      <td>${Number(x.netWeight||0).toFixed(2)}</td>
+      <td>${moneyReport(x.settlementAmount)}</td>
+      <td>${moneyReport(x.settlementPaid)}</td>
+      <td>${moneyReport(x.settlementBalance)}</td>
+      <td><span class="badge ${x.settlementStatus==="SETTLED"?"badge-green":x.settlementStatus==="PENDING PAYMENT"?"badge-orange":"badge-red"}">${escapeHtml(x.settlementStatus)}</span></td>
+    </tr>`).join("")}</tbody>
+  </table></div>`;
+}
+
+function renderCostBatchOptions(){
+  const el=document.getElementById("costBatch");
+  if(!el)return;
+  const cur=el.value;
+  el.innerHTML='<option value="">Select Batch</option>'+
+    batchesData.filter(b=>String(b.batchId||"").trim()).map(b=>
+      `<option value="${escapeHtml(b.batchId)}">${escapeHtml(b.batchId)} — ${escapeHtml(b.farmName||"")}</option>`
+    ).join("");
+  if(cur)el.value=cur;
+}
+
+function updateBatchCostForm(){
+  const id=document.getElementById("costBatch")?.value||"";
+  const x=batchProfitabilityData.find(r=>String(r.batchId)===String(id))||{};
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.value=Number(v||0);};
+  set("costChick",x.chickCost);set("costFeed",x.feedCost);set("costMedicine",x.medicineCost);set("costOther",x.otherCost);
+  const remarks=document.getElementById("costRemarks");if(remarks)remarks.value=x.costRemarks||"";
+}
+
+async function saveBatchCostUI(){
+  try{
+    const d=await postData({
+      action:"saveBatchCost",
+      batchId:document.getElementById("costBatch")?.value||"",
+      chickCost:document.getElementById("costChick")?.value||"0",
+      feedCost:document.getElementById("costFeed")?.value||"0",
+      medicineCost:document.getElementById("costMedicine")?.value||"0",
+      otherCost:document.getElementById("costOther")?.value||"0",
+      remarks:document.getElementById("costRemarks")?.value.trim()||""
+    });
+    showMessage("profitabilityMessage",
+      `${d.batchId} saved. Revenue ₹${Number(d.salesRevenue||0).toFixed(2)} • Total Cost ₹${Number(d.totalCost||0).toFixed(2)} • Profit ₹${Number(d.profit||0).toFixed(2)}.`,
+      "success");
+    await loadData();
+    renderCostBatchOptions();
+    updateBatchCostForm();
+  }catch(e){showMessage("profitabilityMessage",e.message,"error");}
+}
+
+function renderBatchProfitability(){
+  renderCostBatchOptions();
+  const el=document.getElementById("batchProfitabilityList");
+  if(!el)return;
+  if(!batchProfitabilityData.length){
+    el.innerHTML='<div class="empty">No batches found.</div>';return;
+  }
+  el.innerHTML=`<div style="overflow-x:auto"><table class="data-table">
+    <thead><tr><th>Batch</th><th>Farm</th><th>Birds Sold</th><th>Net Kg</th><th>Sales Revenue</th><th>Operating Cost</th><th>Farmer Settlement</th><th>Total Cost</th><th>Profit</th><th>Margin</th></tr></thead>
+    <tbody>${batchProfitabilityData.map(x=>`<tr>
+      <td>${escapeHtml(x.batchId)}</td><td>${escapeHtml(x.farmName)}</td>
+      <td>${Number(x.birdsSold||0).toLocaleString("en-IN")}</td>
+      <td>${Number(x.netWeight||0).toFixed(2)}</td>
+      <td>${moneyReport(x.salesRevenue)}</td>
+      <td>${moneyReport(x.operatingCost)}</td>
+      <td>${moneyReport(x.farmerSettlement)}</td>
+      <td>${moneyReport(x.totalCost)}</td>
+      <td>${moneyReport(x.profit)}</td>
+      <td>${Number(x.profitMargin||0).toFixed(2)}%</td>
+    </tr>`).join("")}</tbody>
+  </table></div>`;
+}
 
 /*************************************************
  * PAGE NAVIGATION
@@ -1511,7 +1763,7 @@ function renderBatchSalesSettlement(){
         <td>${Number(x.netWeight||0).toFixed(2)}</td>
         <td>${moneyReport(x.saleAmount)}</td>
         <td>${moneyReport(x.averageRate)}</td>
-        <td><span class="badge badge-orange">READY</span></td>
+        <td><span class="badge badge-orange">${escapeHtml(x.settlementStatus||"FCR REQUIRED")}</span></td>
       </tr>`).join("")}
     </tbody>
   </table></div>
@@ -1547,7 +1799,7 @@ function printBatchSalesSettlement(){
       <td>${moneyReport(x.averageRate)}</td><td>${escapeHtml(x.settlementStatus||"READY")}</td>
     </tr>`).join("")}
   </table>
-  <p><b>Note:</b> Settlement payout is not calculated because the farmer settlement rate/formula has not been defined.</p>
+  <p><b>Settlement rule:</b> FCR 1.60 = ₹10.00/kg; every 0.01 FCR lower adds ₹0.20/kg.</p>
   </body></html>`);
   w.document.close();
   setTimeout(()=>w.print(),300);
@@ -1742,6 +1994,10 @@ async function loadData(){
     challansData = Array.isArray(data.challans) ? data.challans : [];
     traderLedgerData = Array.isArray(data.traderLedger) ? data.traderLedger : [];
     collectionsData = Array.isArray(data.collections) ? data.collections : [];
+    salesReturnsData = Array.isArray(data.salesReturns) ? data.salesReturns : [];
+    batchSalesSettlementData = Array.isArray(data.batchSalesSettlement) ? data.batchSalesSettlement : [];
+    farmerSettlementData = Array.isArray(data.farmerSettlement) ? data.farmerSettlement : [];
+    batchProfitabilityData = Array.isArray(data.batchProfitability) ? data.batchProfitability : [];
 
     renderAll();
 
