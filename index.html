@@ -1078,6 +1078,130 @@ textarea{
 </div>
 
 
+
+<!-- =====================================================
+     COMPLETE ERP CONSOLE
+===================================================== -->
+<div id="page-erp" class="page">
+  <div class="section-title">KG Farms ERP</div>
+  <div class="tab-row">
+    <button class="tab-btn active" onclick="showErpTab('master',this)">Master</button>
+    <button class="tab-btn" onclick="showErpTab('operations',this)">Operations</button>
+    <button class="tab-btn" onclick="showErpTab('ledgers',this)">Ledgers</button>
+    <button class="tab-btn" onclick="showErpTab('reports',this)">Reports</button>
+    <button class="tab-btn" onclick="showErpTab('system',this)">System</button>
+  </div>
+
+  <div id="erp-master" class="erp-tab">
+    <div class="card">
+      <div class="row-main">Master Data</div>
+      <label>Master</label>
+      <select id="erpMasterType" onchange="renderErpParentOptions()">
+        <option value="farmer">Farmer</option><option value="farm">Farm</option><option value="shed">Shed</option>
+        <option value="vendor">Vendor</option><option value="inventory">Inventory Item</option><option value="feed">Feed</option>
+        <option value="vaccine">Vaccine</option><option value="user">Employee/User</option><option value="vehicle">Vehicle</option>
+        <option value="expenseHead">Expense Head</option>
+      </select>
+      <label>Name / Vehicle No.</label><input id="erpMasterName" placeholder="Enter name">
+      <div class="grid">
+        <div><label>Mobile</label><input id="erpMasterMobile"></div>
+        <div><label>Unit / Role / Type</label><input id="erpMasterUnit"></div>
+      </div>
+      <label>Address / Location</label><input id="erpMasterAddress">
+      <label>Parent (Farmer/Farm where applicable)</label><select id="erpMasterParent"><option value="">None</option></select>
+      <div class="grid">
+        <div><label>Capacity / Reorder Level / Bird Age</label><input type="number" id="erpMasterNumber" step="0.01"></div>
+        <div><label>Opening Balance / Bag Size</label><input type="number" id="erpMasterNumber2" step="0.01"></div>
+      </div>
+      <label>Remarks</label><input id="erpMasterRemarks">
+      <button class="primary-btn" onclick="createErpMaster()">Save Master</button>
+      <div id="erpMasterMessage"></div>
+    </div>
+    <div id="erpMasterLists"></div>
+  </div>
+
+  <div id="erp-operations" class="erp-tab" style="display:none">
+    <div class="card">
+      <div class="row-main">Purchase</div>
+      <label>Date</label><input type="date" id="erpPurchaseDate">
+      <label>Vendor</label><select id="erpPurchaseVendor"></select>
+      <label>Inventory Item</label><select id="erpPurchaseItem"></select>
+      <div class="grid">
+        <div><label>Quantity</label><input type="number" id="erpPurchaseQty" step="0.01"></div>
+        <div><label>Rate</label><input type="number" id="erpPurchaseRate" step="0.01"></div>
+      </div>
+      <label>Payment Mode</label><select id="erpPurchaseMode"><option>Credit</option><option>Cash</option><option>Bank Transfer</option><option>UPI</option><option>Cheque</option></select>
+      <label>Reference / Remarks</label><input id="erpPurchaseRemarks">
+      <button class="primary-btn" onclick="createErpPurchase()">Record Purchase</button>
+      <div id="erpPurchaseMessage"></div>
+    </div>
+
+    <div class="card">
+      <div class="row-main">Inventory Adjustment / Issue</div>
+      <label>Date</label><input type="date" id="erpStockDate">
+      <label>Item</label><select id="erpStockItem"></select>
+      <div class="grid"><div><label>Type</label><select id="erpStockType"><option value="OUT">Issue / OUT</option><option value="IN">Adjustment / IN</option></select></div>
+      <div><label>Quantity</label><input type="number" id="erpStockQty" step="0.01"></div></div>
+      <label>Batch</label><select id="erpStockBatch"><option value="">Optional</option></select>
+      <label>Remarks</label><input id="erpStockRemarks">
+      <button class="primary-btn" onclick="saveErpStock()">Update Inventory</button>
+      <div id="erpStockMessage"></div>
+    </div>
+
+    <div class="card">
+      <div class="row-main">Vehicle / Trip</div>
+      <label>Date</label><input type="date" id="erpTripDate">
+      <label>Vehicle</label><select id="erpTripVehicle"></select>
+      <label>Purpose</label><input id="erpTripPurpose">
+      <div class="grid"><div><label>Opening KM</label><input type="number" id="erpTripOpen"></div><div><label>Closing KM</label><input type="number" id="erpTripClose"></div></div>
+      <label>Expense</label><input type="number" id="erpTripExpense" step="0.01">
+      <label>Remarks</label><input id="erpTripRemarks">
+      <button class="primary-btn" onclick="createErpTrip()">Save Trip</button>
+      <div id="erpTripMessage"></div>
+    </div>
+    <div id="erpOperationsLists"></div>
+  </div>
+
+  <div id="erp-ledgers" class="erp-tab" style="display:none">
+    <div id="erpLedgerSummary"></div>
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="renderErpLedger('farmer',this)">Farmer Ledger</button>
+      <button class="tab-btn" onclick="renderErpLedger('vendor',this)">Vendor Ledger</button>
+      <button class="tab-btn" onclick="renderErpLedger('trader',this)">Trader Ledger</button>
+      <button class="tab-btn" onclick="renderErpLedger('cash',this)">Cash/Bank</button>
+    </div>
+    <div id="erpLedgerList"></div>
+  </div>
+
+  <div id="erp-reports" class="erp-tab" style="display:none">
+    <div id="erpReportCards"></div>
+    <div id="erpReportTable"></div>
+  </div>
+
+  <div id="erp-system" class="erp-tab" style="display:none">
+    <div class="card"><div class="row-main">Notifications / Alerts</div><div id="erpAlerts"></div></div>
+    <div class="card">
+      <div class="row-main">Settings</div>
+      <label>Key</label><input id="erpSettingKey">
+      <label>Value</label><input id="erpSettingValue">
+      <button class="primary-btn" onclick="saveErpSetting()">Save Setting</button>
+      <div id="erpSettingMessage"></div>
+      <div id="erpSettingsList"></div>
+    </div>
+    <div class="card">
+      <div class="row-main">Users, Roles & Permissions</div>
+      <div class="row-sub">Employee/User master is under Master. Use this section to define role permissions.</div>
+      <label>Role</label><input id="erpPermRole" placeholder="Admin / Manager / Supervisor">
+      <label>Module</label><input id="erpPermModule" placeholder="Sales / Farm / Inventory ...">
+      <div class="grid"><label><input type="checkbox" id="erpPermView" checked> View</label><label><input type="checkbox" id="erpPermCreate"> Create</label><label><input type="checkbox" id="erpPermEdit"> Edit</label><label><input type="checkbox" id="erpPermDelete"> Delete</label></div>
+      <button class="primary-btn" onclick="saveErpPermission()">Save Permission</button>
+      <div id="erpPermissionMessage"></div>
+      <div id="erpPermissionsList"></div>
+    </div>
+    <div class="card"><div class="row-main">Audit Trail</div><div id="erpAuditList"></div></div>
+  </div>
+</div>
+
 <div class="bottom-nav">
 
   <button class="nav-btn active"
@@ -1126,6 +1250,11 @@ textarea{
     Sales
   </button>
 
+
+  <button class="nav-btn" onclick="showPage('erp',this)">
+    <span class="nav-icon">▦</span>
+    ERP
+  </button>
 </div>
 
 
@@ -1163,6 +1292,7 @@ let farmerSettlementData = [];
 let batchProfitabilityData = [];
 let expensesData = [];
 let batchClosureData = [];
+let erpData = {masters:{},purchases:[],inventoryStock:[],trips:[],farmerLedger:[],vendorLedger:[],cashBankLedger:[],reports:{},alerts:[],settings:[],permissions:[],audit:[]};
 
 
 /*************************************************
@@ -4085,6 +4215,122 @@ document.addEventListener(
 
   }
 );
+
+
+
+/*************************************************
+ * COMPLETE ERP CONSOLE
+ *************************************************/
+function showErpTab(name,btn){
+  document.querySelectorAll(".erp-tab").forEach(x=>x.style.display="none");
+  const el=document.getElementById("erp-"+name); if(el)el.style.display="block";
+  if(btn){btn.parentElement.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));btn.classList.add("active");}
+  renderErpAll();
+}
+function erpOpts(list,placeholder){
+  return `<option value="">${placeholder||"Select"}</option>`+(list||[]).map(x=>`<option value="${escapeHtml(x.id)}">${escapeHtml(x.name)}</option>`).join("");
+}
+function renderErpParentOptions(){
+  const t=document.getElementById("erpMasterType")?.value;
+  const p=document.getElementById("erpMasterParent"); if(!p)return;
+  p.innerHTML = t==="farm" ? erpOpts(erpData.masters?.farmer,"Select Farmer") :
+                t==="shed" ? erpOpts(erpData.masters?.farm,"Select Farm") : '<option value="">None</option>';
+}
+function renderErpSelectors(){
+  const m=erpData.masters||{};
+  const set=(id,html)=>{const e=document.getElementById(id);if(e)e.innerHTML=html;};
+  set("erpPurchaseVendor",erpOpts(m.vendor,"Select Vendor"));
+  set("erpPurchaseItem",erpOpts(m.inventory,"Select Item"));
+  set("erpStockItem",erpOpts(m.inventory,"Select Item"));
+  set("erpTripVehicle",erpOpts(m.vehicle,"Select Vehicle"));
+  set("erpStockBatch",'<option value="">Optional Batch</option>'+batchesData.map(x=>`<option value="${escapeHtml(x.batchId)}">${escapeHtml(x.batchId)} — ${escapeHtml(x.farmName||"")}</option>`).join(""));
+  renderErpParentOptions();
+}
+async function createErpMaster(){
+  try{
+    const t=document.getElementById("erpMasterType").value, parent=document.getElementById("erpMasterParent");
+    const parentName=parent?.selectedOptions?.[0]?.textContent||"";
+    const n1=Number(document.getElementById("erpMasterNumber").value)||0,n2=Number(document.getElementById("erpMasterNumber2").value)||0;
+    const unit=document.getElementById("erpMasterUnit").value.trim(), addr=document.getElementById("erpMasterAddress").value.trim();
+    const payload={action:"erpCreateMaster",masterType:t,name:document.getElementById("erpMasterName").value.trim(),mobile:document.getElementById("erpMasterMobile").value.trim(),
+      address:addr,location:addr,parentId:parent?.value||"",parentName:parentName,remarks:document.getElementById("erpMasterRemarks").value.trim(),
+      unit:unit,role:unit,vehicleType:unit,category:unit,driverName:addr,capacity:n1,reorderLevel:n1,defaultBirdAge:n1,openingBalance:n2,bagSizeKg:n2||50};
+    const d=await postData(payload);showMessage("erpMasterMessage",d.message,"success");document.getElementById("erpMasterName").value="";await loadData();renderErpAll();
+  }catch(e){showMessage("erpMasterMessage",e.message,"error");}
+}
+async function createErpPurchase(){
+  try{
+    const d=await postData({action:"erpCreatePurchase",date:document.getElementById("erpPurchaseDate").value,vendorId:document.getElementById("erpPurchaseVendor").value,itemId:document.getElementById("erpPurchaseItem").value,
+      quantity:document.getElementById("erpPurchaseQty").value,rate:document.getElementById("erpPurchaseRate").value,paymentMode:document.getElementById("erpPurchaseMode").value,remarks:document.getElementById("erpPurchaseRemarks").value.trim()});
+    showMessage("erpPurchaseMessage",`${d.purchaseNo} recorded — ₹${Number(d.amount||0).toFixed(2)}`,"success");await loadData();renderErpAll();
+  }catch(e){showMessage("erpPurchaseMessage",e.message,"error");}
+}
+async function saveErpStock(){
+  try{
+    const d=await postData({action:"erpInventoryAdjustment",date:document.getElementById("erpStockDate").value,itemId:document.getElementById("erpStockItem").value,txnType:document.getElementById("erpStockType").value,quantity:document.getElementById("erpStockQty").value,batchId:document.getElementById("erpStockBatch").value,remarks:document.getElementById("erpStockRemarks").value.trim()});
+    showMessage("erpStockMessage",d.message,"success");await loadData();renderErpAll();
+  }catch(e){showMessage("erpStockMessage",e.message,"error");}
+}
+async function createErpTrip(){
+  try{
+    const d=await postData({action:"erpCreateTrip",date:document.getElementById("erpTripDate").value,vehicleId:document.getElementById("erpTripVehicle").value,purpose:document.getElementById("erpTripPurpose").value.trim(),openingKm:document.getElementById("erpTripOpen").value,closingKm:document.getElementById("erpTripClose").value,expense:document.getElementById("erpTripExpense").value,remarks:document.getElementById("erpTripRemarks").value.trim()});
+    showMessage("erpTripMessage",d.message,"success");await loadData();renderErpAll();
+  }catch(e){showMessage("erpTripMessage",e.message,"error");}
+}
+async function saveErpSetting(){
+  try{const d=await postData({action:"erpSaveSetting",key:document.getElementById("erpSettingKey").value.trim(),value:document.getElementById("erpSettingValue").value});showMessage("erpSettingMessage",d.message,"success");await loadData();renderErpAll();}catch(e){showMessage("erpSettingMessage",e.message,"error");}
+}
+async function saveErpPermission(){
+  try{const d=await postData({action:"erpSavePermission",role:document.getElementById("erpPermRole").value.trim(),module:document.getElementById("erpPermModule").value.trim(),canView:document.getElementById("erpPermView").checked,canCreate:document.getElementById("erpPermCreate").checked,canEdit:document.getElementById("erpPermEdit").checked,canDelete:document.getElementById("erpPermDelete").checked});showMessage("erpPermissionMessage",d.message,"success");await loadData();renderErpAll();}catch(e){showMessage("erpPermissionMessage",e.message,"error");}
+}
+function erpTable(headers,rows){
+  if(!rows?.length)return '<div class="empty">No records.</div>';
+  return `<div style="overflow-x:auto"><table class="data-table"><thead><tr>${headers.map(h=>`<th>${escapeHtml(h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(v=>`<td>${escapeHtml(v==null?"":String(v))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+}
+function renderErpMasters(){
+  const el=document.getElementById("erpMasterLists");if(!el)return;
+  const labels={farmer:"Farmers",farm:"Farms",shed:"Sheds",vendor:"Vendors",inventory:"Inventory Items",feed:"Feed",vaccine:"Vaccines",user:"Employees / Users",vehicle:"Vehicles",expenseHead:"Expense Heads"};
+  el.innerHTML=Object.keys(labels).map(k=>{
+    const a=erpData.masters?.[k]||[];
+    return `<div class="card"><div class="row-flex"><div class="row-main">${labels[k]}</div><div class="badge">${a.length}</div></div>${a.slice(-12).reverse().map(x=>`<div class="list-row"><div class="row-flex"><div><div class="row-main">${escapeHtml(x.name)}</div><div class="row-sub">${escapeHtml(x.id)}</div></div><div class="row-sub">${escapeHtml(x.raw?.Status||"")}</div></div></div>`).join("")||'<div class="empty">No records.</div>'}</div>`;
+  }).join("");
+}
+function renderErpOperations(){
+  const el=document.getElementById("erpOperationsLists");if(!el)return;
+  const stock=erpData.inventoryStock||[];
+  el.innerHTML=`<div class="card"><div class="row-main">Inventory Stock</div>${erpTable(["Item","Stock","Unit","Reorder","Status"],stock.map(x=>[x.itemName,x.stock,x.unit,x.reorderLevel,x.status]))}</div>
+  <div class="card"><div class="row-main">Recent Purchases</div>${erpTable(["No","Date","Vendor","Item","Qty","Amount"],(erpData.purchases||[]).slice(-15).reverse().map(x=>[x["Purchase No"],x.Date||x["Date"],x["Vendor Name"],x["Item Name"],x["Quantity"],"₹"+Number(x["Amount"]||0).toFixed(2)]))}</div>
+  <div class="card"><div class="row-main">Recent Trips</div>${erpTable(["Trip","Date","Vehicle","Purpose","KM","Expense"],(erpData.trips||[]).slice(-15).reverse().map(x=>[x["Trip ID"],x.Date||x["Date"],x["Vehicle No"],x["Purpose"],x["Distance KM"],"₹"+Number(x["Expense"]||0).toFixed(2)]))}</div>`;
+}
+function renderErpLedger(kind,btn){
+  if(btn){btn.parentElement.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));btn.classList.add("active");}
+  const el=document.getElementById("erpLedgerList");if(!el)return;
+  if(kind==="farmer") el.innerHTML=erpTable(["Farmer","Batch","Farm","Debit","Credit","Balance"],(erpData.farmerLedger||[]).map(x=>[x.farmerName,x.batchId,x.farmName,"₹"+Number(x.debit||0).toFixed(2),"₹"+Number(x.credit||0).toFixed(2),"₹"+Number(x.balance||0).toFixed(2)]));
+  else if(kind==="vendor") el.innerHTML=erpTable(["Vendor","Date","Type","Reference","Debit","Credit","Balance"],(erpData.vendorLedger||[]).map(x=>[x.vendorName,x.date,x.type,x.reference,"₹"+Number(x.debit||0).toFixed(2),"₹"+Number(x.credit||0).toFixed(2),"₹"+Number(x.balance||0).toFixed(2)]));
+  else if(kind==="trader") el.innerHTML=erpTable(["Trader","Date","Type","Reference","Debit","Credit","Balance"],(erpData.traderLedger||[]).map(x=>[x.traderName||"",x.date||"",x.transactionType||"",x.referenceNo||"","₹"+Number(x.debit||0).toFixed(2),"₹"+Number(x.credit||0).toFixed(2),"₹"+Number(x.balance||0).toFixed(2)]));
+  else el.innerHTML=erpTable(["Date","Account","Type","Reference","In","Out","Balance"],(erpData.cashBankLedger||[]).map(x=>[x.date,x.account,x.type,x.reference,"₹"+Number(x.inflow||0).toFixed(2),"₹"+Number(x.outflow||0).toFixed(2),"₹"+Number(x.balance||0).toFixed(2)]));
+}
+function renderErpReports(){
+  const r=erpData.reports||{}, f=r.financial||{}, s=r.sales||{}, c=r.collections||{}, p=r.purchases||{}, st=r.settlement||{};
+  const el=document.getElementById("erpReportCards");if(el)el.innerHTML=`<div class="grid">
+    <div class="card"><div class="info-label">Sales</div><div class="info-value money">₹${Number(s.amount||0).toFixed(2)}</div></div>
+    <div class="card"><div class="info-label">Collections</div><div class="info-value money">₹${Number(c.amount||0).toFixed(2)}</div></div>
+    <div class="card"><div class="info-label">Purchases</div><div class="info-value money">₹${Number(p.amount||0).toFixed(2)}</div></div>
+    <div class="card"><div class="info-label">Settlement Pending</div><div class="info-value money">₹${Number(st.balance||0).toFixed(2)}</div></div>
+    <div class="card"><div class="info-label">Expenses</div><div class="info-value money">₹${Number(f.expenses||0).toFixed(2)}</div></div>
+    <div class="card"><div class="info-label">Batch Profit</div><div class="info-value money">₹${Number(f.profit||0).toFixed(2)}</div></div></div>`;
+  const t=document.getElementById("erpReportTable");if(t)t.innerHTML=`<div class="card"><div class="row-main">Batch Performance</div>${erpTable(["Batch","Farm","Birds Sold","Sales","Total Cost","Profit","Margin %"],(r.batchPerformance||[]).map(x=>[x.batchId,x.farmName,x.birdsSold,"₹"+Number(x.salesRevenue||0).toFixed(2),"₹"+Number(x.totalCost||0).toFixed(2),"₹"+Number(x.profit||0).toFixed(2),Number(x.profitMargin||0).toFixed(2)]))}</div>`;
+}
+function renderErpSystem(){
+  const a=document.getElementById("erpAlerts");if(a)a.innerHTML=(erpData.alerts||[]).map(x=>`<div class="list-row"><div class="row-flex"><div><div class="row-main">${escapeHtml(x.module)}</div><div class="row-sub">${escapeHtml(x.message)}</div></div><div class="badge">${escapeHtml(x.severity)}</div></div></div>`).join("")||'<div class="empty">No active alerts.</div>';
+  const s=document.getElementById("erpSettingsList");if(s)s.innerHTML=erpTable(["Setting","Value","Description"],(erpData.settings||[]).map(x=>[x.key,x.value,x.description]));
+  const p=document.getElementById("erpPermissionsList");if(p)p.innerHTML=erpTable(["Role","Module","View","Create","Edit","Delete"],(erpData.permissions||[]).map(x=>[x.Role,x.Module,x["Can View"],x["Can Create"],x["Can Edit"],x["Can Delete"]]));
+  const au=document.getElementById("erpAuditList");if(au)au.innerHTML=erpTable(["Time","User","Action","Entity","Reference"],(erpData.audit||[]).slice(0,50).map(x=>[x.Timestamp,x.User,x.Action,x.Entity,x.Reference]));
+}
+function renderErpAll(){
+  renderErpSelectors();renderErpMasters();renderErpOperations();renderErpLedger("farmer");renderErpReports();renderErpSystem();
+  ["erpPurchaseDate","erpStockDate","erpTripDate"].forEach(id=>{const e=document.getElementById(id);if(e&&!e.value)e.value=getTodayISO();});
+}
 
 </script>
 
