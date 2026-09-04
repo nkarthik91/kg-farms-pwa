@@ -887,6 +887,57 @@ textarea{
 </div>
 
 
+<div class="bottom-nav">
+
+  <button class="nav-btn active"
+          onclick="showPage('dashboard',this)">
+    <span class="nav-icon">⌂</span>
+    Dashboard
+  </button>
+
+  <button class="nav-btn"
+          onclick="showPage('daily',this)">
+    <span class="nav-icon">＋</span>
+    Daily
+  </button>
+
+  <button class="nav-btn"
+          onclick="showPage('feed',this)">
+    <span class="nav-icon">▣</span>
+    Feed
+  </button>
+
+  <button class="nav-btn"
+          onclick="showPage('orders',this)">
+    <span class="nav-icon">□</span>
+    Orders
+  </button>
+
+  <button class="nav-btn"
+          onclick="showPage('vaccines',this)">
+    <span class="nav-icon">✚</span>
+    Vaccines
+  </button>
+
+  <button class="nav-btn"
+          onclick="showPage('medicine',this)">
+    <span class="nav-icon">⚕</span>
+    Medicine
+  </button>
+
+  <button class="nav-btn"
+          onclick="showPage('batches',this)">
+    <span class="nav-icon">☰</span>
+    Batches
+  </button>
+  <button class="nav-btn" onclick="showPage('sales',this)">
+    <span class="nav-icon">₹</span>
+    Sales
+  </button>
+</div>
+
+
+<script>
 /*************************************************
  * SALES MODULE
  *************************************************/
@@ -1011,57 +1062,7 @@ function renderReceiptHistory(){
   el.innerHTML=[...collectionsData].reverse().slice(0,20).map(x=>`<div class="list-row"><div class="row-flex"><div><div class="row-main">${escapeHtml(x.receiptNo)} • ${escapeHtml(x.traderName)}</div><div class="row-sub">${escapeHtml(x.date)} • ${escapeHtml(x.paymentMode||"")}</div></div><div class="row-main">₹ ${Number(x.amount).toFixed(2)}</div></div></div>`).join("");
 }
 
-<div class="bottom-nav">
 
-  <button class="nav-btn active"
-          onclick="showPage('dashboard',this)">
-    <span class="nav-icon">⌂</span>
-    Dashboard
-  </button>
-
-  <button class="nav-btn"
-          onclick="showPage('daily',this)">
-    <span class="nav-icon">＋</span>
-    Daily
-  </button>
-
-  <button class="nav-btn"
-          onclick="showPage('feed',this)">
-    <span class="nav-icon">▣</span>
-    Feed
-  </button>
-
-  <button class="nav-btn"
-          onclick="showPage('orders',this)">
-    <span class="nav-icon">□</span>
-    Orders
-  </button>
-
-  <button class="nav-btn"
-          onclick="showPage('vaccines',this)">
-    <span class="nav-icon">✚</span>
-    Vaccines
-  </button>
-
-  <button class="nav-btn"
-          onclick="showPage('medicine',this)">
-    <span class="nav-icon">⚕</span>
-    Medicine
-  </button>
-
-  <button class="nav-btn"
-          onclick="showPage('batches',this)">
-    <span class="nav-icon">☰</span>
-    Batches
-  </button>
-  <button class="nav-btn" onclick="showPage('sales',this)">
-    <span class="nav-icon">₹</span>
-    Sales
-  </button>
-</div>
-
-
-<script>
 
 /*************************************************
  * API
