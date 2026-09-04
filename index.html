@@ -524,6 +524,55 @@ select{appearance:auto}
   .btn{margin-top:12px}
 }
 
+
+/* =====================================================
+   PHASE B — WORKFLOW DETAIL VIEWS + BOTTOM SAFE SPACE
+===================================================== */
+html{scroll-padding-bottom:120px}
+body{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))!important}
+.container{padding-bottom:calc(116px + env(safe-area-inset-bottom,0px))!important}
+.page{padding-bottom:24px}
+.bottom-nav{
+  height:calc(72px + env(safe-area-inset-bottom,0px));
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.more-sheet{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+.workflow-card{cursor:pointer;transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease}
+.workflow-card:hover{transform:translateY(-1px);border-color:#cfdad3;box-shadow:0 6px 18px rgba(15,23,42,.07)}
+.detail-overlay{position:fixed;inset:0;z-index:100;background:rgba(15,23,42,.38);display:none;align-items:flex-end;justify-content:center}
+.detail-overlay.open{display:flex}
+.detail-sheet{width:100%;max-width:960px;max-height:92vh;background:var(--bg);border-radius:22px 22px 0 0;overflow:hidden;box-shadow:0 -18px 50px rgba(15,23,42,.18);display:flex;flex-direction:column}
+.detail-head{background:#fff;border-bottom:1px solid var(--line);padding:14px 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.detail-kicker{font-size:10px;text-transform:uppercase;letter-spacing:.75px;color:var(--brand);font-weight:800}
+.detail-title{font-size:22px;font-weight:850;letter-spacing:-.5px;margin-top:3px}
+.detail-meta{font-size:11px;color:var(--muted);margin-top:4px}
+.detail-close{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);background:#fff;font-size:20px;color:#4b5563}
+.detail-body{overflow:auto;padding:14px 16px calc(28px + env(safe-area-inset-bottom,0px))}
+.detail-hero{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:12px}
+.detail-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.detail-stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px}
+.detail-stat-label{font-size:10px;color:var(--muted);font-weight:650}
+.detail-stat-value{font-size:19px;font-weight:850;margin-top:4px;word-break:break-word}
+.detail-section{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:11px}
+.detail-section-title{font-size:14px;font-weight:800;margin-bottom:8px}
+.detail-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid #eef1ef;align-items:flex-start}
+.detail-row:first-of-type{border-top:0}
+.detail-row-label{font-size:11px;color:var(--muted)}
+.detail-row-value{font-size:12px;font-weight:700;text-align:right}
+.detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.detail-actions button{flex:1;min-width:130px}
+.detail-empty{font-size:12px;color:var(--muted);padding:12px 0;text-align:center}
+.detail-table{width:100%;border-collapse:collapse;font-size:11px}
+.detail-table th,.detail-table td{padding:8px 6px;border-bottom:1px solid #eef1ef;text-align:left;white-space:nowrap}.detail-table th{color:var(--muted);font-weight:700}
+.detail-table-wrap{overflow:auto}
+.link-chevron{color:var(--brand);font-weight:850;margin-left:8px}
+@media(min-width:760px){
+  .detail-overlay{align-items:center;padding:24px}
+  .detail-sheet{border-radius:22px;max-height:88vh}
+  .detail-head{padding:18px 20px}.detail-body{padding:18px 20px 26px}
+  .detail-stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+
 </style>
 </head>
 
@@ -1404,6 +1453,13 @@ select{appearance:auto}
   </div>
 </div>
 
+<div id="detailOverlay" class="detail-overlay" onclick="if(event.target===this)closeDetailView()">
+  <div class="detail-sheet" role="dialog" aria-modal="true">
+    <div id="detailHead" class="detail-head"></div>
+    <div id="detailBody" class="detail-body"></div>
+  </div>
+</div>
+
 <div class="bottom-nav">
   <button class="nav-btn active" onclick="showPage('dashboard',this)"><span class="nav-icon">⌂</span>Home</button>
   <button class="nav-btn" onclick="showPage('daily',this)"><span class="nav-icon">＋</span>Entries</button>
@@ -1655,7 +1711,7 @@ async function createTraderUI(){
 function renderTraderList(){
   const el=document.getElementById("traderList");if(!el)return;
   if(!tradersData.length){el.innerHTML='<div class="empty">No traders found.</div>';return;}
-  el.innerHTML=tradersData.map(t=>{const o=getTraderOutstandingUI(t.traderId);return`<div class="card"><div class="row-flex"><div><div class="row-main">${escapeHtml(t.traderName)}</div><div class="row-sub">${escapeHtml(t.traderId)} • ${escapeHtml(t.mobile||"—")}</div></div><span class="badge ${o>0?"badge-orange":"badge-green"}">₹ ${o.toFixed(2)}</span></div><div class="row-sub" style="margin-top:8px">${escapeHtml(t.address||"—")}</div></div>`}).join("");
+  el.innerHTML=tradersData.map(t=>{const o=getTraderOutstandingUI(t.traderId);return`<div class="card workflow-card" onclick="openTraderDetail('${escapeHtml(t.traderId)}')"><div class="row-flex"><div><div class="row-main">${escapeHtml(t.traderName)}</div><div class="row-sub">${escapeHtml(t.traderId)} • ${escapeHtml(t.mobile||"—")}</div></div><span class="badge ${o>0?"badge-orange":"badge-green"}">₹ ${o.toFixed(2)}</span></div><div class="row-flex" style="margin-top:8px"><div class="row-sub">${escapeHtml(t.address||"—")}</div><span class="link-chevron">›</span></div></div>`}).join("");
 }
 function getTraderOutstandingUI(id){
   const t=tradersData.find(x=>String(x.traderId)===String(id));let b=t?Number(t.openingBalance)||0:0;
@@ -3244,7 +3300,7 @@ function renderBatches(){
         === "completed";
 
       return `
-      <div class="card">
+      <div class="card workflow-card" onclick="openBatchDetail('${escapeHtml(batch.batchId)}')">
 
         <div class="row-flex">
 
@@ -4402,7 +4458,7 @@ function renderErpMasters(){
   const labels={farmer:"Farmers",farm:"Farms",shed:"Sheds",vendor:"Vendors",inventory:"Inventory Items",feed:"Feed",vaccine:"Vaccines",user:"Employees / Users",vehicle:"Vehicles",expenseHead:"Expense Heads"};
   el.innerHTML=Object.keys(labels).map(k=>{
     const a=erpData.masters?.[k]||[];
-    return `<div class="card"><div class="row-flex"><div class="row-main">${labels[k]}</div><div class="badge">${a.length}</div></div>${a.slice(-12).reverse().map(x=>`<div class="list-row"><div class="row-flex"><div><div class="row-main">${escapeHtml(x.name)}</div><div class="row-sub">${escapeHtml(x.id)}</div></div><div class="row-sub">${escapeHtml(x.raw?.Status||"")}</div></div></div>`).join("")||'<div class="empty">No records.</div>'}</div>`;
+    return `<div class="card"><div class="row-flex"><div class="row-main">${labels[k]}</div><div class="badge">${a.length}</div></div>${a.slice(-12).reverse().map(x=>`<div class="list-row ${k==="farmer"||k==="vendor"?"workflow-card":""}" ${k==="farmer"?`onclick="openFarmerDetail('${escapeHtml(x.id)}')"`:k==="vendor"?`onclick="openVendorDetail('${escapeHtml(x.id)}')"`:""}><div class="row-flex"><div><div class="row-main">${escapeHtml(x.name)}</div><div class="row-sub">${escapeHtml(x.id)}</div></div><div style="display:flex;align-items:center;gap:8px"><div class="row-sub">${escapeHtml(x.raw?.Status||"")}</div>${k==="farmer"||k==="vendor"?'<span class="link-chevron">›</span>':""}</div></div></div>`).join("")||'<div class="empty">No records.</div>'}</div>`;
   }).join("");
 }
 function renderErpOperations(){
@@ -4440,6 +4496,89 @@ function renderErpSystem(){
 function renderErpAll(){
   renderErpSelectors();renderErpMasters();renderErpOperations();renderErpLedger("farmer");renderErpReports();renderErpSystem();
   ["erpPurchaseDate","erpStockDate","erpTripDate"].forEach(id=>{const e=document.getElementById(id);if(e&&!e.value)e.value=getTodayISO();});
+}
+
+
+
+/*************************************************
+ * PHASE B — WORKFLOW DETAIL VIEWS
+ *************************************************/
+function moneyB(v){return "₹ "+Number(v||0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});}
+function numB(v){return Number(v||0).toLocaleString("en-IN");}
+function rawPick(raw,...keys){for(const k of keys){if(raw&&raw[k]!==undefined&&raw[k]!==null&&String(raw[k]).trim()!=="")return raw[k];}return "";}
+function openDetailShell(kicker,title,meta,html){
+  const o=document.getElementById("detailOverlay"),h=document.getElementById("detailHead"),b=document.getElementById("detailBody");
+  if(!o||!h||!b)return;
+  h.innerHTML=`<div><div class="detail-kicker">${escapeHtml(kicker)}</div><div class="detail-title">${escapeHtml(title)}</div><div class="detail-meta">${meta}</div></div><button class="detail-close" onclick="closeDetailView()" aria-label="Close">×</button>`;
+  b.innerHTML=html;o.classList.add("open");document.body.style.overflow="hidden";
+}
+function closeDetailView(){document.getElementById("detailOverlay")?.classList.remove("open");document.body.style.overflow="";}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDetailView();});
+function detailStats(items){return `<div class="detail-stats">${items.map(i=>`<div class="detail-stat"><div class="detail-stat-label">${escapeHtml(i[0])}</div><div class="detail-stat-value">${i[1]}</div></div>`).join("")}</div>`;}
+function detailRows(items){return items.filter(x=>x[1]!==""&&x[1]!==null&&x[1]!==undefined).map(x=>`<div class="detail-row"><div class="detail-row-label">${escapeHtml(x[0])}</div><div class="detail-row-value">${escapeHtml(String(x[1]))}</div></div>`).join("");}
+function sectionB(title,content){return `<div class="detail-section"><div class="detail-section-title">${escapeHtml(title)}</div>${content||'<div class="detail-empty">No records yet.</div>'}</div>`;}
+function simpleRowsB(rows,mapper){if(!rows.length)return '<div class="detail-empty">No records yet.</div>';return rows.slice(0,8).map(mapper).join("");}
+
+function openBatchDetail(id){
+  const b=batchesData.find(x=>String(x.batchId)===String(id));if(!b)return;
+  const feeds=feedData.filter(x=>String(x.batchId)===String(id));
+  const vaccines=vaccineData.filter(x=>String(x.batchId)===String(id)).sort((a,c)=>parseDateValue(a.scheduledDate)-parseDateValue(c.scheduledDate));
+  const sales=challansData.filter(x=>String(x.batchId)===String(id)&&String(x.status||"").toLowerCase()!=="cancelled");
+  const profit=batchProfitabilityData.find(x=>String(x.batchId)===String(id))||{};
+  const mort=Math.max(0,Number(b.chicksPlaced||0)-Number(b.currentBirds||0));
+  const revenue=sales.reduce((n,x)=>n+Number(x.saleAmount||0),0);
+  const feedHtml=simpleRowsB(feeds,(x)=>`<div class="detail-row"><div><div class="detail-row-value" style="text-align:left">${escapeHtml(x.feedType||x.currentFeed||x.stage||"")}</div><div class="detail-row-label">Required ${numB(x.requiredBags||x.feedRequired||0)} bags</div></div><div class="detail-row-value">${numB(x.balanceBags||x.balance||0)} balance</div></div>`);
+  const vacHtml=simpleRowsB(vaccines,(x)=>`<div class="detail-row"><div><div class="detail-row-value" style="text-align:left">${escapeHtml(x.vaccine)}</div><div class="detail-row-label">Day ${escapeHtml(String(x.birdAge||""))}</div></div><div class="detail-row-value">${escapeHtml(x.scheduledDate||"")}</div></div>`);
+  const saleHtml=simpleRowsB([...sales].reverse(),(x)=>`<div class="detail-row"><div><div class="detail-row-value" style="text-align:left">${escapeHtml(x.challanNo||"")}</div><div class="detail-row-label">${escapeHtml(x.traderName||"")} · ${numB(x.birds)} birds</div></div><div class="detail-row-value">${moneyB(x.saleAmount)}</div></div>`);
+  let html=detailStats([["Age","Day "+escapeHtml(String(b.age||0))],["Current Birds",numB(b.currentBirds)],["Mortality",numB(mort)],["Sales Revenue",moneyB(revenue)]])+
+    sectionB("Batch Information",detailRows([["Batch ID",b.batchId],["Farm",b.farmName],["Placement Date",b.placementDate],["Chicks Placed",numB(b.chicksPlaced)],["Status",b.status||"Active"]]))+
+    sectionB("Feed",feedHtml)+sectionB("Vaccines",vacHtml)+sectionB("Recent Sales",saleHtml);
+  if(Object.keys(profit).length)html+=sectionB("Profitability",detailRows([["Sales Revenue",moneyB(profit.salesRevenue)],["Total Cost",moneyB(profit.totalCost)],["Farmer Settlement",moneyB(profit.farmerSettlement)],["Profit",moneyB(profit.profit)],["Profit Margin",Number(profit.profitMargin||0).toFixed(2)+"%"],["FCR",profit.fcr||"—"]]));
+  html+=`<div class="detail-actions"><button class="btn btn-primary" onclick="closeDetailView();showPage('daily',document.querySelectorAll('.nav-btn')[1])">Daily Entry</button><button class="btn btn-secondary" onclick="closeDetailView();openMorePage('feed')">Feed</button><button class="btn btn-secondary" onclick="closeDetailView();showPage('sales',document.querySelectorAll('.nav-btn')[2])">Sales</button></div>`;
+  openDetailShell("Batch Detail",b.farmName,`${escapeHtml(b.batchId)} · ${String(b.status||"Active").toUpperCase()}`,html);
+}
+
+function openTraderDetail(id){
+  const t=tradersData.find(x=>String(x.traderId)===String(id));if(!t)return;
+  const sales=challansData.filter(x=>String(x.traderId)===String(id)&&String(x.status||"").toLowerCase()!=="cancelled");
+  const col=collectionsData.filter(x=>String(x.traderId)===String(id));
+  const ledger=traderLedgerData.filter(x=>String(x.traderId)===String(id));
+  const totalSales=sales.reduce((n,x)=>n+Number(x.saleAmount||0),0),totalCol=col.reduce((n,x)=>n+Number(x.amount||0),0),out=getTraderOutstandingUI(id);
+  const salesHtml=simpleRowsB([...sales].reverse(),x=>`<div class="detail-row"><div><div class="detail-row-value" style="text-align:left">${escapeHtml(x.challanNo||"")}</div><div class="detail-row-label">${escapeHtml(x.date||"")} · ${numB(x.birds)} birds</div></div><div class="detail-row-value">${moneyB(x.saleAmount)}</div></div>`);
+  const colHtml=simpleRowsB([...col].reverse(),x=>`<div class="detail-row"><div><div class="detail-row-value" style="text-align:left">${escapeHtml(x.receiptNo||"")}</div><div class="detail-row-label">${escapeHtml(x.date||"")} · ${escapeHtml(x.paymentMode||"")}</div></div><div class="detail-row-value">${moneyB(x.amount)}</div></div>`);
+  const ledHtml=simpleRowsB([...ledger].reverse(),x=>`<div class="detail-row"><div><div class="detail-row-value" style="text-align:left">${escapeHtml(x.transactionType||"")}</div><div class="detail-row-label">${escapeHtml(x.date||"")} · ${escapeHtml(x.referenceNo||x.transactionId||"")}</div></div><div class="detail-row-value">${x.debit?"Dr "+moneyB(x.debit):"Cr "+moneyB(x.credit)}</div></div>`);
+  let html=detailStats([["Total Sales",moneyB(totalSales)],["Collections",moneyB(totalCol)],["Outstanding",moneyB(out)],["Transactions",numB(ledger.length)]])+
+    sectionB("Contact",detailRows([["Trader ID",t.traderId],["Mobile",t.mobile||"—"],["Address",t.address||"—"],["Opening Balance",moneyB(t.openingBalance)],["Status",t.status||"Active"],["Remarks",t.remarks||""]]))+
+    sectionB("Recent Sales",salesHtml)+sectionB("Recent Collections",colHtml)+sectionB("Ledger",ledHtml)+
+    `<div class="detail-actions"><button class="btn btn-primary" onclick="closeDetailView();showSalesTab('challan',document.querySelector('#page-sales .tab-btn:nth-child(2)'))">New Challan</button><button class="btn btn-secondary" onclick="closeDetailView();showSalesTab('receipt',document.querySelector('#page-sales .tab-btn:nth-child(6)'))">Collection</button></div>`;
+  openDetailShell("Trader Detail",t.traderName,`${escapeHtml(t.traderId)} · ${String(t.status||"Active").toUpperCase()}`,html);
+}
+
+function openFarmerDetail(id){
+  const f=(erpData.masters?.farmer||[]).find(x=>String(x.id)===String(id));if(!f)return;
+  const farms=(erpData.masters?.farm||[]).filter(x=>String(rawPick(x.raw,"Farmer ID"))===String(id)||String(rawPick(x.raw,"Farmer Name"))===String(f.name));
+  const farmNames=farms.map(x=>x.name);
+  const batches=batchesData.filter(b=>farmNames.includes(b.farmName));
+  const ledger=(erpData.farmerLedger||[]).filter(x=>String(x.farmerId||"")===String(id)||String(x.farmerName||"")===String(f.name));
+  const bal=ledger.length?Number(ledger[ledger.length-1].balance||0):0;
+  const farmsHtml=simpleRowsB(farms,x=>`<div class="detail-row"><div><div class="detail-row-value" style="text-align:left">${escapeHtml(x.name)}</div><div class="detail-row-label">${escapeHtml(x.id)}</div></div><div class="detail-row-value">${escapeHtml(rawPick(x.raw,"Location")||"")}</div></div>`);
+  const batchHtml=simpleRowsB(batches,x=>`<div class="detail-row workflow-card" onclick="openBatchDetail('${escapeHtml(x.batchId)}')"><div><div class="detail-row-value" style="text-align:left">${escapeHtml(x.batchId)}</div><div class="detail-row-label">${escapeHtml(x.farmName)} · Day ${escapeHtml(String(x.age||0))}</div></div><div class="detail-row-value">${numB(x.currentBirds)} birds ›</div></div>`);
+  let html=detailStats([["Farms",numB(farms.length)],["Active Batches",numB(batches.filter(x=>String(x.status).toLowerCase()!=="completed").length)],["Live Birds",numB(batches.reduce((n,x)=>n+Number(x.currentBirds||0),0))],["Ledger Balance",moneyB(bal)]])+
+   sectionB("Farmer Information",detailRows([["Farmer ID",f.id],["Mobile",rawPick(f.raw,"Mobile")||"—"],["Address",rawPick(f.raw,"Address")||"—"],["Status",rawPick(f.raw,"Status")||"Active"],["Remarks",rawPick(f.raw,"Remarks")]]))+sectionB("Farms",farmsHtml)+sectionB("Batches",batchHtml)+sectionB("Ledger",simpleRowsB([...ledger].reverse(),x=>`<div class="detail-row"><div><div class="detail-row-value" style="text-align:left">${escapeHtml(x.batchId||x.reference||"")}</div><div class="detail-row-label">${escapeHtml(x.farmName||"")}</div></div><div class="detail-row-value">${moneyB(x.balance)}</div></div>`));
+  openDetailShell("Farmer Detail",f.name,`${escapeHtml(f.id)} · ${(rawPick(f.raw,"Status")||"Active").toString().toUpperCase()}`,html);
+}
+
+function openVendorDetail(id){
+  const v=(erpData.masters?.vendor||[]).find(x=>String(x.id)===String(id));if(!v)return;
+  const purchases=(erpData.purchases||[]).filter(x=>String(x["Vendor ID"]||x.vendorId||"")===String(id)||String(x["Vendor Name"]||x.vendorName||"")===String(v.name));
+  const ledger=(erpData.vendorLedger||[]).filter(x=>String(x.vendorId||"")===String(id)||String(x.vendorName||"")===String(v.name));
+  const total=purchases.reduce((n,x)=>n+Number(x.Amount||x["Amount"]||0),0),bal=ledger.length?Number(ledger[ledger.length-1].balance||0):Number(rawPick(v.raw,"Opening Balance")||0);
+  let html=detailStats([["Purchases",moneyB(total)],["Purchase Count",numB(purchases.length)],["Outstanding",moneyB(bal)],["Ledger Entries",numB(ledger.length)]])+
+    sectionB("Vendor Information",detailRows([["Vendor ID",v.id],["Mobile",rawPick(v.raw,"Mobile")||"—"],["Address",rawPick(v.raw,"Address")||"—"],["Opening Balance",moneyB(rawPick(v.raw,"Opening Balance"))],["Status",rawPick(v.raw,"Status")||"Active"],["Remarks",rawPick(v.raw,"Remarks")]]))+
+    sectionB("Recent Purchases",simpleRowsB([...purchases].reverse(),x=>`<div class="detail-row"><div><div class="detail-row-value" style="text-align:left">${escapeHtml(x["Purchase No"]||"")}</div><div class="detail-row-label">${escapeHtml(x.Date||x["Date"]||"")} · ${escapeHtml(x["Item Name"]||"")}</div></div><div class="detail-row-value">${moneyB(x.Amount||x["Amount"])}</div></div>`))+
+    sectionB("Ledger",simpleRowsB([...ledger].reverse(),x=>`<div class="detail-row"><div><div class="detail-row-value" style="text-align:left">${escapeHtml(x.type||"")}</div><div class="detail-row-label">${escapeHtml(x.date||"")} · ${escapeHtml(x.reference||"")}</div></div><div class="detail-row-value">${moneyB(x.balance)}</div></div>`))+
+    `<div class="detail-actions"><button class="btn btn-primary" onclick="closeDetailView();openMorePage('erp','operations')">New Purchase</button><button class="btn btn-secondary" onclick="closeDetailView();openMorePage('erp','ledgers')">Vendor Ledger</button></div>`;
+  openDetailShell("Vendor Detail",v.name,`${escapeHtml(v.id)} · ${(rawPick(v.raw,"Status")||"Active").toString().toUpperCase()}`,html);
 }
 
 </script>
