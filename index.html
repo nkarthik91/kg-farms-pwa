@@ -430,6 +430,100 @@ label{font-size:11px!important;font-weight:650;color:#4b5563!important;margin-bo
   .bottom-nav{max-width:none;left:0;right:0;transform:none}.nav-btn{max-width:150px;margin:auto}
 }
 @media(max-width:420px){.header-actions .icon-btn:nth-child(2){display:none}.more-grid{grid-template-columns:repeat(3,1fr)}}
+
+/* =====================================================
+   PHASE A.2 — OPERATIONAL SCREEN POLISH
+===================================================== */
+.page > .section-title{
+  position:relative;
+  padding-left:12px;
+  margin-top:2px;
+}
+.page > .section-title::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:3px;
+  bottom:3px;
+  width:3px;
+  border-radius:3px;
+  background:var(--brand);
+}
+.page > .tab-row{
+  position:sticky;
+  top:67px;
+  z-index:12;
+  padding:7px 0;
+  margin:0 -2px 10px;
+  background:rgba(245,247,246,.94);
+  backdrop-filter:blur(8px);
+}
+.tab-row::-webkit-scrollbar{display:none}
+.tab-row{scrollbar-width:none}
+.card:has(input),.card:has(select),.card:has(textarea){
+  background:linear-gradient(180deg,#fff 0%,#fcfdfc 100%);
+}
+.card > .card-title{
+  font-size:15px;
+  padding-bottom:9px;
+  border-bottom:1px solid #eef1ef;
+}
+.card > .row-main:first-child{
+  font-size:15px;
+}
+input::placeholder,textarea::placeholder{color:#a0a7ad}
+input[type=number]{font-variant-numeric:tabular-nums}
+input[type=date],input[type=time]{color:#263238}
+select{appearance:auto}
+.btn{min-height:46px}
+.btn-secondary{background:#f3f5f4!important;border:1px solid #dfe5e1!important;color:#374151!important}
+.btn-success{background:var(--brand)!important}
+.btn-danger{background:#b91c1c!important}
+.notice{border:1px solid transparent}
+.info-box{border:1px solid #e7ece9;background:#f8fbf9}
+.search input{background:#fff!important}
+/* Operational lists: readable, tappable rows */
+#batchList,#feedSummaryList,#ordersList,#vaccineList,#medicineStockList,#medicineMasterList,
+#medicineUsageHistory,#challanHistory,#salesCapacityList,#collectionHistory,#traderList,
+#erpMasterLists,#erpLedgerList,#erpReportsList{display:grid;gap:10px}
+#batchList > *,#feedSummaryList > *,#ordersList > *,#vaccineList > *,#medicineStockList > *,
+#medicineMasterList > *,#medicineUsageHistory > *,#challanHistory > *,#salesCapacityList > *{
+  border-radius:14px;
+}
+/* Better density for large ERP tab collections */
+#page-erp .card{margin-bottom:10px}
+#page-erp .tab-row{margin-bottom:12px}
+#page-erp input,#page-erp select,#page-erp textarea{min-height:42px}
+/* Sales screen has many sub-tabs: keep them usable without taking space */
+#page-sales > .tab-row{padding-top:5px;padding-bottom:8px}
+#page-sales .tab-btn{font-size:10.5px;padding:8px 11px}
+/* Form grouping */
+.divider + .card-title{margin-top:2px}
+#cageRows{display:grid;gap:7px;margin-top:5px}
+.cage-row input{min-width:0}
+/* Empty/loading states look intentional */
+.loading,.empty{border:1px dashed #e0e6e2;border-radius:12px;background:#fbfcfb}
+/* Desktop: forms become compact two-column layouts where possible */
+@media(min-width:760px){
+  .container{padding-left:22px;padding-right:22px}
+  .page:not(#page-dashboard){max-width:920px;margin:0 auto}
+  .page > .section-title{font-size:23px}
+  .page > .tab-row{top:70px}
+  #page-daily .card,#page-feed .card,#page-batches .card,#page-medicine .card{max-width:760px}
+  #page-daily .card > label:nth-of-type(1),#page-daily .card > label:nth-of-type(2){display:block}
+  #page-daily .card{padding:20px}
+  #page-sales > .tab-row{gap:7px}
+}
+@media(max-width:520px){
+  .container{padding-left:13px;padding-right:13px}
+  .card{padding:14px;border-radius:15px}
+  .page > .section-title{font-size:20px;margin-bottom:11px}
+  .page > .tab-row{top:66px}
+  .grid{grid-template-columns:1fr}
+  .cage-row{grid-template-columns:1fr 1fr 1fr auto}
+  .btn{margin-top:12px}
+}
+
 </style>
 </head>
 
@@ -499,7 +593,7 @@ label{font-size:11px!important;font-weight:650;color:#4b5563!important;margin-bo
 
 <div id="page-daily" class="page">
 
-  <div class="section-title">Daily Farm Entry</div>
+  <div class="section-title">Daily Farm Entry</div><div class="section-subtitle">Record mortality, feed type and remaining farm stock.</div>
 
   <div id="dailyMessage"></div>
 
@@ -554,7 +648,7 @@ label{font-size:11px!important;font-weight:650;color:#4b5563!important;margin-bo
 
 <div id="page-feed" class="page">
 
-  <div class="section-title">Feed Management</div>
+  <div class="section-title">Feed Management</div><div class="section-subtitle">Track stage balance, supplies and pending orders.</div>
 
   <div class="tab-row">
     <button class="tab-btn active"
@@ -630,7 +724,7 @@ label{font-size:11px!important;font-weight:650;color:#4b5563!important;margin-bo
 
 <div id="page-orders" class="page">
 
-  <div class="section-title">Feed Orders</div>
+  <div class="section-title">Feed Orders</div><div class="section-subtitle">Review feed quantities that still need to be supplied.</div>
 
   <div id="ordersMessage"></div>
 
@@ -647,7 +741,7 @@ label{font-size:11px!important;font-weight:650;color:#4b5563!important;margin-bo
 
 <div id="page-vaccines" class="page">
 
-  <div class="section-title">Vaccine Schedule</div>
+  <div class="section-title">Vaccine Schedule</div><div class="section-subtitle">Upcoming vaccination plan by batch and scheduled date.</div>
 
   <div class="card">
 
@@ -675,7 +769,7 @@ label{font-size:11px!important;font-weight:650;color:#4b5563!important;margin-bo
 
 <div id="page-batches" class="page">
 
-  <div class="section-title">Batch Management</div>
+  <div class="section-title">Batch Management</div><div class="section-subtitle">View active batches or create a new placement.</div>
 
   <div class="tab-row">
 
@@ -744,7 +838,7 @@ label{font-size:11px!important;font-weight:650;color:#4b5563!important;margin-bo
 
 <div id="page-medicine" class="page">
 
-  <div class="section-title">Medicine Management</div>
+  <div class="section-title">Medicine Management</div><div class="section-subtitle">Monitor stock, receive medicines and record usage.</div>
 
   <div class="tab-row">
 
@@ -949,7 +1043,7 @@ label{font-size:11px!important;font-weight:650;color:#4b5563!important;margin-bo
 
 <!-- SALES MODULE -->
 <div id="page-sales" class="page">
-  <div class="section-title">Sales & Traders</div>
+  <div class="section-title">Sales & Traders</div><div class="section-subtitle">Bird sales, challans, collections and settlement.</div>
   <div class="tab-row">
     <button class="tab-btn active" onclick="showSalesTab('capacity',this)">Selling Capacity</button>
     <button class="tab-btn" onclick="showSalesTab('challan',this)">Delivery Challan</button>
@@ -1175,7 +1269,7 @@ label{font-size:11px!important;font-weight:650;color:#4b5563!important;margin-bo
      COMPLETE ERP CONSOLE
 ===================================================== -->
 <div id="page-erp" class="page">
-  <div class="section-title">KG Farms ERP</div>
+  <div class="section-title">KG Farms ERP</div><div class="section-subtitle">Masters, operations, ledgers, reports and system controls.</div>
   <div class="tab-row">
     <button class="tab-btn active" onclick="showErpTab('master',this)">Master</button>
     <button class="tab-btn" onclick="showErpTab('operations',this)">Operations</button>
