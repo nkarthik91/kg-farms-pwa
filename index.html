@@ -868,6 +868,7 @@ textarea{
     <button class="tab-btn" onclick="showSalesTab('settlement',this);renderFarmerSettlement()">Settlement</button>
     <button class="tab-btn" onclick="showSalesTab('profitability',this);renderBatchProfitability()">Profitability</button>
     <button class="tab-btn" onclick="showSalesTab('expenses',this);renderExpenses()">Expenses</button>
+    <button class="tab-btn" onclick="showSalesTab('closure',this);renderBatchClosure()">Batch Closure</button>
     <button class="tab-btn" onclick="showSalesTab('reports',this);renderSalesReports()">Reports</button>
   </div>
   <div id="salesCapacityTab"><div id="salesCapacityList"><div class="loading">Loading selling capacity...</div></div></div>
@@ -991,6 +992,27 @@ textarea{
     <div class="card">
       <div class="card-title">Recent Batch Expenses</div>
       <div id="expenseHistory"><div class="empty">No expenses recorded.</div></div>
+    </div>
+  </div>
+
+  <div id="salesClosureTab" class="hidden">
+    <div class="card">
+      <div class="card-title">Batch Closure & Finalization</div>
+      <div class="info-box">
+        <div class="info-label">Closure Rule</div>
+        <div class="info-value">A batch can be closed only when all current birds are sold/cleared and farmer settlement balance is ₹0.</div>
+      </div>
+      <div id="closureMessage"></div>
+      <label>Batch</label>
+      <select id="closureBatch" onchange="updateClosureBatch()"><option value="">Select Batch</option></select>
+      <div id="closureBatchInfo"></div>
+      <label>Closure Date</label><input type="date" id="closureDate">
+      <label>Remarks</label><textarea id="closureRemarks" placeholder="Optional"></textarea>
+      <button class="btn btn-success" onclick="closeBatchUI()">Close Batch</button>
+    </div>
+    <div class="card">
+      <div class="card-title">Batch Closure Status</div>
+      <div id="batchClosureList"><div class="empty">No batches found.</div></div>
     </div>
   </div>
 
@@ -1140,6 +1162,7 @@ let salesReturnsData = [];
 let farmerSettlementData = [];
 let batchProfitabilityData = [];
 let expensesData = [];
+let batchClosureData = [];
 
 
 /*************************************************
@@ -1147,8 +1170,71 @@ let expensesData = [];
  *************************************************/
 let cageRows=[];
 
+
+/*************************************************
+ * MILESTONE 23 – BATCH CLOSURE UI
+ *************************************************/
+function renderClosureBatchOptions(){
+  const el=document.getElementById("closureBatch");
+  if(!el)return;
+  const cur=el.value;
+  el.innerHTML='<option value="">Select Batch</option>'+batchClosureData.filter(x=>String(x.batchId||"").trim()).map(x=>
+    `<option value="${escapeHtml(x.batchId)}">${escapeHtml(x.batchId)} — ${escapeHtml(x.farmName||"")}</option>`
+  ).join("");
+  if(cur)el.value=cur;
+}
+function updateClosureBatch(){
+  const id=document.getElementById("closureBatch")?.value||"";
+  const x=batchClosureData.find(r=>String(r.batchId)===String(id));
+  const el=document.getElementById("closureBatchInfo");
+  if(!el)return;
+  if(!id||!x){el.innerHTML="";return;}
+  const ready=x.status==="READY TO CLOSE";
+  el.innerHTML=`<div class="info-box">
+    <div class="grid">
+      <div><div class="info-label">Current Birds</div><div class="info-value">${Number(x.currentBirds||0)}</div></div>
+      <div><div class="info-label">Birds Sold</div><div class="info-value">${Number(x.birdsSold||0)}</div></div>
+      <div><div class="info-label">Birds Remaining</div><div class="info-value">${Number(x.birdsRemaining||0)}</div></div>
+      <div><div class="info-label">Sales Revenue</div><div class="info-value money">₹ ${Number(x.salesRevenue||0).toFixed(2)}</div></div>
+      <div><div class="info-label">Settlement Balance</div><div class="info-value">₹ ${Number(x.settlementBalance||0).toFixed(2)}</div></div>
+      <div><div class="info-label">Profit</div><div class="info-value money">₹ ${Number(x.profit||0).toFixed(2)}</div></div>
+    </div>
+    <div class="notice ${ready?"notice-success":"notice-error"}" style="margin-top:12px;margin-bottom:0">${ready?"READY TO CLOSE":"Cannot close: "+escapeHtml(x.reason||"requirements not completed")}</div>
+  </div>`;
+}
+async function closeBatchUI(){
+  try{
+    const id=document.getElementById("closureBatch")?.value||"";
+    if(!id)throw new Error("Batch is required.");
+    const x=batchClosureData.find(r=>String(r.batchId)===String(id));
+    if(x&&x.status==="CLOSED")throw new Error("Batch is already closed.");
+    if(!confirm("Close batch "+id+"? This marks the batch as CLOSED."))return;
+    const d=await postData({action:"closeBatch",batchId:id,closureDate:document.getElementById("closureDate")?.value||getTodayISO(),remarks:document.getElementById("closureRemarks")?.value.trim()||""});
+    showMessage("closureMessage",`${d.batchId} closed successfully. Final profit ₹${Number(d.profit||0).toFixed(2)}.` ,"success");
+    document.getElementById("closureRemarks").value="";
+    await loadData();
+    renderBatchClosure();
+  }catch(e){showMessage("closureMessage",e.message,"error");}
+}
+function renderBatchClosure(){
+  renderClosureBatchOptions();
+  const date=document.getElementById("closureDate");if(date&&!date.value)date.value=getTodayISO();
+  updateClosureBatch();
+  const el=document.getElementById("batchClosureList");
+  if(!el)return;
+  if(!batchClosureData.length){el.innerHTML='<div class="empty">No batches found.</div>';return;}
+  el.innerHTML=`<div style="overflow-x:auto"><table class="data-table"><thead><tr>
+    <th>Batch</th><th>Farm</th><th>Current</th><th>Sold</th><th>Remaining</th><th>Sales</th><th>Settlement Bal.</th><th>Profit</th><th>Status</th><th>Closure Date</th>
+  </tr></thead><tbody>${batchClosureData.map(x=>`<tr>
+    <td>${escapeHtml(x.batchId)}</td><td>${escapeHtml(x.farmName)}</td><td>${Number(x.currentBirds||0)}</td><td>${Number(x.birdsSold||0)}</td><td>${Number(x.birdsRemaining||0)}</td>
+    <td>${moneyReport(x.salesRevenue)}</td><td>${moneyReport(x.settlementBalance)}</td><td>${moneyReport(x.profit)}</td>
+    <td><span class="badge ${x.status==="CLOSED"?"badge-green":x.status==="READY TO CLOSE"?"badge-orange":"badge-red"}">${escapeHtml(x.status)}</span></td>
+    <td>${escapeHtml(x.closureDate||"—")}</td>
+  </tr>`).join("")}</tbody></table></div>`;
+}
+
 function showSalesTab(tab,button){
-  ["capacity","challan","returns","traders","ledger","receipt","settlement","profitability","expenses","reports"].forEach(t=>{
+  ["capacity","challan","returns","traders","ledger","receipt","settlement","profitability","expenses","closure","reports"].forEach(t=>{
     const el=document.getElementById("sales"+t.charAt(0).toUpperCase()+t.slice(1)+"Tab");
     if(el)el.classList.toggle("hidden",t!==tab);
   });
@@ -1157,7 +1243,7 @@ function showSalesTab(tab,button){
 }
 function renderSalesModules(){
   renderSellingCapacity();renderSalesTraderOptions();renderTraderList();renderTraderLedger();renderChallanHistory();renderReceiptHistory();
-  renderFarmerSettlement();renderBatchProfitability();renderExpenses();
+  renderFarmerSettlement();renderBatchProfitability();renderExpenses();renderBatchClosure();
   if(!cageRows.length){cageRows=[{cages:"",emptyWeight:"",loadWeight:""}];renderCageRows();}
   ["challanDate","receiptDate"].forEach(id=>{const e=document.getElementById(id);if(e&&!e.value)e.value=getTodayISO();});
 }
@@ -2064,6 +2150,7 @@ async function loadData(){
     farmerSettlementData = Array.isArray(data.farmerSettlement) ? data.farmerSettlement : [];
     batchProfitabilityData = Array.isArray(data.batchProfitability) ? data.batchProfitability : [];
     expensesData = Array.isArray(data.expenses) ? data.expenses : [];
+    batchClosureData = Array.isArray(data.batchClosure) ? data.batchClosure : [];
 
     renderAll();
 
