@@ -372,14 +372,80 @@ textarea{
     border-right:1px solid #e5e7eb;
   }
 }
+
+/* =====================================================
+   PHASE A — KG FARMS PRODUCT POLISH
+===================================================== */
+:root{
+  --brand:#1f7a4d;
+  --brand-dark:#14532d;
+  --brand-soft:#eaf7ef;
+  --ink:#17202a;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+  --surface:#ffffff;
+  --bg:#f5f7f6;
+  --danger:#dc2626;
+  --warning:#d97706;
+  --info:#2563eb;
+}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink);}
+.header{background:rgba(255,255,255,.96);backdrop-filter:blur(12px);padding:14px 16px 12px;border-bottom:1px solid var(--line);}
+.header-inner{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand-wrap{display:flex;align-items:center;gap:11px}
+.brand-mark{width:40px;height:40px;border-radius:12px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px;box-shadow:0 5px 14px rgba(31,122,77,.18)}
+.header-title{font-size:19px;line-height:1.1;font-weight:800;letter-spacing:-.3px}
+.header-sub{font-size:11px;color:var(--muted);margin-top:3px}
+.header-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{width:38px;height:38px;border:1px solid var(--line);background:#fff;border-radius:11px;display:grid;place-items:center;font-size:17px;color:#374151}
+.container{max-width:1100px;padding:18px 16px 96px}
+.section-title{font-size:21px;letter-spacing:-.35px;margin:4px 0 14px}
+.section-subtitle{font-size:12px;color:var(--muted);margin:-8px 0 16px}
+.card{border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:14px;box-shadow:0 2px 10px rgba(15,23,42,.035);}
+.card-title,.row-main{font-weight:750;letter-spacing:-.1px}
+.row-sub{line-height:1.35}
+.grid{gap:10px}
+.stat{background:#f8faf9;border:1px solid #edf1ee;border-radius:14px;padding:13px}
+.stat-label{font-size:11px;color:var(--muted);font-weight:600}
+.stat-value{font-size:21px;font-weight:800;margin-top:4px;letter-spacing:-.5px}
+.primary-btn,.btn-primary{background:var(--brand)!important;border-color:var(--brand)!important;color:#fff!important;border-radius:11px!important;font-weight:700!important;min-height:44px;box-shadow:0 4px 10px rgba(31,122,77,.14)}
+.primary-btn:hover,.btn-primary:hover{background:var(--brand-dark)!important}
+input,select,textarea{border:1px solid #d8dee4!important;border-radius:10px!important;min-height:44px;background:#fff!important;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--brand)!important;box-shadow:0 0 0 3px rgba(31,122,77,.10)!important}
+label{font-size:11px!important;font-weight:650;color:#4b5563!important;margin-bottom:5px!important}
+.badge{border-radius:999px;padding:5px 9px;font-size:10px;font-weight:750;letter-spacing:.15px;background:#f3f4f6;color:#4b5563}
+.badge-green{background:#e8f7ee;color:#166534}.badge-orange{background:#fff4df;color:#9a5a00}.badge-red{background:#feeceb;color:#991b1b}.badge-blue{background:#eaf2ff;color:#1d4ed8}
+.tab-row{gap:6px}.tab-btn{border-radius:10px;padding:9px 12px;font-size:11px}.tab-btn.active{background:var(--brand);border-color:var(--brand)}
+.bottom-nav{height:72px;background:rgba(255,255,255,.98);backdrop-filter:blur(12px);box-shadow:0 -5px 20px rgba(15,23,42,.06);border-top:1px solid var(--line);overflow:visible}
+.nav-btn{min-width:0;font-size:10px;padding:7px 3px;color:#6b7280}.nav-icon{font-size:19px;line-height:21px;margin-bottom:3px}.nav-btn.active{color:var(--brand);font-weight:800}.nav-btn.active .nav-icon{transform:translateY(-1px)}
+.quick-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.quick-action{border:1px solid var(--line);background:#fff;border-radius:13px;padding:12px;text-align:left;font-weight:700;color:#263238;min-height:54px}.quick-action span{display:block;font-size:10px;color:var(--muted);font-weight:500;margin-top:3px}
+.dashboard-greeting{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:15px}.dashboard-date{font-size:11px;color:var(--muted);text-align:right}.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--brand);font-weight:800;margin-bottom:3px}
+.glance-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.glance-card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:13px}.glance-card.primary{background:var(--brand);color:#fff;border-color:var(--brand)}.glance-label{font-size:10px;color:var(--muted);font-weight:650}.glance-card.primary .glance-label{color:rgba(255,255,255,.78)}.glance-value{font-size:23px;font-weight:850;letter-spacing:-.7px;margin-top:5px}.glance-note{font-size:10px;color:var(--muted);margin-top:3px}.glance-card.primary .glance-note{color:rgba(255,255,255,.75)}
+.batch-strip{display:flex;gap:10px;overflow-x:auto;padding:2px 1px 6px;scroll-snap-type:x mandatory}.batch-mini{min-width:245px;scroll-snap-align:start;border:1px solid var(--line);background:#fff;border-radius:15px;padding:14px}.batch-mini-top{display:flex;justify-content:space-between;gap:8px}.batch-mini-name{font-size:14px;font-weight:800}.batch-mini-meta{font-size:11px;color:var(--muted);margin-top:3px}.batch-mini-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:12px}.mini-label{font-size:9px;color:var(--muted)}.mini-value{font-size:14px;font-weight:800;margin-top:2px}
+.alert-list{display:grid;gap:8px}.alert-item{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:11px;background:#fff}.alert-dot{width:9px;height:9px;border-radius:50%;background:var(--warning);flex:0 0 auto}.alert-dot.danger{background:var(--danger)}.alert-copy{flex:1}.alert-title{font-size:12px;font-weight:750}.alert-sub{font-size:10px;color:var(--muted);margin-top:2px}
+.more-sheet{position:fixed;left:0;right:0;bottom:72px;background:#fff;border-top:1px solid var(--line);box-shadow:0 -12px 30px rgba(15,23,42,.12);z-index:45;display:none;padding:12px 16px 14px}.more-sheet.open{display:block}.more-sheet-inner{max-width:1100px;margin:auto}.more-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.more-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.more-item{border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 9px;text-align:center;font-size:10px;font-weight:700;color:#374151}.more-item .mi{font-size:18px;display:block;margin-bottom:4px}
+.desktop-only{display:none}
+@media(min-width:700px){
+  .container{padding-top:24px}.glance-grid{grid-template-columns:repeat(4,1fr)}.quick-actions{grid-template-columns:repeat(4,1fr)}.desktop-only{display:block}.more-grid{grid-template-columns:repeat(6,1fr)}
+  .bottom-nav{max-width:none;left:0;right:0;transform:none}.nav-btn{max-width:150px;margin:auto}
+}
+@media(max-width:420px){.header-actions .icon-btn:nth-child(2){display:none}.more-grid{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 
 <body>
 
 <div class="header">
-  <div class="header-title">KG Farms</div>
-  <div class="header-sub">Poultry Management System</div>
+  <div class="header-inner">
+    <div class="brand-wrap">
+      <div class="brand-mark">KG</div>
+      <div><div class="header-title">KG Farms</div><div class="header-sub">Poultry Management System</div></div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" title="Alerts" onclick="openMorePage('erp','system')">♢</button>
+      <button class="icon-btn" title="More" onclick="toggleMoreMenu()">⋯</button>
+    </div>
+  </div>
 </div>
 
 <div class="container">
@@ -390,12 +456,38 @@ textarea{
 
 <div id="page-dashboard" class="page active">
 
-  <div class="section-title">Dashboard</div>
+  <div class="dashboard-greeting">
+    <div><div class="eyebrow">Overview</div><div class="section-title" style="margin:0">Good day 👋</div><div class="section-subtitle" style="margin:4px 0 0">Here is what needs attention across KG Farms.</div></div>
+    <div class="dashboard-date" id="dashboardToday"></div>
+  </div>
 
   <div id="dashboardMessage"></div>
 
-  <div id="dashboardList">
-    <div class="loading">Loading dashboard...</div>
+  <div class="glance-grid" id="dashboardGlance"></div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="row-flex" style="margin-bottom:10px"><div><div class="row-main">Quick Actions</div><div class="row-sub">Common tasks in one tap</div></div></div>
+    <div class="quick-actions">
+      <button class="quick-action" onclick="showPage('daily',document.querySelectorAll('.nav-btn')[1])">＋ Daily Entry<span>Record today's farm data</span></button>
+      <button class="quick-action" onclick="showPage('feed',document.querySelectorAll('.nav-btn')[1]);document.getElementById('moreSheet')?.classList.remove('open')">Feed<span>Stock and supply</span></button>
+      <button class="quick-action" onclick="showPage('sales',document.querySelectorAll('.nav-btn')[2])">₹ New Sale<span>Create delivery challan</span></button>
+      <button class="quick-action" onclick="openMorePage('erp','reports')">Reports<span>Performance and finance</span></button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row-flex" style="margin-bottom:10px"><div><div class="row-main">Active Batches</div><div class="row-sub">Tap a batch to continue working</div></div><span class="badge badge-green" id="activeBatchCount">0</span></div>
+    <div id="activeBatchStrip" class="batch-strip"><div class="loading">Loading batches...</div></div>
+  </div>
+
+  <div class="card">
+    <div class="row-flex" style="margin-bottom:10px"><div><div class="row-main">Needs Attention</div><div class="row-sub">Items that may need action</div></div></div>
+    <div id="dashboardAlerts" class="alert-list"><div class="empty">Checking alerts...</div></div>
+  </div>
+
+  <div class="card">
+    <div class="row-flex" style="margin-bottom:10px"><div><div class="row-main">Today Operations</div><div class="row-sub">At-a-glance operational status</div></div></div>
+    <div id="dashboardList"><div class="loading">Loading...</div></div>
   </div>
 
 </div>
@@ -1202,61 +1294,29 @@ textarea{
   </div>
 </div>
 
-<div class="bottom-nav">
-
-  <button class="nav-btn active"
-          onclick="showPage('dashboard',this)">
-    <span class="nav-icon">⌂</span>
-    Dashboard
-  </button>
-
-  <button class="nav-btn"
-          onclick="showPage('daily',this)">
-    <span class="nav-icon">＋</span>
-    Daily
-  </button>
-
-  <button class="nav-btn"
-          onclick="showPage('feed',this)">
-    <span class="nav-icon">▣</span>
-    Feed
-  </button>
-
-  <button class="nav-btn"
-          onclick="showPage('orders',this)">
-    <span class="nav-icon">□</span>
-    Orders
-  </button>
-
-  <button class="nav-btn"
-          onclick="showPage('vaccines',this)">
-    <span class="nav-icon">✚</span>
-    Vaccines
-  </button>
-
-  <button class="nav-btn"
-          onclick="showPage('medicine',this)">
-    <span class="nav-icon">⚕</span>
-    Medicine
-  </button>
-
-  <button class="nav-btn"
-          onclick="showPage('batches',this)">
-    <span class="nav-icon">☰</span>
-    Batches
-  </button>
-  <button class="nav-btn" onclick="showPage('sales',this)">
-    <span class="nav-icon">₹</span>
-    Sales
-  </button>
-
-
-  <button class="nav-btn" onclick="showPage('erp',this)">
-    <span class="nav-icon">▦</span>
-    ERP
-  </button>
+<div id="moreSheet" class="more-sheet">
+  <div class="more-sheet-inner">
+    <div class="more-head"><div><div class="row-main">More</div><div class="row-sub">Management, finance and system</div></div><button class="icon-btn" onclick="toggleMoreMenu()">×</button></div>
+    <div class="more-grid">
+      <button class="more-item" onclick="openMorePage('batches')"><span class="mi">🐔</span>Batches</button>
+      <button class="more-item" onclick="openMorePage('vaccines')"><span class="mi">✚</span>Vaccines</button>
+      <button class="more-item" onclick="openMorePage('medicine')"><span class="mi">⚕</span>Medicine</button>
+      <button class="more-item" onclick="openMorePage('orders')"><span class="mi">▱</span>Feed Orders</button>
+      <button class="more-item" onclick="openMorePage('erp','reports')"><span class="mi">▥</span>Reports</button>
+      <button class="more-item" onclick="openMorePage('erp','ledgers')"><span class="mi">₹</span>Financials</button>
+      <button class="more-item" onclick="openMorePage('erp','master')"><span class="mi">⌘</span>Masters</button>
+      <button class="more-item" onclick="openMorePage('erp','system')"><span class="mi">⚙</span>System</button>
+    </div>
+  </div>
 </div>
 
+<div class="bottom-nav">
+  <button class="nav-btn active" onclick="showPage('dashboard',this)"><span class="nav-icon">⌂</span>Home</button>
+  <button class="nav-btn" onclick="showPage('daily',this)"><span class="nav-icon">＋</span>Entries</button>
+  <button class="nav-btn" onclick="showPage('sales',this)"><span class="nav-icon">₹</span>Sales</button>
+  <button class="nav-btn" onclick="openMorePage('erp','reports')"><span class="nav-icon">▥</span>Reports</button>
+  <button class="nav-btn" onclick="toggleMoreMenu()"><span class="nav-icon">☰</span>More</button>
+</div>
 
 <script>
 
@@ -2352,109 +2412,65 @@ function renderAll(){
  *************************************************/
 
 function renderDashboard(){
+  const data=Array.isArray(dashboardData)?dashboardData:[];
+  const today=document.getElementById("dashboardToday");
+  if(today) today.textContent=new Date().toLocaleDateString("en-IN",{weekday:"short",day:"2-digit",month:"short",year:"numeric"});
 
-  const el =
-    document.getElementById("dashboardList");
+  const active=data.length;
+  const birds=data.reduce((n,x)=>n+(Number(x.birds)||0),0);
+  const orders=data.filter(x=>(Number(x.balanceToSupply)||0)>0).length;
+  const vaccineDue=data.filter(x=>x.nextVaccine).length;
+  const glance=document.getElementById("dashboardGlance");
+  if(glance) glance.innerHTML=`
+    <div class="glance-card primary"><div class="glance-label">Active Batches</div><div class="glance-value">${active}</div><div class="glance-note">Currently running</div></div>
+    <div class="glance-card"><div class="glance-label">Live Birds</div><div class="glance-value">${birds.toLocaleString("en-IN")}</div><div class="glance-note">Across active batches</div></div>
+    <div class="glance-card"><div class="glance-label">Feed Alerts</div><div class="glance-value">${orders}</div><div class="glance-note">Orders required</div></div>
+    <div class="glance-card"><div class="glance-label">Vaccine Plans</div><div class="glance-value">${vaccineDue}</div><div class="glance-note">Upcoming schedules</div></div>`;
 
-  if(!dashboardData.length){
-
-    el.innerHTML =
-      `<div class="empty">
-        No active batches found.
-      </div>`;
-
-    return;
+  const count=document.getElementById("activeBatchCount");if(count)count.textContent=active;
+  const strip=document.getElementById("activeBatchStrip");
+  if(strip){
+    strip.innerHTML=data.length?data.slice().sort((a,b)=>(Number(b.age)||0)-(Number(a.age)||0)).map(item=>{
+      const balance=Number(item.balanceToSupply)||0;
+      return `<button class="batch-mini" style="text-align:left" onclick="openBatchFromDashboard('${escapeJs(item.batchId||"")}')">
+        <div class="batch-mini-top"><div><div class="batch-mini-name">${escapeHtml(item.farmName||"Farm")}</div><div class="batch-mini-meta">${escapeHtml(item.batchId||"")} · Day ${Number(item.age)||0}</div></div><span class="badge ${balance>0?'badge-orange':'badge-green'}">${balance>0?'ORDER':'OK'}</span></div>
+        <div class="batch-mini-grid"><div><div class="mini-label">Birds</div><div class="mini-value">${(Number(item.birds)||0).toLocaleString("en-IN")}</div></div><div><div class="mini-label">Feed</div><div class="mini-value">${escapeHtml(item.currentFeed||"—")}</div></div><div><div class="mini-label">Next vaccine</div><div class="mini-value">${escapeHtml(item.nextVaccine||"—")}</div></div></div>
+      </button>`;
+    }).join(""):'<div class="empty">No active batches found.</div>';
   }
 
-  el.innerHTML =
-    dashboardData.map(item => {
+  const alerts=[];
+  data.filter(x=>(Number(x.balanceToSupply)||0)>0).slice(0,5).forEach(x=>alerts.push({danger:false,title:`Feed order required — ${x.batchId}`,sub:`${x.farmName||""} · ${Number(x.balanceToSupply)||0} bags to be supplied`}));
+  data.filter(x=>x.nextVaccine).slice(0,5).forEach(x=>alerts.push({danger:false,title:`Vaccine scheduled — ${x.nextVaccine}`,sub:`${x.farmName||""} · ${x.batchId||""}${x.nextVaccineDate?' · '+x.nextVaccineDate:''}`}));
+  const al=document.getElementById("dashboardAlerts");
+  if(al)al.innerHTML=alerts.length?alerts.slice(0,6).map(a=>`<div class="alert-item"><span class="alert-dot ${a.danger?'danger':''}"></span><div class="alert-copy"><div class="alert-title">${escapeHtml(a.title)}</div><div class="alert-sub">${escapeHtml(a.sub)}</div></div></div>`).join(""):'<div class="empty">No immediate alerts.</div>';
 
-      const balance =
-        Number(item.balanceToSupply) || 0;
-
-      const orderBadge =
-        balance > 0
-          ? `<span class="badge badge-orange">
-              ORDER REQUIRED
-            </span>`
-          : `<span class="badge badge-green">
-              COMPLETE
-            </span>`;
-
-      return `
-      <div class="card">
-
-        <div class="row-flex">
-
-          <div>
-            <div class="row-main">
-              ${escapeHtml(item.farmName)}
-            </div>
-
-            <div class="row-sub">
-              ${escapeHtml(item.batchId)}
-            </div>
-          </div>
-
-          ${orderBadge}
-
-        </div>
-
-        <div class="grid" style="margin-top:12px">
-
-          <div class="stat">
-            <div class="stat-label">Birds</div>
-            <div class="stat-value">
-              ${item.birds || 0}
-            </div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">Age</div>
-            <div class="stat-value">
-              Day ${item.age || 0}
-            </div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">Current Feed</div>
-            <div class="stat-value">
-              ${escapeHtml(item.currentFeed || "-")}
-            </div>
-          </div>
-
-          <div class="stat">
-            <div class="stat-label">Feed Balance</div>
-            <div class="stat-value">
-              ${balance}
-            </div>
-          </div>
-
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="row-sub">
-          Next Vaccine
-        </div>
-
-        <div class="row-main">
-          ${escapeHtml(item.nextVaccine || "None")}
-        </div>
-
-        ${
-          item.vaccineDate
-            ? `<div class="row-sub">
-                ${escapeHtml(item.vaccineDate)}
-              </div>`
-            : ""
-        }
-
-      </div>
-      `;
-    }).join("");
+  const el=document.getElementById("dashboardList");
+  if(!el)return;
+  if(!data.length){el.innerHTML='<div class="empty">No active batches found.</div>';return;}
+  el.innerHTML=data.slice(0,8).map(item=>{
+    const balance=Number(item.balanceToSupply)||0;
+    return `<div class="list-row"><div class="row-flex"><div><div class="row-main">${escapeHtml(item.farmName||"")} <span class="row-sub">${escapeHtml(item.batchId||"")}</span></div><div class="row-sub">Day ${Number(item.age)||0} · ${(Number(item.birds)||0).toLocaleString("en-IN")} birds · Feed ${escapeHtml(item.currentFeed||"—")}</div></div><span class="badge ${balance>0?'badge-orange':'badge-green'}">${balance>0?'ORDER REQUIRED':'READY'}</span></div></div>`;
+  }).join("");
 }
-
+function escapeJs(v){return String(v||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/\n/g,"\\n").replace(/\r/g,"\\r");}
+function openBatchFromDashboard(id){
+  document.getElementById("moreSheet")?.classList.remove("open");
+  const b=document.getElementById("batchSelect");
+  if(b){b.value=id;b.dispatchEvent(new Event("change"));}
+  showPage("batches",null);
+}
+function toggleMoreMenu(){document.getElementById("moreSheet")?.classList.toggle("open");}
+function openMorePage(page,tab){
+  document.getElementById("moreSheet")?.classList.remove("open");
+  showPage(page,null);
+  document.querySelectorAll(".nav-btn").forEach(x=>x.classList.remove("active"));
+  if(page==="dashboard")document.querySelectorAll(".nav-btn")[0]?.classList.add("active");
+  else if(page==="daily")document.querySelectorAll(".nav-btn")[1]?.classList.add("active");
+  else if(page==="sales")document.querySelectorAll(".nav-btn")[2]?.classList.add("active");
+  else document.querySelectorAll(".nav-btn")[3]?.classList.add("active");
+  if(page==="erp"&&tab){const btn=[...document.querySelectorAll("#page-erp .tab-btn")].find(x=>x.textContent.trim().toLowerCase()===tab);if(btn)showErpTab(tab,btn);}
+}
 
 /*************************************************
  * DAILY BATCH OPTIONS
