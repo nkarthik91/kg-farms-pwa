@@ -864,7 +864,7 @@ textarea{
     <button class="tab-btn" onclick="showSalesTab('traders',this)">Traders</button>
     <button class="tab-btn" onclick="showSalesTab('ledger',this)">Ledger</button>
     <button class="tab-btn" onclick="showSalesTab('receipt',this)">Receipt</button>
-<button class="tab-btn" onclick="showSalesTab('reports',this);renderSalesReports()">Reports</button>
+    <button class="tab-btn" onclick="showSalesTab('reports',this);renderSalesReports()">Reports</button>
   </div>
   <div id="salesCapacityTab"><div id="salesCapacityList"><div class="loading">Loading selling capacity...</div></div></div>
   <div id="salesChallanTab" class="hidden"><div id="challanMessage"></div><div class="card">
@@ -885,6 +885,39 @@ textarea{
   </div><div id="traderList"></div></div>
   <div id="salesLedgerTab" class="hidden"><div id="ledgerSummary"></div><div class="card"><div class="card-title">Trader Ledger</div><div class="grid"><div><label>Trader</label><select id="ledgerTrader" onchange="renderTraderLedger()"><option value="">All Traders</option></select></div><div><label>From Date</label><input type="date" id="ledgerFrom" onchange="renderTraderLedger()"></div><div><label>To Date</label><input type="date" id="ledgerTo" onchange="renderTraderLedger()"></div></div><div id="ledgerList"></div></div><div class="card"><div class="card-title">Trader Outstanding Summary</div><div id="traderSummaryList"></div></div></div>
   <div id="salesReceiptTab" class="hidden"><div id="receiptMessage"></div><div class="card"><div class="card-title">Receive Payment</div><label>Date</label><input type="date" id="receiptDate"><label>Trader</label><select id="receiptTrader" onchange="updateReceiptTrader()"><option value="">Select Trader</option></select><div id="receiptOutstanding"></div><label>Amount</label><input type="number" id="receiptAmount" min="0.01" step="0.01"><label>Payment Mode</label><select id="receiptMode"><option>Cash</option><option>Bank Transfer</option><option>UPI</option><option>Cheque</option><option>Other</option></select><label>Reference No.</label><input type="text" id="receiptReference"><label>Remarks</label><textarea id="receiptRemarks"></textarea><button class="btn btn-success" onclick="saveReceipt()">Save Receipt</button></div><div class="card"><div class="card-title">Recent Receipts</div><div id="receiptHistory"></div></div></div>
+
+  <div id="salesReportsTab" class="hidden">
+    <div class="card">
+      <div class="card-title">Sales & Collection Report</div>
+      <div class="grid">
+        <div><label>From Date</label><input type="date" id="reportFromDate"></div>
+        <div><label>To Date</label><input type="date" id="reportToDate"></div>
+        <div><label>Trader</label><select id="reportTrader"><option value="">All Traders</option></select></div>
+      </div>
+      <div style="margin-top:12px">
+        <button class="btn btn-primary" onclick="renderSalesReports()">Apply Filter</button>
+        <button class="btn btn-secondary" onclick="clearSalesReportFilters()">Clear</button>
+        <button class="btn btn-secondary" onclick="printSalesReport()">Print Report</button>
+      </div>
+    </div>
+
+    <div id="salesReportStats" class="grid"></div>
+
+    <div class="card">
+      <div class="card-title">Trader Outstanding</div>
+      <div id="salesOutstandingList"><div class="empty">No outstanding balance.</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Sales Report</div>
+      <div id="salesReportList"><div class="empty">No sales found.</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Collection Report</div>
+      <div id="collectionReportList"><div class="empty">No collections found.</div></div>
+    </div>
+  </div>
 </div>
 
 
@@ -967,7 +1000,6 @@ let sellingCapacityData = [];
 let challansData = [];
 let traderLedgerData = [];
 let collectionsData = [];
-let salesReportsData = null;
 
 
 /*************************************************
@@ -984,7 +1016,7 @@ function showSalesTab(tab,button){
   if(button)button.classList.add("active");
 }
 function renderSalesModules(){
-  renderSellingCapacity();renderSalesTraderOptions();renderTraderList();renderTraderLedger();renderChallanHistory();renderReceiptHistory();renderSalesReports();renderReceiptHistory();
+  renderSellingCapacity();renderSalesTraderOptions();renderTraderList();renderTraderLedger();renderChallanHistory();renderReceiptHistory();
   if(!cageRows.length){cageRows=[{cages:"",emptyWeight:"",loadWeight:""}];renderCageRows();}
   ["challanDate","receiptDate"].forEach(id=>{const e=document.getElementById(id);if(e&&!e.value)e.value=getTodayISO();});
 }
@@ -1139,191 +1171,177 @@ function renderReceiptHistory(){
 
 
 
+/*************************************************
+ * PAGE NAVIGATION
+ *************************************************/
+
 
 /*************************************************
- * MILESTONE 17 – SALES REPORTS
+ * MILESTONE 17 – SALES & COLLECTION REPORTS
  *************************************************/
 function moneyReport(v){
-  return "₹ " + Number(v || 0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+  return "₹ " + Number(v||0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
 }
-function reportDateObj(s){
-  if(!s) return null;
-  const p=String(s).split("-");
-  return p.length===3 ? new Date(Number(p[2]),Number(p[1])-1,Number(p[0])) : null;
-}
-function isoToLocalDate(s){
-  if(!s) return null;
-  return new Date(s+"T00:00:00");
+function reportDateObj(v){
+  const s=String(v||"").trim();
+  if(!s)return null;
+  if(/^\d{2}-\d{2}-\d{4}$/.test(s)){
+    const p=s.split("-");
+    return new Date(+p[2],+p[1]-1,+p[0]);
+  }
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s)){
+    const p=s.split("-");
+    return new Date(+p[0],+p[1]-1,+p[2]);
+  }
+  return new Date(s);
 }
 function getFilteredSalesRows(){
-  const from=document.getElementById("reportFromDate")?.value || "";
-  const to=document.getElementById("reportToDate")?.value || "";
-  const trader=document.getElementById("reportTrader")?.value || "";
-  const fromD=isoToLocalDate(from);
-  const toD=to ? new Date(to+"T23:59:59") : null;
-
+  const from=document.getElementById("reportFromDate")?.value||"";
+  const to=document.getElementById("reportToDate")?.value||"";
+  const trader=document.getElementById("reportTrader")?.value||"";
+  const fromD=from?new Date(from+"T00:00:00"):null;
+  const toD=to?new Date(to+"T23:59:59"):null;
   return challansData.filter(x=>{
-    if(String(x.status||"").toLowerCase()==="cancelled") return false;
-    if(trader && String(x.traderId)!==String(trader)) return false;
+    if(String(x.status||"").toLowerCase()==="cancelled")return false;
+    if(trader&&String(x.traderId)!==String(trader))return false;
     const d=reportDateObj(x.date);
-    if(fromD && (!d || d<fromD)) return false;
-    if(toD && (!d || d>toD)) return false;
+    if(fromD&&(!d||d<fromD))return false;
+    if(toD&&(!d||d>toD))return false;
     return true;
   });
 }
 function getFilteredCollectionRows(){
-  const from=document.getElementById("reportFromDate")?.value || "";
-  const to=document.getElementById("reportToDate")?.value || "";
-  const trader=document.getElementById("reportTrader")?.value || "";
-  const fromD=isoToLocalDate(from);
-  const toD=to ? new Date(to+"T23:59:59") : null;
-
+  const from=document.getElementById("reportFromDate")?.value||"";
+  const to=document.getElementById("reportToDate")?.value||"";
+  const trader=document.getElementById("reportTrader")?.value||"";
+  const fromD=from?new Date(from+"T00:00:00"):null;
+  const toD=to?new Date(to+"T23:59:59"):null;
   return collectionsData.filter(x=>{
-    if(trader && String(x.traderId)!==String(trader)) return false;
+    if(trader&&String(x.traderId)!==String(trader))return false;
     const d=reportDateObj(x.date);
-    if(fromD && (!d || d<fromD)) return false;
-    if(toD && (!d || d>toD)) return false;
+    if(fromD&&(!d||d<fromD))return false;
+    if(toD&&(!d||d>toD))return false;
     return true;
   });
 }
 function renderReportTraderOptions(){
   const el=document.getElementById("reportTrader");
-  if(!el) return;
+  if(!el)return;
   const current=el.value;
   el.innerHTML='<option value="">All Traders</option>'+
-    tradersData.map(t=>`<option value="${escapeHtml(t.traderId)}">${escapeHtml(t.traderName)} (${escapeHtml(t.traderId)})</option>`).join("");
-  if(current) el.value=current;
+    tradersData.filter(t=>String(t.status||"").toLowerCase()!=="inactive")
+      .map(t=>`<option value="${escapeHtml(t.traderId)}">${escapeHtml(t.traderName)} (${escapeHtml(t.traderId)})</option>`).join("");
+  if(current)el.value=current;
 }
 function renderSalesReports(){
+  const stats=document.getElementById("salesReportStats");
+  const outstandingEl=document.getElementById("salesOutstandingList");
+  const salesEl=document.getElementById("salesReportList");
+  const collectionEl=document.getElementById("collectionReportList");
+  if(!stats||!outstandingEl||!salesEl||!collectionEl)return;
+
   renderReportTraderOptions();
 
   const sales=getFilteredSalesRows();
   const receipts=getFilteredCollectionRows();
+  const selectedTrader=document.getElementById("reportTrader")?.value||"";
 
   const salesTotal=sales.reduce((s,x)=>s+(Number(x.saleAmount)||0),0);
-  const receiptTotal=receipts.reduce((s,x)=>s+(Number(x.amount)||0),0);
+  const collectionTotal=receipts.reduce((s,x)=>s+(Number(x.amount)||0),0);
   const birds=sales.reduce((s,x)=>s+(Number(x.birds)||0),0);
   const weight=sales.reduce((s,x)=>s+(Number(x.netWeight)||0),0);
+  const outstanding=selectedTrader
+    ? getTraderOutstandingUI(selectedTrader)
+    : tradersData.reduce((s,t)=>s+getTraderOutstandingUI(t.traderId),0);
 
-  const selectedTrader=document.getElementById("reportTrader")?.value || "";
-  let outstanding=0;
+  stats.innerHTML=`
+    <div class="stat"><div class="stat-label">Total Sales</div><div class="stat-value">${moneyReport(salesTotal)}</div></div>
+    <div class="stat"><div class="stat-label">Collections</div><div class="stat-value">${moneyReport(collectionTotal)}</div></div>
+    <div class="stat"><div class="stat-label">Outstanding</div><div class="stat-value">${moneyReport(outstanding)}</div></div>
+    <div class="stat"><div class="stat-label">Birds Sold</div><div class="stat-value">${birds.toLocaleString("en-IN")}</div></div>
+    <div class="stat"><div class="stat-label">Net Weight</div><div class="stat-value">${weight.toFixed(2)} Kg</div></div>`;
 
-  if(selectedTrader){
-    outstanding=getTraderOutstandingUI(selectedTrader);
-  }else{
-    outstanding=tradersData.reduce((s,t)=>s+getTraderOutstandingUI(t.traderId),0);
-  }
+  let summary=tradersData.map(t=>({t:t,out:getTraderOutstandingUI(t.traderId)}));
+  if(selectedTrader)summary=summary.filter(x=>String(x.t.traderId)===String(selectedTrader));
+  summary=summary.filter(x=>x.out>0).sort((a,b)=>b.out-a.out);
 
-  const stats=document.getElementById("salesReportStats");
-  if(stats){
-    stats.innerHTML=`
-      <div class="stat"><div class="stat-label">Sales</div><div class="stat-value">${moneyReport(salesTotal)}</div></div>
-      <div class="stat"><div class="stat-label">Collections</div><div class="stat-value">${moneyReport(receiptTotal)}</div></div>
-      <div class="stat"><div class="stat-label">Outstanding</div><div class="stat-value">${moneyReport(outstanding)}</div></div>
-      <div class="stat"><div class="stat-label">Birds Sold</div><div class="stat-value">${birds.toLocaleString("en-IN")}</div></div>
-      <div class="stat"><div class="stat-label">Net Weight</div><div class="stat-value">${weight.toFixed(2)} kg</div></div>
-    `;
-  }
+  outstandingEl.innerHTML=summary.length
+    ? summary.map(x=>`<div class="list-row"><div class="row-flex">
+        <div><div class="row-main">${escapeHtml(x.t.traderName)}</div><div class="row-sub">${escapeHtml(x.t.traderId)}</div></div>
+        <div class="row-main">${moneyReport(x.out)}</div>
+      </div></div>`).join("")
+    : '<div class="empty">No outstanding balance.</div>';
 
-  const summaryEl=document.getElementById("salesOutstandingList");
-  if(summaryEl){
-    let rows=tradersData.map(t=>{
-      const out=getTraderOutstandingUI(t.traderId);
-      return {t,out};
-    });
-    if(selectedTrader) rows=rows.filter(x=>String(x.t.traderId)===String(selectedTrader));
-    rows=rows.filter(x=>x.out>0).sort((a,b)=>b.out-a.out);
+  salesEl.innerHTML=sales.length
+    ? `<div style="overflow-x:auto"><table class="data-table">
+      <thead><tr><th>Date</th><th>Challan</th><th>Trader</th><th>Batch</th><th>Birds</th><th>Net Kg</th><th>Rate/Kg</th><th>Sale</th></tr></thead>
+      <tbody>${sales.map(x=>`<tr>
+        <td>${escapeHtml(x.date)}</td><td>${escapeHtml(x.challanNo)}</td><td>${escapeHtml(x.traderName)}</td>
+        <td>${escapeHtml(x.batchId)}</td><td>${Number(x.birds||0).toLocaleString("en-IN")}</td>
+        <td>${Number(x.netWeight||0).toFixed(2)}</td><td>${moneyReport(x.ratePerKg)}</td><td>${moneyReport(x.saleAmount)}</td>
+      </tr>`).join("")}</tbody></table></div>`
+    : '<div class="empty">No sales found for the selected filters.</div>';
 
-    summaryEl.innerHTML=rows.length
-      ? rows.map(x=>`<div class="list-row"><div class="row-flex">
-          <div><div class="row-main">${escapeHtml(x.t.traderName)}</div>
-          <div class="row-sub">${escapeHtml(x.t.traderId)} • ${escapeHtml(x.t.address||"")}</div></div>
-          <div class="row-main">${moneyReport(x.out)}</div>
-        </div></div>`).join("")
-      : '<div class="empty">No outstanding balance.</div>';
-  }
-
-  const salesEl=document.getElementById("salesReportList");
-  if(salesEl){
-    salesEl.innerHTML=sales.length
-      ? `<div class="table-wrap"><table class="data-table">
-        <thead><tr><th>Date</th><th>Challan</th><th>Trader</th><th>Batch</th><th>Birds</th><th>Net Kg</th><th>Rate/Kg</th><th>Sale</th></tr></thead>
-        <tbody>${sales.map(x=>`<tr>
-          <td>${escapeHtml(x.date)}</td><td>${escapeHtml(x.challanNo)}</td><td>${escapeHtml(x.traderName)}</td>
-          <td>${escapeHtml(x.batchId)}</td><td>${Number(x.birds||0).toLocaleString("en-IN")}</td>
-          <td>${Number(x.netWeight||0).toFixed(2)}</td><td>${moneyReport(x.ratePerKg)}</td><td>${moneyReport(x.saleAmount)}</td>
-        </tr>`).join("")}</tbody></table></div>`
-      : '<div class="empty">No sales found for the selected filters.</div>';
-  }
-
-  const collEl=document.getElementById("collectionReportList");
-  if(collEl){
-    collEl.innerHTML=receipts.length
-      ? `<div class="table-wrap"><table class="data-table">
-        <thead><tr><th>Date</th><th>Receipt</th><th>Trader</th><th>Mode</th><th>Reference</th><th>Amount</th></tr></thead>
-        <tbody>${receipts.map(x=>`<tr>
-          <td>${escapeHtml(x.date)}</td><td>${escapeHtml(x.receiptNo)}</td><td>${escapeHtml(x.traderName)}</td>
-          <td>${escapeHtml(x.paymentMode)}</td><td>${escapeHtml(x.referenceNo||"")}</td><td>${moneyReport(x.amount)}</td>
-        </tr>`).join("")}</tbody></table></div>`
-      : '<div class="empty">No collections found for the selected filters.</div>';
-  }
+  collectionEl.innerHTML=receipts.length
+    ? `<div style="overflow-x:auto"><table class="data-table">
+      <thead><tr><th>Date</th><th>Receipt</th><th>Trader</th><th>Mode</th><th>Reference</th><th>Amount</th></tr></thead>
+      <tbody>${receipts.map(x=>`<tr>
+        <td>${escapeHtml(x.date)}</td><td>${escapeHtml(x.receiptNo)}</td><td>${escapeHtml(x.traderName)}</td>
+        <td>${escapeHtml(x.paymentMode||"")}</td><td>${escapeHtml(x.referenceNo||"")}</td><td>${moneyReport(x.amount)}</td>
+      </tr>`).join("")}</tbody></table></div>`
+    : '<div class="empty">No collections found for the selected filters.</div>';
 }
 function clearSalesReportFilters(){
-  const f=document.getElementById("reportFromDate");
-  const t=document.getElementById("reportToDate");
-  const tr=document.getElementById("reportTrader");
-  if(f)f.value="";
-  if(t)t.value="";
-  if(tr)tr.value="";
+  ["reportFromDate","reportToDate","reportTrader"].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value="";
+  });
   renderSalesReports();
 }
 function printSalesReport(){
-  renderSalesReports();
   const sales=getFilteredSalesRows();
   const receipts=getFilteredCollectionRows();
-  const trader=document.getElementById("reportTrader")?.value || "";
-  const traderName=trader ? (tradersData.find(x=>String(x.traderId)===String(trader))?.traderName || trader) : "All Traders";
-  const from=document.getElementById("reportFromDate")?.value || "All";
-  const to=document.getElementById("reportToDate")?.value || "All";
+  const traderId=document.getElementById("reportTrader")?.value||"";
+  const traderName=traderId
+    ? (tradersData.find(t=>String(t.traderId)===String(traderId))?.traderName||traderId)
+    : "All Traders";
+  const from=document.getElementById("reportFromDate")?.value||"All";
+  const to=document.getElementById("reportToDate")?.value||"All";
   const salesTotal=sales.reduce((s,x)=>s+(Number(x.saleAmount)||0),0);
-  const receiptTotal=receipts.reduce((s,x)=>s+(Number(x.amount)||0),0);
-  const outstanding=trader ? getTraderOutstandingUI(trader) : tradersData.reduce((s,t)=>s+getTraderOutstandingUI(t.traderId),0);
+  const collectionTotal=receipts.reduce((s,x)=>s+(Number(x.amount)||0),0);
+  const outstanding=traderId
+    ? getTraderOutstandingUI(traderId)
+    : tradersData.reduce((s,t)=>s+getTraderOutstandingUI(t.traderId),0);
 
-  const win=window.open("","_blank");
-  if(!win){alert("Please allow pop-ups to print the report.");return;}
-  win.document.write(`<!doctype html><html><head><title>KG FARMS - Sales Report</title>
+  const w=window.open("","_blank");
+  if(!w){alert("Please allow pop-ups to print the report.");return;}
+
+  w.document.write(`<!doctype html><html><head><title>KG FARMS - Sales & Collection Report</title>
   <style>
-  @page{size:A4;margin:12mm}body{font-family:Arial,sans-serif;font-size:11px;color:#111}
-  h1{text-align:center;margin:0;font-size:20px}h2{text-align:center;margin:4px 0 14px;font-size:14px}
-  .meta{display:flex;justify-content:space-between;border-bottom:1px solid #999;padding-bottom:8px;margin-bottom:10px}
-  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
-  .card{border:1px solid #aaa;padding:7px}.label{font-size:9px;color:#555}.value{font-weight:bold;font-size:13px}
-  table{width:100%;border-collapse:collapse;margin-bottom:16px}th,td{border:1px solid #999;padding:5px}th{background:#eee}
-  .right{text-align:right}.section{font-weight:bold;font-size:13px;margin:10px 0 5px}
+    @page{size:A4;margin:12mm}body{font-family:Arial,sans-serif;font-size:11px;color:#111}
+    h1{text-align:center;margin:0;font-size:22px}h2{text-align:center;margin:4px 0 14px;font-size:14px}
+    .meta{display:flex;justify-content:space-between;border-bottom:1px solid #999;padding-bottom:8px;margin-bottom:12px}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+    .box{border:1px solid #aaa;padding:8px}.label{font-size:9px;color:#555}.value{font-weight:bold;font-size:14px}
+    table{width:100%;border-collapse:collapse;margin-bottom:15px}th,td{border:1px solid #999;padding:5px}th{background:#eee}
   </style></head><body>
   <h1>KG FARMS</h1><h2>SALES & COLLECTION REPORT</h2>
   <div class="meta"><div>Trader: <b>${escapeHtml(traderName)}</b></div><div>Period: <b>${escapeHtml(from)} to ${escapeHtml(to)}</b></div></div>
   <div class="cards">
-    <div class="card"><div class="label">SALES</div><div class="value">${moneyReport(salesTotal)}</div></div>
-    <div class="card"><div class="label">COLLECTIONS</div><div class="value">${moneyReport(receiptTotal)}</div></div>
-    <div class="card"><div class="label">OUTSTANDING</div><div class="value">${moneyReport(outstanding)}</div></div>
+    <div class="box"><div class="label">TOTAL SALES</div><div class="value">${moneyReport(salesTotal)}</div></div>
+    <div class="box"><div class="label">TOTAL COLLECTIONS</div><div class="value">${moneyReport(collectionTotal)}</div></div>
+    <div class="box"><div class="label">OUTSTANDING</div><div class="value">${moneyReport(outstanding)}</div></div>
   </div>
-  <div class="section">Sales</div>
+  <b>Sales</b>
   <table><tr><th>Date</th><th>Challan</th><th>Trader</th><th>Batch</th><th>Birds</th><th>Net Kg</th><th>Rate/Kg</th><th>Sale</th></tr>
-  ${sales.map(x=>`<tr><td>${escapeHtml(x.date)}</td><td>${escapeHtml(x.challanNo)}</td><td>${escapeHtml(x.traderName)}</td><td>${escapeHtml(x.batchId)}</td><td>${Number(x.birds||0)}</td><td>${Number(x.netWeight||0).toFixed(2)}</td><td class="right">${moneyReport(x.ratePerKg)}</td><td class="right">${moneyReport(x.saleAmount)}</td></tr>`).join("")}
+  ${sales.map(x=>`<tr><td>${escapeHtml(x.date)}</td><td>${escapeHtml(x.challanNo)}</td><td>${escapeHtml(x.traderName)}</td><td>${escapeHtml(x.batchId)}</td><td>${Number(x.birds||0)}</td><td>${Number(x.netWeight||0).toFixed(2)}</td><td>${moneyReport(x.ratePerKg)}</td><td>${moneyReport(x.saleAmount)}</td></tr>`).join("")}
   </table>
-  <div class="section">Collections</div>
+  <b>Collections</b>
   <table><tr><th>Date</th><th>Receipt</th><th>Trader</th><th>Mode</th><th>Reference</th><th>Amount</th></tr>
-  ${receipts.map(x=>`<tr><td>${escapeHtml(x.date)}</td><td>${escapeHtml(x.receiptNo)}</td><td>${escapeHtml(x.traderName)}</td><td>${escapeHtml(x.paymentMode)}</td><td>${escapeHtml(x.referenceNo||"")}</td><td class="right">${moneyReport(x.amount)}</td></tr>`).join("")}
-  </table>
-  </body></html>`);
-  win.document.close();
-  setTimeout(()=>win.print(),300);
+  ${receipts.map(x=>`<tr><td>${escapeHtml(x.date)}</td><td>${escapeHtml(x.receiptNo)}</td><td>${escapeHtml(x.traderName)}</td><td>${escapeHtml(x.paymentMode||"")}</td><td>${escapeHtml(x.referenceNo||"")}</td><td>${moneyReport(x.amount)}</td></tr>`).join("")}
+  </table></body></html>`);
+  w.document.close();
+  setTimeout(()=>w.print(),300);
 }
-
-/*************************************************
- * PAGE NAVIGATION
- *************************************************/
 
 function showPage(page,button){
 
@@ -3403,4 +3421,4 @@ document.addEventListener(
 </script>
 
 </body>
-</html>[[]]
+</html>
