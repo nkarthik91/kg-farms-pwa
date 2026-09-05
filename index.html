@@ -723,14 +723,13 @@ body{background:var(--c-bg);overscroll-behavior-y:none}
       <option value="BFP">BFP</option>
     </select>
 
-    <label>Remaining Feed Stock After Today's Consumption (50kg Bags) <span class="required-mark">*</span></label>
+    <label>Remaining Feed Stock (50kg Bags) <span style="color:#c62828">*</span></label>
     <input type="number"
            id="dailyFeedStock"
            min="0"
            step="1"
            required
-           placeholder="Enter physical stock remaining">
-    <div class="field-help">Enter the physical feed stock remaining at the farm after today's consumption. This becomes the current Farm Stock shown on the Feed page.</div>
+           placeholder="Enter current stock after consumption">
 
     <button class="btn btn-primary"
             onclick="saveDailyEntry()">
@@ -1536,7 +1535,6 @@ const API_URL =
 let dashboardData = [];
 let feedData = [];
 let groupedFeedData = [];
-let farmStockData = [];
 let ordersData = [];
 let vaccineData = [];
 let batchesData = [];
@@ -2466,7 +2464,7 @@ function escapeHtml(value){
 /*************************************************
  * API / RELIABILITY LAYER
  *************************************************/
-const KG_CACHE_KEY = "kgfarms:last-good-data:v6";
+const KG_CACHE_KEY = "kgfarms:last-good-data:v3";
 const KG_API_TIMEOUT = 60000;
 let kgLoadInFlight = null;
 let kgLoadingCount = 0;
@@ -2499,14 +2497,14 @@ window.addEventListener("offline",updateNetworkStatus);
 
 function cacheCurrentData(){
   try{
-    localStorage.setItem(KG_CACHE_KEY,JSON.stringify({savedAt:Date.now(),dashboardData,feedData,groupedFeedData,farmStockData,ordersData,vaccineData,batchesData,medicineMaster,medicineStock,medicineUsage,tradersData,sellingCapacityData,challansData,traderLedgerData,collectionsData,salesReturnsData,batchSalesSettlementData,farmerSettlementData,batchProfitabilityData,expensesData,batchClosureData,erpData}));
+    localStorage.setItem(KG_CACHE_KEY,JSON.stringify({savedAt:Date.now(),dashboardData,feedData,groupedFeedData,ordersData,vaccineData,batchesData,medicineMaster,medicineStock,medicineUsage,tradersData,sellingCapacityData,challansData,traderLedgerData,collectionsData,salesReturnsData,batchSalesSettlementData,farmerSettlementData,batchProfitabilityData,expensesData,batchClosureData,erpData}));
   }catch(e){console.warn("KG cache unavailable",e);}
 }
 function restoreCachedData(){
   try{
     const x=JSON.parse(localStorage.getItem(KG_CACHE_KEY)||"null");
     if(!x)return false;
-    const keys=["dashboardData","feedData","groupedFeedData","farmStockData","ordersData","vaccineData","batchesData","medicineMaster","medicineStock","medicineUsage","tradersData","sellingCapacityData","challansData","traderLedgerData","collectionsData","salesReturnsData","batchSalesSettlementData","farmerSettlementData","batchProfitabilityData","expensesData","batchClosureData","erpData"];
+    const keys=["dashboardData","feedData","groupedFeedData","ordersData","vaccineData","batchesData","medicineMaster","medicineStock","medicineUsage","tradersData","sellingCapacityData","challansData","traderLedgerData","collectionsData","salesReturnsData","batchSalesSettlementData","farmerSettlementData","batchProfitabilityData","expensesData","batchClosureData","erpData"];
     keys.forEach(k=>{if(k in x)window[k]=x[k];});
     renderAll();
     const age=Math.max(0,Date.now()-Number(x.savedAt||0));
@@ -2537,7 +2535,6 @@ async function loadData(options={}){
       dashboardData=Array.isArray(data.data)?data.data:[];
       feedData=Array.isArray(data.feed)?data.feed:[];
       groupedFeedData=Array.isArray(data.groupedFeed)?data.groupedFeed:[];
-      farmStockData=Array.isArray(data.farmStock)?data.farmStock:[];
       ordersData=Array.isArray(data.orders)?data.orders:[];
       vaccineData=Array.isArray(data.vaccines)?data.vaccines:[];
       batchesData=Array.isArray(data.batches)?data.batches:[];
@@ -2793,12 +2790,11 @@ async function saveDailyEntry(){
     }
 
     if(remainingFeedStock === "" || remainingFeedStock === null || remainingFeedStock === undefined){
-      throw new Error("Remaining Feed Stock is required. Enter the physical stock left after today's consumption.");
+      throw new Error("Remaining Feed Stock is required.");
     }
 
-    const stockNumber = Number(remainingFeedStock);
-    if(!Number.isFinite(stockNumber) || stockNumber < 0){
-      throw new Error("Remaining Feed Stock must be 0 or more bags.");
+    if(Number(remainingFeedStock) < 0){
+      throw new Error("Remaining Feed Stock cannot be negative.");
     }
 
     const result =
@@ -2883,15 +2879,6 @@ function renderFeed(){
   const el=document.getElementById("feedSummaryList");
   if(!el)return;
   const groups=(Array.isArray(groupedFeedData)&&groupedFeedData.length)?groupedFeedData:getClientGroupedFeed();
-  const directStock={};
-  (Array.isArray(farmStockData)?farmStockData:[]).forEach(x=>{ directStock[String(x.batchId).trim()+'|'+String(x.feedType).trim().toUpperCase()]=x; });
-  groups.forEach(g=>{
-    ['BPSC','BSC','BFP'].forEach(stage=>{
-      const x=g.stages?.[stage];
-      const ds=directStock[String(g.batchId).trim()+'|'+stage];
-      if(x && ds){ x.currentStockBags=ds.bags; x.currentStockKg=ds.kg; x.currentStockDate=ds.date; }
-    });
-  });
   if(!groups.length){el.innerHTML='<div class="empty">No feed data available.</div>';return;}
 
   const label={BPSC:"BPSC (500G)",BSC:"BSC",BFP:"BFP"};
@@ -2914,6 +2901,7 @@ function renderFeed(){
       <div class="feed-stage-head">${label[stage]}</div>
       <div class="feed-stage-sub">REQ <span>|</span> SUP <span>|</span> BAL</div>
       <div class="feed-stage-values"><strong>${req}</strong><span>|</span><strong>${sup}</strong><span>|</span><strong class="${bal>0?'feed-balance':''}">${bal}</strong></div>
+      <div class="feed-stage-stock">CURRENT STOCK: <b>${hasStock ? stockBags : '—'}${hasStock ? ' BAGS' : ''}</b>${hasStock ? ' · '+stockKg.toLocaleString()+' KG' : ''}</div>
       <div class="feed-stage-action">${action}</div>
     </div>`;
   };
@@ -2931,13 +2919,13 @@ function renderFeed(){
       </div>
       <div class="feed-stage-grid">${stageCard(g,"BPSC")}${stageCard(g,"BSC")}${stageCard(g,"BFP")}</div>
       <div class="feed-farm-stock">
-        <span class="feed-farm-stock-label">Farm Stock :</span>
+        <span class="feed-farm-stock-label">FARM STOCK :</span>
         ${["BPSC","BSC","BFP"].map(s=>{
           const x=g.stages?.[s]||{};
           const has=x.currentStockBags!==null && x.currentStockBags!==undefined && x.currentStockBags!=='';
-          return `<span class="feed-farm-stock-item">${s} <b>${has ? (Number(x.currentStockBags)||0)+' Bags' : '—'}</b></span>`;
+          return has ? `<span class="feed-farm-stock-item">${s} <b>${Number(x.currentStockBags)||0} BAGS</b></span>` : '';
         }).join('')}
-        
+        ${!totalStockStages.length ? '<span class="feed-farm-stock-none">No daily stock entered</span>' : ''}
       </div>
       <div class="feed-total"><span>REQ <b>${totalReq}</b> BAGS</span><span>SUP <b>${totalSup}</b> BAGS</span><span class="${totalBal>0?'feed-balance':''}">BAL <b>${totalBal}</b> BAGS</span></div>
     </div>`;
