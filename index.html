@@ -593,110 +593,26 @@ body{background:var(--c-bg);overscroll-behavior-y:none}
 .api-retry button{border:0;border-radius:10px;background:var(--c-brand);color:#fff;padding:9px 14px;font-weight:800}
 @media(max-width:700px){#appStatusBar{font-size:10px;padding:7px 12px}.loading-card{padding:15px 18px}}
 
-
-/* =====================================================
-   GROUPED FARM FEED SUMMARY
-   One farm/batch card with all feed stages together
-===================================================== */
-.feed-farm-card{padding:0;overflow:hidden;border:1px solid #e4e9e6;background:#fff}
-.feed-farm-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px;border-bottom:1px solid #edf1ef;background:#fff}
-.feed-farm-name{font-size:15px;font-weight:800;color:#17212f;line-height:1.25}
-.feed-farm-batch{font-size:11px;color:#667085;margin-top:3px}
-.feed-farm-status{white-space:nowrap}
-.feed-stage-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
-.feed-stage-grid{display:grid;grid-template-columns:repeat(3,minmax(210px,1fr));min-width:660px}
-.feed-stage{border-right:1px solid #e8eeeb;background:#fff}
-.feed-stage:last-child{border-right:0}
-.feed-stage-title{padding:10px 12px;text-align:center;font-size:12px;font-weight:900;color:#162033;background:#edf8f3;border-bottom:1px solid #dcece4}
-.feed-stage-title small{display:block;font-size:9px;font-weight:600;color:#667085;margin-top:2px}
-.feed-rsb-head,.feed-rsb-values{display:grid;grid-template-columns:repeat(3,1fr);align-items:center;text-align:center}
-.feed-rsb-head{padding:8px 8px 4px;font-size:9px;letter-spacing:.08em;font-weight:800;color:#218255}
-.feed-rsb-values{padding:2px 8px 8px;font-size:14px;font-weight:900;color:#17212f}
-.feed-rsb-values > span{border-right:1px solid #dce5e0}
-.feed-rsb-values > span:last-child{border-right:0}
-.feed-rsb-values .feed-bal-due{color:#c43220}
-.feed-rsb-values .feed-bal-zero{color:#218255}
-.feed-stage-action{padding:0 10px 11px}
-.feed-order-btn{width:100%;min-height:34px;border:0;border-radius:9px;background:#21865a;color:#fff;font-weight:800;font-size:11px;cursor:pointer}
-.feed-order-btn:hover{filter:brightness(.96)}
-.feed-order-btn.pending{background:#fff3dc;color:#a25b00;border:1px solid #f3d497;cursor:default}
-.feed-order-btn.complete{background:#e9f7ef;color:#187345;border:1px solid #cfeadb;cursor:default}
-.feed-order-panel{margin:0 16px 16px;padding:13px;border:1px solid #cfe4d8;border-radius:12px;background:#f5fbf7}
-.feed-order-panel-title{font-weight:800;color:#173726;margin-bottom:9px}
-.feed-order-inline{display:grid;grid-template-columns:minmax(130px,1fr) minmax(110px,.55fr) auto auto;gap:8px;align-items:end}
-.feed-order-inline label{margin:0;font-size:10px;color:#667085}
-.feed-order-inline input{margin-top:4px;height:40px}
-.feed-order-inline .btn{height:40px;margin:0;white-space:nowrap}
-.feed-farm-total{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 16px;background:#fafcfb;border-top:1px solid #edf1ef;font-size:11px;color:#667085}
-.feed-farm-total strong{font-size:12px;color:#17212f}
-@media(max-width:720px){
-  .feed-farm-card{margin-left:0;margin-right:0}
-  .feed-farm-head{padding:13px 12px}
-  .feed-stage-grid{grid-template-columns:repeat(3,190px);min-width:570px}
-  .feed-order-inline{grid-template-columns:1fr 1fr}
-  .feed-order-inline .btn{width:100%}
-  .feed-farm-total{padding:9px 12px}
-}
+.feed-group-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 2px 10px rgba(15,23,42,.04)}
+.feed-group-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.feed-stage-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.feed-stage{background:#f7faf8;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;min-width:0}
+.feed-stage-head{font-size:11px;font-weight:850;letter-spacing:.2px;white-space:nowrap}
+.feed-stage-sub{font-size:9px;color:var(--brand);font-weight:800;margin-top:6px;letter-spacing:.5px}
+.feed-stage-sub span,.feed-stage-values span{color:#9aa4ad;margin:0 3px}
+.feed-stage-values{font-size:15px;margin-top:4px;white-space:nowrap}
+.feed-balance{color:#c53b3b}
+.feed-stage-action{min-height:30px;margin-top:8px;display:flex;align-items:center;justify-content:center}
+.feed-order-mini{font-size:10px!important;padding:7px 8px!important;margin:0!important;width:100%}
+.feed-order-pending{font-size:9px;font-weight:850;color:#a65d00;background:#fff3d8;border-radius:8px;padding:7px 4px;width:100%}
+.feed-complete{font-size:9px;font-weight:850;color:#137544;background:#e5f6eb;border-radius:8px;padding:7px 8px}
+.feed-total{display:flex;justify-content:space-between;gap:8px;margin-top:10px;padding:9px 10px;border-radius:10px;background:#f5f7f6;font-size:10px;font-weight:750}
+.feed-total b{font-weight:900}
+.feed-order-modal{position:fixed;inset:0;background:rgba(15,23,42,.38);z-index:300;display:none;align-items:flex-end;justify-content:center}
+.feed-order-modal.open{display:flex}
+.feed-order-dialog{width:100%;max-width:620px;background:#fff;border-radius:20px 20px 0 0;padding:16px;box-shadow:0 -16px 40px rgba(15,23,42,.2)}
+@media(max-width:560px){.feed-stage-grid{grid-template-columns:1fr}.feed-stage{text-align:left}.feed-stage-values{text-align:left}.feed-stage-action{justify-content:flex-start}.feed-order-mini{width:auto}.feed-total{flex-wrap:wrap}}
 </style>
-
-<style id="phase-d-production-polish">
-/* =========================================================
-   PHASE D — FINAL PRODUCTION POLISH
-   ========================================================= */
-:root{--pd-brand:#16804f;--pd-ink:#17202a;--pd-muted:#667085;--pd-line:#e4ebe7}
-*{box-sizing:border-box}
-button,input,select,textarea{font-family:inherit}
-button{touch-action:manipulation}
-.page{min-height:calc(100vh - 150px)}
-.section-subtitle{line-height:1.45}
-.empty{padding:22px 14px;text-align:center;color:#7b8794;border:1px dashed #dce5df;border-radius:12px;background:#fbfcfb}
-.loading{padding:18px;text-align:center;color:#7b8794}
-.notice{border-radius:12px;padding:11px 13px;margin:10px 0;font-size:12px;line-height:1.45}
-.notice-success{background:#ecfdf3;color:#087443;border:1px solid #b7ebca}
-.notice-error{background:#fff1f0;color:#b42318;border:1px solid #f3c1bd}
-.notice-warning{background:#fff8eb;color:#9a5b00;border:1px solid #f1d39a}
-/* Header actions */
-.header-actions{gap:8px}
-.header-actions .icon-btn{position:relative}
-.header-actions .icon-btn .alert-count{position:absolute;top:-3px;right:-3px;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:#dc2626;color:#fff;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
-/* Notification drawer */
-#notificationPanel{position:fixed;right:14px;top:70px;width:min(380px,calc(100vw - 28px));max-height:min(70vh,560px);overflow:auto;background:#fff;border:1px solid var(--pd-line);border-radius:18px;box-shadow:0 18px 50px rgba(15,23,42,.18);z-index:850;display:none}
-#notificationPanel.open{display:block}
-.notification-head{position:sticky;top:0;background:#fff;border-bottom:1px solid #edf1ef;padding:14px 15px;display:flex;justify-content:space-between;align-items:center;z-index:1}
-.notification-title{font-size:14px;font-weight:850;color:var(--pd-ink)}
-.notification-close{border:0;background:#f3f5f4;width:30px;height:30px;border-radius:50%;font-size:18px;color:#52606d}
-.notification-item{display:flex;gap:10px;padding:13px 15px;border-bottom:1px solid #f0f2f1}
-.notification-item:last-child{border-bottom:0}
-.notification-dot{width:9px;height:9px;border-radius:50%;background:#f59e0b;margin-top:5px;flex:0 0 auto}
-.notification-dot.danger{background:#dc2626}
-.notification-copy{min-width:0;flex:1}
-.notification-item-title{font-size:12px;font-weight:800;color:#1f2937}
-.notification-item-sub{font-size:10px;color:#667085;margin-top:3px;line-height:1.4}
-/* Production tools */
-.production-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.production-tools .btn{min-height:40px}
-.page-tools{display:flex;justify-content:flex-end;gap:7px;margin:-2px 0 12px}
-.page-tools button{border:1px solid var(--pd-line);background:#fff;border-radius:10px;padding:8px 11px;font-size:11px;font-weight:750;color:#344054}
-/* Better desktop rhythm */
-@media(min-width:901px){.container{padding-top:22px}.page{padding-bottom:40px}.card{box-shadow:0 2px 12px rgba(15,23,42,.035)}}
-@media(max-width:700px){#notificationPanel{top:62px;right:10px;width:calc(100vw - 20px);max-height:68vh}.page{min-height:calc(100vh - 125px)}}
-/* Print-ready output: only the currently active page prints. */
-@media print{
-  @page{size:A4;margin:12mm}
-  html,body{background:#fff!important;padding:0!important;margin:0!important;color:#111!important}
-  .header,.bottom-nav,#moreSheet,#notificationPanel,#appStatusBar,#appLoading,.detail-overlay,.page-tools,.quick-actions,.btn,.primary-btn,.secondary-btn,.icon-btn,button:not(.print-safe){display:none!important}
-  .container{max-width:none!important;padding:0!important;margin:0!important}
-  .page{display:none!important;min-height:auto!important;padding:0!important;margin:0!important}
-  .page.active{display:block!important}
-  .card{break-inside:avoid;box-shadow:none!important;border:1px solid #ddd!important;margin-bottom:10px!important}
-  .section-title{font-size:20px!important}
-  .section-subtitle{color:#555!important}
-  table{font-size:10px!important}
-  .data-table{width:100%!important}
-  a{color:#111!important;text-decoration:none!important}
-}
-</style>
-
 </head>
 
 <body>
@@ -711,15 +627,10 @@ button{touch-action:manipulation}
       <div><div class="header-title">KG Farms</div><div class="header-sub">Poultry Management System</div></div>
     </div>
     <div class="header-actions">
-      <button class="icon-btn" id="headerAlertButton" title="Alerts" aria-label="Alerts" onclick="toggleNotificationPanel()">♢<span id="headerAlertCount" class="alert-count" style="display:none">0</span></button>
+      <button class="icon-btn" title="Alerts" onclick="openMorePage('erp','system')">♢</button>
       <button class="icon-btn" title="More" onclick="toggleMoreMenu()">⋯</button>
     </div>
   </div>
-</div>
-
-<div id="notificationPanel" aria-label="KG Farms notifications">
-  <div class="notification-head"><div><div class="notification-title">Notifications</div><div class="row-sub">Items needing attention</div></div><button class="notification-close" onclick="toggleNotificationPanel(false)" aria-label="Close">×</button></div>
-  <div id="notificationList"><div class="empty">No notifications.</div></div>
 </div>
 
 <div class="container">
@@ -1615,6 +1526,7 @@ const API_URL =
 
 let dashboardData = [];
 let feedData = [];
+let groupedFeedData = [];
 let ordersData = [];
 let vaccineData = [];
 let batchesData = [];
@@ -2477,16 +2389,27 @@ function saveSalesReturn(){
   }).catch(e=>{if(msg)msg.innerHTML=`<div class="error">${escapeHtml(e.message||String(e))}</div>`;});
 }
 function showPage(page,button){
-  kgCurrentPage=page;
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  const target=document.getElementById("page-"+page);
-  if(target)target.classList.add("active");
-  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
-  if(button)button.classList.add("active");
+
+  document
+    .querySelectorAll(".page")
+    .forEach(p => p.classList.remove("active"));
+
+  const target =
+    document.getElementById("page-" + page);
+
+  if(target){
+    target.classList.add("active");
+  }
+
+  document
+    .querySelectorAll(".nav-btn")
+    .forEach(b => b.classList.remove("active"));
+
+  if(button){
+    button.classList.add("active");
+  }
+
   window.scrollTo(0,0);
-  // Load only the selected module. Dashboard is already loaded at startup.
-  if(page!=="dashboard" && !kgLoadedViews.has(page))loadViewData(page).catch(()=>{});
-  else renderView(page);
 }
 
 
@@ -2533,12 +2456,9 @@ function escapeHtml(value){
 /*************************************************
  * API / RELIABILITY LAYER
  *************************************************/
-const KG_CACHE_KEY = "kgfarms:last-good-data:v1";
+const KG_CACHE_KEY = "kgfarms:last-good-data:v3";
 const KG_API_TIMEOUT = 60000;
 let kgLoadInFlight = null;
-let kgViewInflight = {};
-let kgLoadedViews = new Set();
-let kgCurrentPage = "dashboard";
 let kgLoadingCount = 0;
 
 function setAppLoading(show,text){
@@ -2569,17 +2489,14 @@ window.addEventListener("offline",updateNetworkStatus);
 
 function cacheCurrentData(){
   try{
-    let cached={};
-    try{cached=JSON.parse(localStorage.getItem(KG_CACHE_KEY)||"{}")||{};}catch(e){}
-    Object.assign(cached,{savedAt:Date.now(),dashboardData,feedData,ordersData,vaccineData,batchesData,medicineMaster,medicineStock,medicineUsage,tradersData,sellingCapacityData,challansData,traderLedgerData,collectionsData,salesReturnsData,batchSalesSettlementData,farmerSettlementData,batchProfitabilityData,expensesData,batchClosureData,erpData});
-    localStorage.setItem(KG_CACHE_KEY,JSON.stringify(cached));
+    localStorage.setItem(KG_CACHE_KEY,JSON.stringify({savedAt:Date.now(),dashboardData,feedData,groupedFeedData,ordersData,vaccineData,batchesData,medicineMaster,medicineStock,medicineUsage,tradersData,sellingCapacityData,challansData,traderLedgerData,collectionsData,salesReturnsData,batchSalesSettlementData,farmerSettlementData,batchProfitabilityData,expensesData,batchClosureData,erpData}));
   }catch(e){console.warn("KG cache unavailable",e);}
 }
 function restoreCachedData(){
   try{
     const x=JSON.parse(localStorage.getItem(KG_CACHE_KEY)||"null");
     if(!x)return false;
-    const keys=["dashboardData","feedData","ordersData","vaccineData","batchesData","medicineMaster","medicineStock","medicineUsage","tradersData","sellingCapacityData","challansData","traderLedgerData","collectionsData","salesReturnsData","batchSalesSettlementData","farmerSettlementData","batchProfitabilityData","expensesData","batchClosureData","erpData"];
+    const keys=["dashboardData","feedData","groupedFeedData","ordersData","vaccineData","batchesData","medicineMaster","medicineStock","medicineUsage","tradersData","sellingCapacityData","challansData","traderLedgerData","collectionsData","salesReturnsData","batchSalesSettlementData","farmerSettlementData","batchProfitabilityData","expensesData","batchClosureData","erpData"];
     keys.forEach(k=>{if(k in x)window[k]=x[k];});
     renderAll();
     const age=Math.max(0,Date.now()-Number(x.savedAt||0));
@@ -2596,102 +2513,49 @@ async function fetchWithTimeout(url,options={},timeout=KG_API_TIMEOUT){
   finally{clearTimeout(timer);}
 }
 
-function applyViewData(data,view){
-  if(!data)return;
-  if(Array.isArray(data.data))dashboardData=data.data;
-  if(Array.isArray(data.feed))feedData=data.feed;
-  if(Array.isArray(data.orders))ordersData=data.orders;
-  if(Array.isArray(data.vaccines))vaccineData=data.vaccines;
-  if(Array.isArray(data.batches))batchesData=data.batches;
-  if(data.medicine){
-    medicineMaster=Array.isArray(data.medicine.master)?data.medicine.master:[];
-    medicineStock=Array.isArray(data.medicine.stock)?data.medicine.stock:[];
-    medicineUsage=Array.isArray(data.medicine.usage)?data.medicine.usage:[];
-  }
-  if(Array.isArray(data.traders))tradersData=data.traders;
-  if(Array.isArray(data.sellingCapacity))sellingCapacityData=data.sellingCapacity;
-  if(Array.isArray(data.challans))challansData=data.challans;
-  if(Array.isArray(data.traderLedger))traderLedgerData=data.traderLedger;
-  if(Array.isArray(data.collections))collectionsData=data.collections;
-  if(Array.isArray(data.salesReturns))salesReturnsData=data.salesReturns;
-  if(Array.isArray(data.batchSalesSettlement))batchSalesSettlementData=data.batchSalesSettlement;
-  if(Array.isArray(data.farmerSettlement))farmerSettlementData=data.farmerSettlement;
-  if(Array.isArray(data.batchProfitability))batchProfitabilityData=data.batchProfitability;
-  if(Array.isArray(data.expenses))expensesData=data.expenses;
-  if(Array.isArray(data.batchClosure))batchClosureData=data.batchClosure;
-  if(data.erp)erpData=data.erp;
-  if(view)kgLoadedViews.add(view);
-}
-
-function renderView(view){
-  switch(view){
-    case "dashboard": renderDashboard(); break;
-    case "daily": renderDailyBatchOptions(); break;
-    case "feed": renderFeed(); renderFeedSupplyBatchOptions(); break;
-    case "orders": renderOrders(); break;
-    case "vaccines": renderVaccines(); break;
-    case "batches": renderBatches(); break;
-    case "medicine": renderMedicineStock(); renderMedicineMaster(); renderMedicineMedicineOptions(); renderMedicineUsageHistory(); break;
-    case "sales": renderSalesModules(); break;
-    case "erp": renderErpAll(); break;
-  }
-  updateHeaderAlertCount?.();
-}
-
-async function loadViewData(view,options={}){
-  view=String(view||"dashboard").toLowerCase();
-  if(!navigator.onLine){
-    if(!kgLoadedViews.has(view))restoreCachedData();
-    renderView(view);
-    return;
-  }
-  if(kgViewInflight[view])return kgViewInflight[view];
-  const silent=!!options.silent;
-  kgViewInflight[view]=(async()=>{
-    if(!silent)setAppLoading(true,view==="dashboard"?"Loading dashboard…":"Loading…");
-    try{
-      const response=await fetchWithTimeout(API_URL+"?view="+encodeURIComponent(view)+"&t="+Date.now());
-      if(!response.ok)throw new Error("Server returned HTTP "+response.status+".");
-      const data=await response.json();
-      if(data.status!=="success")throw new Error(data.message||"Unable to load data.");
-      applyViewData(data,view);
-      cacheCurrentData();
-      renderView(view);
-      if(!silent)showAppStatus(view==="dashboard"?"Dashboard updated":"Updated just now","online",1500);
-      return data;
-    }catch(err){
-      console.error("KG Farms view load failed",view,err);
-      if(!kgLoadedViews.has(view) && restoreCachedData()){
-        renderView(view);
-        showAppStatus("Could not refresh · showing saved data","offline",0);
-      }else{
-        const target=document.getElementById("page-"+view)||document.getElementById("dashboardList");
-        if(target){
-          const holder=target.querySelector?.(".view-load-error")||target;
-          if(holder===target)target.insertAdjacentHTML("afterbegin",`<div class="notice notice-error view-load-error">Unable to load this section.<br>${escapeHtml(err.message)}<div class="api-retry"><button onclick="loadViewData('${escapeJs(view)}')">Retry</button></div></div>`);
-        }
-        showAppStatus("Unable to load this section","offline",3000);
-      }
-      throw err;
-    }finally{
-      if(!silent)setAppLoading(false);
-      delete kgViewInflight[view];
-    }
-  })();
-  return kgViewInflight[view];
-}
-
 async function loadData(options={}){
   if(kgLoadInFlight)return kgLoadInFlight;
   kgLoadInFlight=(async()=>{
     const silent=!!options.silent;
-    if(!navigator.onLine){restoreCachedData();renderView(kgCurrentPage);return;}
-    // Refresh only the dashboard plus views already opened during this session.
-    const views=["dashboard",...Array.from(kgLoadedViews)].filter((v,i,a)=>a.indexOf(v)===i);
+    if(!navigator.onLine){restoreCachedData();return;}
+    if(!silent)setAppLoading(true,"Loading KG Farms…");
     try{
-      for(const view of views)await loadViewData(view,{silent:true});
+      const response=await fetchWithTimeout(API_URL+"?t="+Date.now());
+      if(!response.ok)throw new Error("Server returned HTTP "+response.status+".");
+      const data=await response.json();
+      if(data.status!=="success")throw new Error(data.message||"Unable to load data.");
+      dashboardData=Array.isArray(data.data)?data.data:[];
+      feedData=Array.isArray(data.feed)?data.feed:[];
+      groupedFeedData=Array.isArray(data.groupedFeed)?data.groupedFeed:[];
+      ordersData=Array.isArray(data.orders)?data.orders:[];
+      vaccineData=Array.isArray(data.vaccines)?data.vaccines:[];
+      batchesData=Array.isArray(data.batches)?data.batches:[];
+      if(data.medicine){medicineMaster=Array.isArray(data.medicine.master)?data.medicine.master:[];medicineStock=Array.isArray(data.medicine.stock)?data.medicine.stock:[];medicineUsage=Array.isArray(data.medicine.usage)?data.medicine.usage:[];}else{medicineMaster=[];medicineStock=[];medicineUsage=[];}
+      tradersData=Array.isArray(data.traders)?data.traders:[];
+      sellingCapacityData=Array.isArray(data.sellingCapacity)?data.sellingCapacity:[];
+      challansData=Array.isArray(data.challans)?data.challans:[];
+      traderLedgerData=Array.isArray(data.traderLedger)?data.traderLedger:[];
+      collectionsData=Array.isArray(data.collections)?data.collections:[];
+      salesReturnsData=Array.isArray(data.salesReturns)?data.salesReturns:[];
+      batchSalesSettlementData=Array.isArray(data.batchSalesSettlement)?data.batchSalesSettlement:[];
+      farmerSettlementData=Array.isArray(data.farmerSettlement)?data.farmerSettlement:[];
+      batchProfitabilityData=Array.isArray(data.batchProfitability)?data.batchProfitability:[];
+      expensesData=Array.isArray(data.expenses)?data.expenses:[];
+      batchClosureData=Array.isArray(data.batchClosure)?data.batchClosure:[];
+      if(data.erp)erpData=data.erp;
+      cacheCurrentData();
+      renderAll();
       if(!silent)showAppStatus("Updated just now","online",1800);
-    }catch(e){console.error(e);}
+    }catch(err){
+      console.error(err);
+      if(restoreCachedData()){
+        showAppStatus("Could not refresh · showing saved data","offline",0);
+      }else{
+        const el=document.getElementById("dashboardList");
+        if(el)el.innerHTML=`<div class="notice notice-error">Unable to load data.<br>${escapeHtml(err.message)}<div class="api-retry"><button onclick="loadData()">Retry</button></div></div>`;
+        showAppStatus("Unable to connect to KG Farms","offline",0);
+      }
+    }finally{if(!silent)setAppLoading(false);}
   })();
   try{return await kgLoadInFlight;}finally{kgLoadInFlight=null;}
 }
@@ -2977,135 +2841,90 @@ function showFeedTab(tab,button){
  * FEED SUMMARY
  *************************************************/
 
+function getClientGroupedFeed(){
+  const groups={};
+  (Array.isArray(feedData)?feedData:[]).forEach(r=>{
+    const id=String(r.batchId||"").trim();
+    if(!id)return;
+    if(!groups[id])groups[id]={batchId:id,farmName:r.farmName||"",stages:{BPSC:null,BSC:null,BFP:null}};
+    const stage=String(r.feedType||"").trim().toUpperCase();
+    if(["BPSC","BSC","BFP"].includes(stage)){
+      groups[id].stages[stage]={requiredKg:Number(r.requiredKg)||0,requiredBags:Number(r.requiredBags)||0,suppliedBags:Number(r.suppliedBags)||0,balanceBags:Number(r.balanceBags)||0};
+    }
+  });
+  return Object.values(groups);
+}
+
 function renderFeed(){
+  const el=document.getElementById("feedSummaryList");
+  if(!el)return;
+  const groups=(Array.isArray(groupedFeedData)&&groupedFeedData.length)?groupedFeedData:getClientGroupedFeed();
+  if(!groups.length){el.innerHTML='<div class="empty">No feed data available.</div>';return;}
 
-  const el = document.getElementById("feedSummaryList");
-
-  if(!feedData.length){
-    el.innerHTML = `<div class="empty">No feed data available.</div>`;
-    return;
-  }
-
-  const stageOrder = ["BPSC","BSC","BFP"];
-  const stageMeta = {
-    BPSC:{label:"BPSC", sub:"500 g / bird"},
-    BSC:{label:"BSC", sub:"1 kg / bird"},
-    BFP:{label:"BFP", sub:"2 kg / bird"}
+  const label={BPSC:"BPSC (500G)",BSC:"BSC",BFP:"BFP"};
+  const stageCard=(g,stage)=>{
+    const x=g.stages?.[stage]||{};
+    const req=Number(x.requiredBags)||0, sup=Number(x.suppliedBags)||0, bal=Number(x.balanceBags)||0;
+    const pending=x.pendingOrder;
+    let action="";
+    if(bal>0){
+      action=pending
+        ? `<div class="feed-order-pending">ORDER PENDING · ${Number(pending.orderQty)||0} BAGS</div>`
+        : `<button class="btn btn-primary feed-order-mini" onclick="openFeedOrder('${escapeJs(g.batchId)}','${stage}',${bal})">ORDER ${bal} BAGS</button>`;
+    }else{
+      action='<span class="feed-complete">COMPLETE</span>';
+    }
+    return `<div class="feed-stage">
+      <div class="feed-stage-head">${label[stage]}</div>
+      <div class="feed-stage-sub">REQ <span>|</span> SUP <span>|</span> BAL</div>
+      <div class="feed-stage-values"><strong>${req}</strong><span>|</span><strong>${sup}</strong><span>|</span><strong class="${bal>0?'feed-balance':''}">${bal}</strong></div>
+      <div class="feed-stage-action">${action}</div>
+    </div>`;
   };
 
-  const grouped = {};
-  feedData.forEach(item => {
-    const key = String(item.batchId || "");
-    if(!grouped[key]) grouped[key] = {
-      batchId:key,
-      farmName:item.farmName || "",
-      stages:{}
-    };
-    grouped[key].stages[String(item.feedType || "").toUpperCase()] = item;
-  });
-
-  const hasPendingOrder = (batchId, feedType) =>
-    (ordersData || []).some(o =>
-      String(o.batchId) === String(batchId) &&
-      String(o.feedType).toUpperCase() === String(feedType).toUpperCase() &&
-      String(o.status).toLowerCase() === "pending"
-    );
-
-  el.innerHTML = Object.values(grouped).map(group => {
-    let totalRequired = 0, totalSupplied = 0, totalBalance = 0;
-
-    const stagesHtml = stageOrder.map(stage => {
-      const item = group.stages[stage] || {};
-      const req = Number(item.requiredBags) || 0;
-      const sup = Number(item.suppliedBags) || 0;
-      const bal = Math.max(0, Number(item.balanceBags) || 0);
-      totalRequired += req; totalSupplied += sup; totalBalance += bal;
-
-      const pending = hasPendingOrder(group.batchId, stage);
-      let action = `<button class="feed-order-btn complete" type="button" disabled>COMPLETE</button>`;
-      if(bal > 0 && pending){
-        action = `<button class="feed-order-btn pending" type="button" disabled>ORDER PENDING</button>`;
-      } else if(bal > 0){
-        action = `<button class="feed-order-btn" type="button" onclick="openInlineFeedOrder('${escapeHtml(group.batchId)}','${stage}',${bal})">ORDER ${bal} BAGS</button>`;
-      }
-
-      const meta = stageMeta[stage];
-      return `
-        <div class="feed-stage">
-          <div class="feed-stage-title">${meta.label}<small>${meta.sub}</small></div>
-          <div class="feed-rsb-head"><span>REQ</span><span>SUP</span><span>BAL</span></div>
-          <div class="feed-rsb-values">
-            <span>${req}</span>
-            <span>${sup}</span>
-            <span class="${bal>0?'feed-bal-due':'feed-bal-zero'}">${bal}</span>
-          </div>
-          <div class="feed-stage-action">${action}</div>
-        </div>`;
-    }).join("");
-
-    return `
-      <div class="card feed-farm-card">
-        <div class="feed-farm-head">
-          <div>
-            <div class="feed-farm-name">${escapeHtml(group.farmName)}</div>
-            <div class="feed-farm-batch">${escapeHtml(group.batchId)}</div>
-          </div>
-          <span class="badge ${totalBalance>0?'badge-orange':'badge-green'} feed-farm-status">
-            ${totalBalance>0?'TO BE SUPPLIED':'COMPLETE'}
-          </span>
-        </div>
-        <div class="feed-stage-scroll"><div class="feed-stage-grid">${stagesHtml}</div></div>
-        <div class="feed-farm-total">
-          <span>Total · <strong>REQ ${totalRequired}</strong> &nbsp;|&nbsp; <strong>SUP ${totalSupplied}</strong></span>
-          <span><strong>BAL ${totalBalance} bags</strong></span>
-        </div>
-        <div id="feedOrderPanel-${escapeHtml(group.batchId)}"></div>
-      </div>`;
+  el.innerHTML=groups.map(g=>{
+    const totalReq=["BPSC","BSC","BFP"].reduce((n,s)=>n+(Number(g.stages?.[s]?.requiredBags)||0),0);
+    const totalSup=["BPSC","BSC","BFP"].reduce((n,s)=>n+(Number(g.stages?.[s]?.suppliedBags)||0),0);
+    const totalBal=["BPSC","BSC","BFP"].reduce((n,s)=>n+(Number(g.stages?.[s]?.balanceBags)||0),0);
+    return `<div class="feed-group-card">
+      <div class="feed-group-top">
+        <div><div class="row-main">${escapeHtml(g.farmName||"")}</div><div class="row-sub">${escapeHtml(g.batchId||"")}</div></div>
+        <span class="badge ${totalBal>0?'badge-orange':'badge-green'}">${totalBal>0?'TO BE SUPPLIED':'COMPLETE'}</span>
+      </div>
+      <div class="feed-stage-grid">${stageCard(g,"BPSC")}${stageCard(g,"BSC")}${stageCard(g,"BFP")}</div>
+      <div class="feed-total"><span>REQ <b>${totalReq}</b> BAGS</span><span>SUP <b>${totalSup}</b> BAGS</span><span class="${totalBal>0?'feed-balance':''}">BAL <b>${totalBal}</b> BAGS</span></div>
+    </div>`;
   }).join("");
 }
 
-function openInlineFeedOrder(batchId, feedType, balance){
-  // Keep ordering inside the same farm card. Quantity is prefilled with current balance but editable.
-  document.querySelectorAll('[id^="feedOrderPanel-"]').forEach(x => x.innerHTML = "");
-  const el = document.getElementById(`feedOrderPanel-${batchId}`);
-  if(!el) return;
-  el.innerHTML = `
-    <div class="feed-order-panel">
-      <div class="feed-order-panel-title">Place Feed Order · ${escapeHtml(feedType)}</div>
-      <div class="feed-order-inline">
-        <div><label>Order Quantity (50kg Bags)<input type="number" id="inlineFeedOrderQty" min="1" step="1" value="${Number(balance)||0}"></label></div>
-        <div><label>Remarks<input type="text" id="inlineFeedOrderRemarks" placeholder="Optional"></label></div>
-        <button class="btn btn-success" type="button" onclick="submitInlineFeedOrder('${escapeHtml(batchId)}','${escapeHtml(feedType)}')">Place Order</button>
-        <button class="btn" type="button" onclick="this.closest('.feed-order-panel').remove()">Cancel</button>
-      </div>
-    </div>`;
-  el.scrollIntoView({behavior:"smooth",block:"nearest"});
+function openFeedOrder(batchId,feedType,balance){
+  const modal=document.getElementById("feedOrderModal");
+  if(!modal)return;
+  document.getElementById("feedOrderBatch").value=batchId;
+  document.getElementById("feedOrderType").value=feedType;
+  document.getElementById("feedOrderQty").value=balance;
+  document.getElementById("feedOrderBalance").textContent=balance+" bags pending";
+  document.getElementById("feedOrderRemarks").value="";
+  modal.classList.add("open");
 }
-
-async function submitInlineFeedOrder(batchId, feedType){
+function closeFeedOrder(){document.getElementById("feedOrderModal")?.classList.remove("open");}
+async function submitFeedOrder(){
   try{
-    const qty = Number(document.getElementById("inlineFeedOrderQty")?.value || 0);
-    const remarks = document.getElementById("inlineFeedOrderRemarks")?.value || "";
-    if(!qty || qty <= 0) throw new Error("Order quantity must be greater than 0.");
-
-    await postData({
-      action:"createFeedOrder",
-      orderDate:new Date().toISOString().slice(0,10),
-      batchId,
-      feedType,
-      orderQty:qty,
-      remarks
-    });
-
-    // Refresh feed and order status so the button immediately becomes ORDER PENDING.
-    await loadViewData("feed",{silent:true,force:true});
-    renderFeed();
-    showMessage("ordersMessage",`Feed order created: ${feedType} · ${qty} bags.`,"success");
-  }catch(err){
-    alert(err.message);
+    const batchId=document.getElementById("feedOrderBatch").value;
+    const feedType=document.getElementById("feedOrderType").value;
+    const qty=Number(document.getElementById("feedOrderQty").value);
+    const remarks=document.getElementById("feedOrderRemarks").value.trim();
+    if(!batchId||!feedType)throw new Error("Feed order details are missing.");
+    if(!qty||qty<=0)throw new Error("Order quantity must be greater than 0.");
+    await postData({action:"createFeedOrder",orderDate:getTodayISO(),batchId,feedType,orderQty:qty,remarks});
+    closeFeedOrder();
+    await loadData();
+    showAppStatus("Feed order placed successfully","online",2200);
+  }catch(e){
+    const m=document.getElementById("feedOrderMessage");
+    if(m)m.innerHTML='<div class="notice notice-error">'+escapeHtml(e.message)+'</div>';
   }
 }
-
 
 /*************************************************
  * FEED SUPPLY OPTIONS
@@ -4797,84 +4616,19 @@ function openVendorDetail(id){
   openDetailShell("Vendor Detail",v.name,`${escapeHtml(v.id)} · ${(rawPick(v.raw,"Status")||"Active").toString().toUpperCase()}`,html);
 }
 
-
-
-/* =========================================================
-   PHASE D — FINAL PRODUCTION POLISH JS
-   ========================================================= */
-function toggleNotificationPanel(force){
-  const p=document.getElementById("notificationPanel");
-  if(!p)return;
-  const open=typeof force==="boolean"?force:!p.classList.contains("open");
-  p.classList.toggle("open",open);
-  if(open)renderNotificationPanel();
-}
-function renderNotificationPanel(){
-  const list=document.getElementById("notificationList");
-  if(!list)return;
-  const items=[];
-  (Array.isArray(dashboardData)?dashboardData:[]).forEach(x=>{
-    const balance=Number(x.balanceToSupply)||0;
-    if(balance>0)items.push({danger:false,title:`Feed order required — ${x.batchId||""}`,sub:`${x.farmName||""} · ${balance} bags to be supplied`});
-    if(x.nextVaccine)items.push({danger:false,title:`Vaccine scheduled — ${x.nextVaccine}`,sub:`${x.farmName||""} · ${x.batchId||""}${x.nextVaccineDate?' · '+x.nextVaccineDate:''}`});
-  });
-  const alerts=(erpData&&Array.isArray(erpData.alerts))?erpData.alerts:[];
-  alerts.slice(0,8).forEach(x=>items.push({danger:String(x.severity||"").toLowerCase().includes("high")||String(x.severity||"").toLowerCase().includes("critical"),title:x.module||"System alert",sub:x.message||""}));
-  const unique=[];const seen=new Set();
-  items.forEach(x=>{const k=x.title+"|"+x.sub;if(!seen.has(k)){seen.add(k);unique.push(x);}});
-  list.innerHTML=unique.length?unique.slice(0,12).map(x=>`<div class="notification-item"><span class="notification-dot ${x.danger?'danger':''}"></span><div class="notification-copy"><div class="notification-item-title">${escapeHtml(x.title)}</div><div class="notification-item-sub">${escapeHtml(x.sub)}</div></div></div>`).join(""):'<div class="empty">No notifications. Everything looks clear.</div>';
-}
-function updateHeaderAlertCount(){
-  const countEl=document.getElementById("headerAlertCount");
-  if(!countEl)return;
-  let count=0;
-  (Array.isArray(dashboardData)?dashboardData:[]).forEach(x=>{if((Number(x.balanceToSupply)||0)>0)count++;if(x.nextVaccine)count++;});
-  count+=Array.isArray(erpData?.alerts)?erpData.alerts.length:0;
-  count=Math.min(count,99);
-  countEl.textContent=count;
-  countEl.style.display=count?"flex":"none";
-}
-function closeNotificationOnOutside(e){
-  const p=document.getElementById("notificationPanel"),b=document.getElementById("headerAlertButton");
-  if(p&&p.classList.contains("open")&&!p.contains(e.target)&&!b?.contains(e.target))p.classList.remove("open");
-}
-document.addEventListener("click",closeNotificationOnOutside);
-
-function printCurrentPage(){
-  toggleNotificationPanel(false);
-  closeDetailView?.();
-  window.print();
-}
-function addPagePrintTools(){
-  document.querySelectorAll(".page").forEach(page=>{
-    if(page.id==="page-dashboard"||page.querySelector(".page-tools"))return;
-    const title=page.querySelector(".section-title");
-    if(!title)return;
-    const tools=document.createElement("div");
-    tools.className="page-tools";
-    tools.innerHTML='<button type="button" onclick="printCurrentPage()">Print page</button>';
-    title.parentElement.insertBefore(tools,title.nextElementSibling);
-  });
-}
-function showProductionReady(){
-  updateHeaderAlertCount();
-  addPagePrintTools();
-}
-const __kgOriginalRenderDashboard=window.renderDashboard;
-if(typeof __kgOriginalRenderDashboard==="function"){
-  window.renderDashboard=function(){
-    const r=__kgOriginalRenderDashboard.apply(this,arguments);
-    updateHeaderAlertCount();
-    return r;
-  };
-}
-window.addEventListener("load",()=>setTimeout(showProductionReady,250));
-window.addEventListener("error",e=>{
-  console.error("KG Farms UI error",e.error||e.message);
-  if(typeof showAppStatus==="function")showAppStatus("Something went wrong · please retry","offline",3200);
-});
-
 </script>
 
+
+<div id="feedOrderModal" class="feed-order-modal">
+  <div class="feed-order-dialog">
+    <div class="row-flex"><div><div class="row-main">Place Feed Order</div><div class="row-sub">Order directly from Feed Balance</div></div><button class="detail-close" onclick="closeFeedOrder()">×</button></div>
+    <div id="feedOrderMessage"></div>
+    <input type="hidden" id="feedOrderBatch"><input type="hidden" id="feedOrderType">
+    <div class="info-box" style="margin-top:12px"><div class="info-label">Pending Balance</div><div class="info-value" id="feedOrderBalance">0 bags pending</div></div>
+    <label>Order Quantity (Bags)</label><input type="number" id="feedOrderQty" min="1" step="1">
+    <label>Remarks</label><textarea id="feedOrderRemarks" placeholder="Optional"></textarea>
+    <button class="btn btn-primary" onclick="submitFeedOrder()">PLACE ORDER</button>
+  </div>
+</div>
 </body>
 </html>
