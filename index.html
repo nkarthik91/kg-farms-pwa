@@ -601,6 +601,13 @@ body{background:var(--c-bg);overscroll-behavior-y:none}
 .feed-stage-sub{font-size:9px;color:var(--brand);font-weight:800;margin-top:6px;letter-spacing:.5px}
 .feed-stage-sub span,.feed-stage-values span{color:#9aa4ad;margin:0 3px}
 .feed-stage-values{font-size:15px;margin-top:4px;white-space:nowrap}
+.feed-farm-stock{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0 0;padding:10px 12px;border-radius:10px;background:#f3f8f5;border:1px solid #dcebe2;font-size:11px;font-weight:800;color:#53616b}
+.feed-farm-stock-label{font-weight:900;color:#1d6f47}
+.feed-farm-stock-item{background:#fff;border:1px solid #dce8e0;border-radius:7px;padding:5px 8px;color:#17202a}
+.feed-farm-stock-item b{color:#1d6f47}
+.feed-farm-stock-none{color:#8a6a25;font-weight:700}
+.feed-stage-stock{font-size:9px;font-weight:850;margin-top:7px;padding-top:6px;border-top:1px dashed #dfe8e3;color:#53616b}
+.feed-stage-stock b{font-size:11px;color:#17202a}
 .feed-balance{color:#c53b3b}
 .feed-stage-action{min-height:30px;margin-top:8px;display:flex;align-items:center;justify-content:center}
 .feed-order-mini{font-size:10px!important;padding:7px 8px!important;margin:0!important;width:100%}
@@ -2865,6 +2872,9 @@ function renderFeed(){
   const stageCard=(g,stage)=>{
     const x=g.stages?.[stage]||{};
     const req=Number(x.requiredBags)||0, sup=Number(x.suppliedBags)||0, bal=Number(x.balanceBags)||0;
+    const hasStock=x.currentStockBags!==null && x.currentStockBags!==undefined && x.currentStockBags!=='';
+    const stockBags=hasStock ? Number(x.currentStockBags)||0 : null;
+    const stockKg=hasStock ? (x.currentStockKg!==null && x.currentStockKg!==undefined ? Number(x.currentStockKg)||0 : stockBags*50) : null;
     const pending=x.pendingOrder;
     let action="";
     if(bal>0){
@@ -2878,6 +2888,7 @@ function renderFeed(){
       <div class="feed-stage-head">${label[stage]}</div>
       <div class="feed-stage-sub">REQ <span>|</span> SUP <span>|</span> BAL</div>
       <div class="feed-stage-values"><strong>${req}</strong><span>|</span><strong>${sup}</strong><span>|</span><strong class="${bal>0?'feed-balance':''}">${bal}</strong></div>
+      <div class="feed-stage-stock">CURRENT STOCK: <b>${hasStock ? stockBags : '—'}${hasStock ? ' BAGS' : ''}</b>${hasStock ? ' · '+stockKg.toLocaleString()+' KG' : ''}</div>
       <div class="feed-stage-action">${action}</div>
     </div>`;
   };
@@ -2886,12 +2897,23 @@ function renderFeed(){
     const totalReq=["BPSC","BSC","BFP"].reduce((n,s)=>n+(Number(g.stages?.[s]?.requiredBags)||0),0);
     const totalSup=["BPSC","BSC","BFP"].reduce((n,s)=>n+(Number(g.stages?.[s]?.suppliedBags)||0),0);
     const totalBal=["BPSC","BSC","BFP"].reduce((n,s)=>n+(Number(g.stages?.[s]?.balanceBags)||0),0);
+    const totalStockStages=["BPSC","BSC","BFP"].filter(s=>g.stages?.[s]?.currentStockBags!==null && g.stages?.[s]?.currentStockBags!==undefined);
+    const totalStock=totalStockStages.reduce((n,s)=>n+(Number(g.stages?.[s]?.currentStockBags)||0),0);
     return `<div class="feed-group-card">
       <div class="feed-group-top">
         <div><div class="row-main">${escapeHtml(g.farmName||"")}</div><div class="row-sub">${escapeHtml(g.batchId||"")}</div></div>
         <span class="badge ${totalBal>0?'badge-orange':'badge-green'}">${totalBal>0?'TO BE SUPPLIED':'COMPLETE'}</span>
       </div>
       <div class="feed-stage-grid">${stageCard(g,"BPSC")}${stageCard(g,"BSC")}${stageCard(g,"BFP")}</div>
+      <div class="feed-farm-stock">
+        <span class="feed-farm-stock-label">FARM STOCK :</span>
+        ${["BPSC","BSC","BFP"].map(s=>{
+          const x=g.stages?.[s]||{};
+          const has=x.currentStockBags!==null && x.currentStockBags!==undefined && x.currentStockBags!=='';
+          return has ? `<span class="feed-farm-stock-item">${s} <b>${Number(x.currentStockBags)||0} BAGS</b></span>` : '';
+        }).join('')}
+        ${!totalStockStages.length ? '<span class="feed-farm-stock-none">No daily stock entered</span>' : ''}
+      </div>
       <div class="feed-total"><span>REQ <b>${totalReq}</b> BAGS</span><span>SUP <b>${totalSup}</b> BAGS</span><span class="${totalBal>0?'feed-balance':''}">BAL <b>${totalBal}</b> BAGS</span></div>
     </div>`;
   }).join("");
