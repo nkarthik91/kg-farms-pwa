@@ -723,12 +723,14 @@ body{background:var(--c-bg);overscroll-behavior-y:none}
       <option value="BFP">BFP</option>
     </select>
 
-    <label>Remaining Feed Stock (50kg Bags)</label>
+    <label>Remaining Feed Stock After Today's Consumption (50kg Bags) <span class="required-mark">*</span></label>
     <input type="number"
            id="dailyFeedStock"
            min="0"
            step="1"
-           placeholder="Optional">
+           required
+           placeholder="Enter physical stock remaining">
+    <div class="field-help">Enter the physical feed stock remaining at the farm after today's consumption. This becomes the current Farm Stock shown on the Feed page.</div>
 
     <button class="btn btn-primary"
             onclick="saveDailyEntry()">
@@ -2784,6 +2786,19 @@ async function saveDailyEntry(){
 
     if(!batchId){
       throw new Error("Batch is required.");
+    }
+
+    if(!feedType){
+      throw new Error("Feed Type is required.");
+    }
+
+    if(remainingFeedStock === "" || remainingFeedStock === null || remainingFeedStock === undefined){
+      throw new Error("Remaining Feed Stock is required. Enter the physical stock left after today's consumption.");
+    }
+
+    const stockNumber = Number(remainingFeedStock);
+    if(!Number.isFinite(stockNumber) || stockNumber < 0){
+      throw new Error("Remaining Feed Stock must be 0 or more bags.");
     }
 
     const result =
